@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light dark">
+<title>热榜速读</title>
+<style>
+  :root {
+    --bg: #f6f3ec;
+    --surface: #fffdf8;
+    --ink: #1f1d1a;
+    --ink-2: #5d574e;
+    --ink-3: #958d81;
+    --line: #e4ded2;
+    --accent: #c2410c;
+    --accent-soft: #fbe9dd;
+    --read: #a8a195;
+    --serif: "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", "STSong", "SimSun", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #171614;
+      --surface: #201e1b;
+      --ink: #ece7dd;
+      --ink-2: #b3ab9d;
+      --ink-3: #7d766b;
+      --line: #33302b;
+      --accent: #f08a4b;
+      --accent-soft: #3a2619;
+      --read: #6f695f;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+  }
+  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+
+  /* ---------- list ---------- */
+  .masthead { padding: 36px 0 18px; border-bottom: 2px solid var(--ink); }
+  .masthead h1 { font-family: var(--serif); font-size: 34px; line-height: 1.15; margin: 0; letter-spacing: .04em; }
+  .masthead p { margin: 8px 0 0; color: var(--ink-2); font-size: 14px; }
+  .masthead .stale { color: var(--accent); }
+  .list { list-style: none; margin: 0; padding: 0 0 64px; }
+  .item { border-bottom: 1px solid var(--line); }
+  .item a {
+    display: grid; grid-template-columns: 34px 1fr auto; gap: 12px;
+    padding: 18px 0; text-decoration: none; align-items: start;
+  }
+  .rank {
+    font-family: var(--serif); font-size: 24px; font-weight: 700; line-height: 1.25;
+    color: var(--ink-3); font-variant-numeric: tabular-nums;
+  }
+  .item:nth-child(-n+3) .rank { color: var(--accent); }
+  .item h2 { font-family: var(--serif); font-size: 18px; line-height: 1.45; margin: 0; font-weight: 700; text-wrap: pretty; }
+  .item .lede {
+    margin: 6px 0 0; color: var(--ink-2); font-size: 14px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .meta { margin-top: 8px; font-size: 12px; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; }
+  .tag { color: var(--accent); background: var(--accent-soft); border-radius: 3px; padding: 0 5px; font-weight: 600; }
+  .thumb { width: 96px; height: 68px; object-fit: cover; border-radius: 6px; background: var(--line); }
+  .item.read h2, .item.read .rank { color: var(--read); }
+  @media (hover: hover) { .item a:hover h2 { text-decoration: underline; text-underline-offset: 4px; } }
+  @media (max-width: 480px) {
+    .masthead h1 { font-size: 28px; }
+    .item a { grid-template-columns: 26px 1fr auto; gap: 10px; }
+    .rank { font-size: 20px; }
+    .item h2 { font-size: 17px; }
+    .thumb { width: 76px; height: 56px; }
+  }
+
+  /* ---------- reader ---------- */
+  .bar {
+    position: sticky; top: 0; z-index: 2; background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar .wrap { display: flex; align-items: center; justify-content: space-between; height: 52px; }
+  .bar button, .bar a { font-size: 14px; color: var(--ink-2); padding: 8px 0; text-decoration: none; }
+  .bar .pos { font-size: 13px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  article { padding: 28px 0 24px; }
+  article .kicker { font-size: 13px; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; }
+  article .kicker b { color: var(--accent); font-family: var(--serif); font-size: 15px; }
+  article h1 { font-family: var(--serif); font-size: 28px; line-height: 1.4; margin: 10px 0 0; text-wrap: pretty; }
+  article .hero { display: block; width: 100%; max-height: 380px; object-fit: cover; border-radius: 8px; margin: 22px 0 0; background: var(--line); }
+  article .body { margin-top: 22px; font-size: 17px; line-height: 1.95; max-width: 65ch; }
+  article .body p { margin: 0 0 1em; text-align: justify; }
+  article .body .empty { color: var(--ink-3); font-size: 15px; }
+  article .cut { color: var(--ink-3); font-size: 13px; margin-top: 4px; }
+  @media (max-width: 480px) { article h1 { font-size: 23px; } }
+
+  .exit { border-top: 1px solid var(--line); padding: 22px 0 8px; }
+  .exit h3 { margin: 0; font-size: 13px; font-weight: 400; color: var(--ink-3); }
+  .exit .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+  .btn {
+    flex: 1 1 180px; min-height: 46px; padding: 10px 16px; border-radius: 8px; font-size: 15px;
+    text-align: center; text-decoration: none; border: 1px solid var(--line); background: var(--surface);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .btn.primary { border-color: var(--ink); }
+  .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 16px 0 72px; }
+  .pager button {
+    text-align: left; border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px;
+    background: var(--surface); min-height: 76px;
+  }
+  .pager button:last-child { text-align: right; }
+  .pager small { display: block; font-size: 12px; color: var(--ink-3); }
+  .pager span {
+    font-family: var(--serif); font-size: 15px; line-height: 1.45; margin-top: 2px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .pager button:disabled { opacity: .4; cursor: default; }
+
+  .state { padding: 72px 0; text-align: center; color: var(--ink-2); }
+  .state button { color: var(--accent); text-decoration: underline; }
+  .toast {
+    position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+    background: var(--ink); color: var(--bg); font-size: 14px; padding: 10px 16px; border-radius: 8px;
+    max-width: calc(100vw - 32px); z-index: 5;
+  }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main id="app"><div class="wrap state">正在取热榜…</div></main>
+<div id="toast" class="toast" role="status" hidden></div>
+
+<script>
+(() => {
+  const app = document.getElementById('app');
+  const toastEl = document.getElementById('toast');
+  const READ_KEY = 'hot-read-v1';
+  let data = null;
+  let listScroll = 0;
+
+  const el = (tag, props = {}, ...kids) => {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(props)) {
+      if (v == null || v === false) continue;
+      if (k === 'class') node.className = v;
+      else if (k.startsWith('on')) node.addEventListener(k.slice(2), v);
+      else node.setAttribute(k, v === true ? '' : v);
+    }
+    for (const kid of kids.flat()) if (kid != null && kid !== false) node.append(kid);
+    return node;
+  };
+
+  const readSet = () => {
+    try { return new Set(JSON.parse(localStorage.getItem(READ_KEY) || '[]')); } catch { return new Set(); }
+  };
+  const markRead = (id) => {
+    try {
+      const s = readSet(); s.add(id);
+      localStorage.setItem(READ_KEY, JSON.stringify([...s].slice(-300)));
+    } catch {}
+  };
+
+  const webUrl = (it) => `https://www.zhihu.com/question/${it.id}`;
+  const appUrl = (it) => `zhihu://questions/${it.id}`;
+  const count = (n) => (n >= 10000 ? (n / 10000).toFixed(1).replace(/\.0$/, '') + ' 万' : String(n));
+
+  function ago(iso) {
+    const mins = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60000));
+    if (mins < 1) return '刚刚';
+    if (mins < 60) return `${mins} 分钟前`;
+    if (mins < 60 * 24) return `${Math.floor(mins / 60)} 小时前`;
+    return `${Math.floor(mins / 1440)} 天前`;
+  }
+
+  function image(src, cls) {
+    if (!src) return null;
+    return el('img', {
+      class: cls, src, alt: '', loading: 'lazy', decoding: 'async', referrerpolicy: 'no-referrer',
+      onerror: (e) => e.target.remove(),
+    });
+  }
+
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.hidden = false;
+    clearTimeout(toast.t);
+    toast.t = setTimeout(() => { toastEl.hidden = true; }, 3200);
+  }
+
+  // The app scheme fails silently when the app is missing, so say so if we are still here.
+  function openApp(it) {
+    const started = Date.now();
+    location.href = appUrl(it);
+    setTimeout(() => {
+      if (!document.hidden && Date.now() - started < 2500) toast('没唤起知乎 App，可能没装，用网页版吧');
+    }, 1600);
+  }
+
+  // ---------- views ----------
+  function renderList() {
+    const read = readSet();
+    const hours = (Date.now() - new Date(data.updatedAt).getTime()) / 36e5;
+    document.title = '热榜速读';
+    app.replaceChildren(
+      el('div', { class: 'wrap' },
+        el('header', { class: 'masthead' },
+          el('h1', {}, '热榜速读'),
+          el('p', { class: hours > 3 ? 'stale' : null },
+            `知乎热榜 ${data.items.length} 条 · 更新于 ${ago(data.updatedAt)}` + (hours > 3 ? '（数据有点旧了）' : ''))),
+        el('ol', { class: 'list' }, data.items.map((it) =>
+          el('li', { class: 'item' + (read.has(it.id) ? ' read' : '') },
+            el('a', { href: `#q/${it.id}` },
+              el('span', { class: 'rank' }, String(it.rank)),
+              el('div', {},
+                el('h2', {}, it.title),
+                it.excerpt && el('p', { class: 'lede' }, it.excerpt),
+                el('div', { class: 'meta' },
+                  it.isNew && el('span', { class: 'tag' }, '新'),
+                  el('span', {}, it.heat),
+                  el('span', {}, `${count(it.answers)} 回答`))),
+              image(it.image, 'thumb'))))))
+    );
+    window.scrollTo(0, listScroll);
+  }
+
+  function paragraphs(text) {
+    return text.replace(/([。！？…”」）])\s+/g, '$1\n').split('\n').map((s) => s.trim()).filter(Boolean);
+  }
+
+  function renderReader(id) {
+    const i = data.items.findIndex((x) => x.id === id);
+    if (i < 0) { location.hash = ''; return; }
+    const it = data.items[i];
+    const prev = data.items[i - 1];
+    const next = data.items[i + 1];
+    markRead(it.id);
+    document.title = `${it.title} · 热榜速读`;
+
+    const paras = it.excerpt ? paragraphs(it.excerpt) : [];
+    const go = (target) => { location.hash = `#q/${target.id}`; };
+    const pagerBtn = (target, label) =>
+      el('button', { disabled: !target, onclick: target ? () => go(target) : null },
+        el('small', {}, label), el('span', {}, target ? target.title : '没有了'));
+
+    app.replaceChildren(
+      el('div', { class: 'bar' },
+        el('div', { class: 'wrap' },
+          el('button', { onclick: () => { location.hash = ''; } }, '← 返回热榜'),
+          el('span', { class: 'pos' }, `${it.rank} / ${data.items.length}`))),
+      el('div', { class: 'wrap' },
+        el('article', {},
+          el('div', { class: 'kicker' },
+            el('b', {}, `No.${it.rank}`),
+            it.isNew && el('span', { class: 'tag' }, '新'),
+            el('span', {}, it.heat),
+            el('span', {}, `${count(it.answers)} 回答`),
+            el('span', {}, `${count(it.followers)} 关注`)),
+          el('h1', {}, it.title),
+          image(it.image, 'hero'),
+          el('div', { class: 'body' },
+            paras.length
+              ? paras.map((p) => el('p', {}, p))
+              : el('p', { class: 'empty' }, '这个问题没有补充说明，题目就是全部了。'),
+            paras.length ? el('p', { class: 'cut' }, '— 以上是问题说明的摘录，回答正文只在知乎 —') : null)),
+        el('section', { class: 'exit' },
+          el('h3', {}, '迫不得已，还是想看回答？'),
+          el('div', { class: 'btns' },
+            el('a', { class: 'btn primary', href: webUrl(it), target: '_blank', rel: 'noopener noreferrer' }, '去知乎网页版'),
+            el('button', { class: 'btn', onclick: () => openApp(it) }, '用知乎 App 打开'))),
+        el('nav', { class: 'pager' }, pagerBtn(prev, '← 上一条'), pagerBtn(next, '下一条 →')))
+    );
+    window.scrollTo(0, 0);
+  }
+
+  function route() {
+    if (!data) return;
+    const m = location.hash.match(/^#q\/(\d+)$/);
+    if (m) renderReader(m[1]); else renderList();
+  }
+
+  window.addEventListener('hashchange', route);
+  window.addEventListener('scroll', () => {
+    if (!location.hash.startsWith('#q/')) listScroll = window.scrollY;
+  }, { passive: true });
+  window.addEventListener('keydown', (e) => {
+    const m = location.hash.match(/^#q\/(\d+)$/);
+    if (!m || !data || e.metaKey || e.ctrlKey || e.altKey) return;
+    const i = data.items.findIndex((x) => x.id === m[1]);
+    if (e.key === 'ArrowLeft' && data.items[i - 1]) location.hash = `#q/${data.items[i - 1].id}`;
+    if (e.key === 'ArrowRight' && data.items[i + 1]) location.hash = `#q/${data.items[i + 1].id}`;
+    if (e.key === 'Escape') location.hash = '';
+  });
+
+  async function load() {
+    try {
+      const res = await fetch('data/hot.json', { cache: 'no-cache' });
+      if (!res.ok) throw new Error(res.status);
+      data = await res.json();
+      route();
+    } catch (err) {
+      app.replaceChildren(el('div', { class: 'wrap state' },
+        el('p', {}, '热榜没取到。'),
+        el('button', { onclick: load }, '再试一次')));
+    }
+  }
+  load();
+})();
+</script>
+</body>
+</html>
