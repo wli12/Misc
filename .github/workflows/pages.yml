@@ -24,9 +24,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
       - name: Fetch hot list
         id: fetch
         continue-on-error: true
@@ -36,7 +33,7 @@ jobs:
         # fails here so the last good deployment stays live.
         if: steps.fetch.outcome == 'failure' && github.event_name != 'push'
         run: exit 1
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: site
       - id: deployment
