@@ -57,7 +57,9 @@ a { color: inherit; }
   border: 0; background: none; padding: 6px 14px; border-radius: 999px; color: var(--muted); white-space: nowrap;
 }
 .lists button[aria-pressed="true"] { background: var(--acc); color: var(--on-acc); font-weight: 600; }
-.top .gear { margin-left: auto; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 14px; }
+.top .tools { margin-left: auto; display: flex; gap: 8px; }
+.top .gear { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 14px; white-space: nowrap; }
+.top .gear.on { border-color: var(--acc); }
 
 /* progress */
 .prog { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 20px; }
@@ -131,6 +133,10 @@ h3 { margin: 0; font-size: 12px; letter-spacing: .1em; color: var(--muted); font
 .btn[aria-pressed="true"] { background: var(--acc); border-color: var(--acc); color: var(--on-acc); }
 .btn.no[aria-pressed="true"] { background: var(--muted); border-color: var(--muted); color: var(--surface); }
 .btn.danger { color: var(--danger); }
+.btn.big { padding: 10px 14px; font-size: 15px; font-weight: 600; text-align: center; }
+.email-form { display: flex; gap: 8px; }
+.email-form input { flex: 1; min-width: 0; border: 1px solid var(--line); background: var(--bg); border-radius: 6px; padding: 8px 10px; }
+.who { font-weight: 600; overflow-wrap: anywhere; }
 .srow input, .cfg input, textarea {
   width: 100%; border: 1px solid var(--line); background: var(--bg); border-radius: 6px; padding: 6px 8px; font-size: 13px; min-width: 0;
 }
@@ -152,7 +158,10 @@ textarea { min-height: 84px; font-family: ui-monospace, Menlo, Consolas, monospa
       <button type="button" data-list="db" aria-pressed="true">豆瓣 Top 250</button>
       <button type="button" data-list="im" aria-pressed="false">IMDb Top 250</button>
     </div>
-    <button type="button" class="gear" id="open-settings">播放源与备份</button>
+    <div class="tools">
+      <button type="button" class="gear" id="open-account" hidden>登录</button>
+      <button type="button" class="gear" id="open-settings">播放源与备份</button>
+    </div>
   </header>
 
   <section class="prog" aria-live="polite">
@@ -181,6 +190,8 @@ textarea { min-height: 84px; font-family: ui-monospace, Menlo, Consolas, monospa
 
 <dialog id="detail"><div class="dlg" id="detail-body"></div></dialog>
 
+<dialog id="account"><div class="dlg" id="account-body"></div></dialog>
+
 <dialog id="settings">
   <div class="dlg">
     <div class="dlg-head"><h2>播放源与备份</h2><button type="button" class="x" data-close aria-label="关闭">×</button></div>
@@ -189,7 +200,7 @@ textarea { min-height: 84px; font-family: ui-monospace, Menlo, Consolas, monospa
     <div class="srcs" id="cfg-list"></div>
     <div class="row"><button type="button" class="btn" id="add-src">添加播放源</button></div>
     <h3>备份</h3>
-    <p class="hint">标记只存在这台设备的这个浏览器里。换设备或清理浏览器数据前，把下面的备份文字存好；在新设备上粘贴后点“导入”。</p>
+    <p class="hint">没有登录时，标记只存在这台设备的这个浏览器里。换设备或清理浏览器数据前，把下面的备份文字存好；在新设备上粘贴后点“导入”。</p>
     <textarea id="backup" aria-label="备份文字" spellcheck="false"></textarea>
     <div class="row">
       <button type="button" class="btn" id="do-export">生成并复制备份</button>
@@ -199,6 +210,7 @@ textarea { min-height: 84px; font-family: ui-monospace, Menlo, Consolas, monospa
   </div>
 </dialog>
 
+<script src="config.js"></script>
 <script>
 (() => {
   const KEY = 'pianDan.v1';
@@ -224,7 +236,8 @@ textarea { min-height: 84px; font-family: ui-monospace, Menlo, Consolas, monospa
     return true;
   }
   function load() { try { adopt(JSON.parse(localStorage.getItem(KEY))); } catch (e) {} }
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function store() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function save() { store(); touch(); }
 
   const inList = (f, l) => (l === 'db' ? f.db : f.imdb);
   const srcOf = (f, sid) => (state.avail[f.id] || {})[sid] || {};
@@ -351,7 +364,7 @@ textarea { min-height: 84px; font-family: ui-monospace, Menlo, Consolas, monospa
   // ---- events
   document.querySelector('.lists').addEventListener('click', (e) => {
     const b = e.target.closest('button[data-list]');
-    if (b) { state.list = b.dataset.list; save(); render(); }
+    if (b) { state.list = b.dataset.list; store(); render(); }
   });
   $('#status').addEventListener('click', (e) => {
     const b = e.target.closest('button[data-f]');
@@ -441,13 +454,189 @@ textarea { min-height: 84px; font-family: ui-monospace, Menlo, Consolas, monospa
     }
   }
 
+  // ---- sign-in and cloud sync (only when config.js carries a Firebase config)
+  const SYNC_KEY = 'pianDan.sync', EMAIL_KEY = 'pianDan.emailForSignIn';
+  const SDK = 'https://www.gstatic.com/firebasejs/10.14.1/';
+  // sync.uid: the account this browser last synced with; sync.dirty: local changes not yet confirmed by the cloud
+  let sync = { uid: null, dirty: false };
+  let fb = null, auth = null, user = null, docRef = null, unsub = null, pushTimer = 0;
+  let syncNote = '', accountNote = '', pendingLink = '';
+
+  try { Object.assign(sync, JSON.parse(localStorage.getItem(SYNC_KEY)) || {}); } catch (e) {}
+  const saveSync = () => { try { localStorage.setItem(SYNC_KEY, JSON.stringify(sync)); } catch (e) {} };
+  const payload = () => JSON.stringify({ marks: state.marks, avail: state.avail, sources: state.sources });
+  const parse = (t) => { try { const o = JSON.parse(t); return o && typeof o === 'object' ? o : null; } catch (e) { return null; } };
+
+  const ERR = {
+    'auth/popup-blocked': '浏览器拦截了登录窗口，请允许弹出窗口后再试。',
+    'auth/popup-closed-by-user': '',
+    'auth/cancelled-popup-request': '',
+    'auth/unauthorized-domain': '这个网址还没有加到 Firebase 的“授权网域”里。',
+    'auth/operation-not-allowed': '这种登录方式还没有在 Firebase 控制台里开启。',
+    'auth/invalid-email': '邮箱地址格式不对。',
+    'auth/invalid-action-code': '这个登录链接已经用过或已过期，请重新发送一封。',
+    'auth/expired-action-code': '这个登录链接已过期，请重新发送一封。',
+    'auth/network-request-failed': '网络连接失败，请稍后再试。',
+    'permission-denied': '云端数据库拒绝了访问，请检查 Firestore 规则。',
+    unavailable: '暂时连不上云端，联网后会自动重试。',
+  };
+  const errText = (e) => (e && e.code in ERR ? ERR[e.code] : (e && e.message) || '出错了，请再试一次。');
+
+  function setSyncNote(t) { syncNote = t; renderAccount(); }
+  function touch() {
+    if (!user) return;
+    sync.dirty = true; saveSync();
+    clearTimeout(pushTimer); pushTimer = setTimeout(push, 800);
+  }
+  function push() {
+    if (!docRef) return;
+    const body = payload(), ref = docRef;
+    setSyncNote('正在同步…');
+    ref.set({ data: body, updatedAt: fb.firestore.FieldValue.serverTimestamp() }).then(() => {
+      if (ref !== docRef) return;
+      if (body === payload()) { sync.dirty = false; saveSync(); }
+      setSyncNote('已同步到云端');
+    }).catch((e) => setSyncNote('同步失败：' + errText(e)));
+  }
+  function mergeIn(r) { // first sign-in on this browser: keep both sides, cloud wins a conflict
+    state.marks = { ...state.marks, ...(r.marks || {}) };
+    for (const [id, bag] of Object.entries(r.avail || {})) state.avail[id] = { ...(state.avail[id] || {}), ...bag };
+    if (Array.isArray(r.sources) && r.sources.length) {
+      const ids = new Set(r.sources.map((x) => x.id));
+      state.sources = [...r.sources, ...state.sources.filter((x) => !ids.has(x.id))];
+    }
+  }
+  function refreshAll() {
+    store(); render();
+    if ($('#detail').open) renderDetail();
+    if ($('#settings').open) renderSettings();
+  }
+  function onUser(u) {
+    if (unsub) { unsub(); unsub = null; }
+    clearTimeout(pushTimer);
+    user = u; docRef = null; syncNote = '';
+    renderAccount();
+    if (!u) return;
+    const ref = docRef = fb.firestore().collection('users').doc(u.uid);
+    setSyncNote('正在读取云端的标记…');
+    ref.get().then((snap) => {
+      if (ref !== docRef) return;
+      const remote = snap.exists ? parse(snap.data().data) : null;
+      const known = sync.uid === u.uid;
+      if (remote && !sync.uid) mergeIn(remote);           // browser never synced: merge local into the account
+      else if (remote && !(known && sync.dirty)) adopt(remote); // otherwise the cloud copy is the truth
+      else if (!remote && sync.uid && !known) { state.marks = {}; state.avail = {}; } // another account's data stays out
+      const needPush = !remote || !sync.uid || (known && sync.dirty) || payload() !== snap.data().data;
+      sync.uid = u.uid; sync.dirty = needPush; saveSync();
+      migrate(); refreshAll();
+      if (needPush) push(); else setSyncNote('已同步到云端');
+      unsub = ref.onSnapshot((s) => {
+        if (ref !== docRef || s.metadata.hasPendingWrites || !s.exists || sync.dirty) return;
+        const text = s.data().data, r = parse(text);
+        if (r && text !== payload()) { adopt(r); migrate(); refreshAll(); }
+      }, (e) => setSyncNote('同步中断：' + errText(e)));
+    }).catch((e) => setSyncNote('读取云端失败：' + errText(e)));
+  }
+
+  function renderAccount() {
+    const btn = $('#open-account');
+    btn.textContent = user ? '已登录' : '登录';
+    btn.classList.toggle('on', !!user);
+    const head = (t) => `<div class="dlg-head"><h2>${t}</h2><button type="button" class="x" data-close aria-label="关闭">×</button></div>`;
+    let html;
+    if (user) {
+      html = `${head('已登录')}
+        <div class="who">${esc(user.email || user.displayName || '')}</div>
+        <p class="hint" role="status">${esc(syncNote)}</p>
+        <p class="hint">标记和播放源会自动保存到云端；在别的设备上用同一个账号登录就能看到。</p>
+        <div class="row"><button type="button" class="btn" data-signout>退出登录</button></div>
+        <p class="hint">退出后，这台设备上的标记仍会保留。</p>`;
+    } else if (pendingLink) {
+      html = `${head('完成邮箱登录')}
+        <p class="hint">这条登录链接是在别的设备或浏览器上申请的。再输入一次收到邮件的邮箱地址来确认。</p>
+        <form class="email-form" data-finish><input type="email" id="login-email" required placeholder="you@example.com" aria-label="邮箱地址"><button class="btn go">完成登录</button></form>
+        <p class="hint" role="status">${esc(accountNote)}</p>`;
+    } else {
+      html = `${head('登录后同步标记')}
+        <p class="hint">登录后，标记和播放源会保存到云端，在手机和电脑之间自动同步。不登录也能照常使用，标记只留在这个浏览器里。</p>
+        <button type="button" class="btn go big" data-google ${auth ? '' : 'disabled'}>用 Google 账号登录</button>
+        <h3>或者用邮箱</h3>
+        <form class="email-form" data-send><input type="email" id="login-email" required placeholder="you@example.com" aria-label="邮箱地址"><button class="btn" ${auth ? '' : 'disabled'}>发送登录链接</button></form>
+        <p class="hint" role="status">${esc(accountNote)}</p>`;
+    }
+    const keep = $('#login-email') ? $('#login-email').value : '';
+    $('#account-body').innerHTML = html;
+    if (keep && $('#login-email')) $('#login-email').value = keep;
+  }
+  const say = (t) => { accountNote = t; renderAccount(); };
+
+  function finishEmailLink(email) {
+    say('正在登录…');
+    auth.signInWithEmailLink(email, pendingLink).then(() => {
+      try { localStorage.removeItem(EMAIL_KEY); } catch (e) {}
+      pendingLink = ''; accountNote = '';
+      history.replaceState(null, '', location.pathname);
+      renderAccount();
+    }).catch((e) => say(errText(e)));
+  }
+
+  $('#open-account').addEventListener('click', () => { renderAccount(); $('#account').showModal(); });
+  $('#account').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget || e.target.closest('[data-close]')) { $('#account').close(); return; }
+    if (e.target.closest('[data-google]')) {
+      say('');
+      auth.signInWithPopup(new fb.auth.GoogleAuthProvider()).catch((err) => say(errText(err)));
+    }
+    if (e.target.closest('[data-signout]')) auth.signOut();
+  });
+  $('#account').addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!auth) return;
+    const email = $('#login-email').value.trim();
+    if (!email) return;
+    if (e.target.matches('[data-finish]')) { finishEmailLink(email); return; }
+    say('正在发送…');
+    auth.sendSignInLinkToEmail(email, { url: location.origin + location.pathname, handleCodeInApp: true }).then(() => {
+      try { localStorage.setItem(EMAIL_KEY, email); } catch (err) {}
+      say(`登录链接已发到 ${email}。在这台设备上打开邮件里的链接就能登录；没收到的话看看垃圾邮件。`);
+    }).catch((err) => say(errText(err)));
+  });
+
+  const loadScript = (src) => new Promise((ok, fail) => {
+    const el = document.createElement('script');
+    el.src = src; el.onload = ok; el.onerror = () => fail(new Error(src));
+    document.head.appendChild(el);
+  });
+  async function initSync() {
+    const cfg = window.PIANDAN_FIREBASE;
+    if (!cfg || !cfg.apiKey) return;
+    $('#open-account').hidden = false;
+    renderAccount();
+    try {
+      for (const f of ['firebase-app-compat.js', 'firebase-auth-compat.js', 'firebase-firestore-compat.js']) await loadScript(SDK + f);
+    } catch (e) { say('登录服务没有加载成功，请检查网络后刷新页面。'); return; }
+    fb = window.firebase;
+    fb.initializeApp(cfg);
+    auth = fb.auth();
+    auth.useDeviceLanguage();
+    auth.onAuthStateChanged(onUser);
+    if (auth.isSignInWithEmailLink(location.href)) {
+      pendingLink = location.href;
+      let email = '';
+      try { email = localStorage.getItem(EMAIL_KEY) || ''; } catch (e) {}
+      if (email) finishEmailLink(email); else { renderAccount(); $('#account').showModal(); }
+    }
+    renderAccount();
+  }
+
   load();
   render();
+  initSync();
   fetch('data/movies.json')
     .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then((d) => {
       films = d.films; meta = d; byId = new Map(films.map((f) => [f.id, f]));
-      migrate(); save(); render();
+      migrate(); store(); render();
     })
     .catch(() => { $('#note').textContent = '片单没有载入成功，刷新页面再试一次。'; });
 })();
