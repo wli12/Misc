@@ -193,6 +193,15 @@
     toast.t = setTimeout(() => { toastEl.hidden = true; }, 3200);
   }
 
+  // On phones, tapping a plain link to zhihu.com hands off to the installed app
+  // (universal / app links). Those only fire for tapped links, not for script
+  // navigation, so on touch devices we navigate from a timer to stay in the browser.
+  function openWeb(e, it) {
+    if (!window.matchMedia('(pointer: coarse)').matches) return;
+    e.preventDefault();
+    setTimeout(() => { location.assign(webUrl(it)); }, 0);
+  }
+
   // The app scheme fails silently when the app is missing, so say so if we are still here.
   function openApp(it) {
     const started = Date.now();
@@ -271,7 +280,7 @@
         el('section', { class: 'exit' },
           el('h3', {}, '迫不得已，还是想看回答？'),
           el('div', { class: 'btns' },
-            el('a', { class: 'btn primary', href: webUrl(it), target: '_blank', rel: 'noopener noreferrer' }, '去知乎网页版'),
+            el('a', { class: 'btn primary', href: webUrl(it), target: '_blank', rel: 'noopener noreferrer', onclick: (e) => openWeb(e, it) }, '去知乎网页版'),
             el('button', { class: 'btn', onclick: () => openApp(it) }, '用知乎 App 打开'))),
         el('nav', { class: 'pager' }, pagerBtn(prev, '← 上一条'), pagerBtn(next, '下一条 →')))
     );
