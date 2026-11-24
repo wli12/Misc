@@ -202,6 +202,19 @@
     setTimeout(() => { location.assign(webUrl(it)); }, 0);
   }
 
+  // List items open Zhihu's web page in a new tab and leave this page in place.
+  // On touch devices the tab is opened by script, because a tapped link to
+  // zhihu.com would be handed to the installed app instead.
+  function openFromList(e, it) {
+    markRead(it.id);
+    e.currentTarget.parentNode.classList.add('read');
+    if (!window.matchMedia('(pointer: coarse)').matches) return;
+    const tab = window.open(webUrl(it), '_blank');
+    if (!tab) return; // popup blocked: fall back to the plain link
+    tab.opener = null;
+    e.preventDefault();
+  }
+
   // The app scheme fails silently when the app is missing, so say so if we are still here.
   function openApp(it) {
     const started = Date.now();
@@ -224,7 +237,7 @@
             `知乎热榜 ${data.items.length} 条 · 更新于 ${ago(data.updatedAt)}` + (hours > 3 ? '（数据有点旧了）' : ''))),
         el('ol', { class: 'list' }, data.items.map((it) =>
           el('li', { class: 'item' + (read.has(it.id) ? ' read' : '') },
-            el('a', { href: `#q/${it.id}` },
+            el('a', { href: webUrl(it), target: '_blank', rel: 'noopener noreferrer', onclick: (e) => openFromList(e, it) },
               el('span', { class: 'rank' }, String(it.rank)),
               el('div', {},
                 el('h2', {}, it.title),
