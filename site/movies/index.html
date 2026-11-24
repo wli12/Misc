@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--page-->
+<title>片单标记</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700&display=swap">
+<style>
+/* Layout: a wall of numbered stubs. One list at a time; the list's own brand
+   colour (Douban green, IMDb yellow) is the ink that fills a stub once seen. */
+:root {
+  --bg: #eceff3; --surface: #ffffff; --ink: #17202a; --muted: #5b6673; --line: #d3d9e0;
+  --db: #2a8a3f; --on-db: #ffffff; --im: #e6b400; --on-im: #1c1600;
+  --danger: #b3261e;
+  --num: "Barlow Condensed", "DIN Alternate", "Arial Narrow", sans-serif;
+  --text: system-ui, -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10141a; --surface: #1a2029; --ink: #e7ebf0; --muted: #97a2af; --line: #2d3541;
+    --db: #49b560; --on-db: #06170b; --im: #f5c518; --on-im: #1c1600; --danger: #ff8a80;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10141a; --surface: #1a2029; --ink: #e7ebf0; --muted: #97a2af; --line: #2d3541;
+  --db: #49b560; --on-db: #06170b; --im: #f5c518; --on-im: #1c1600; --danger: #ff8a80;
+  color-scheme: dark;
+}
+body { --acc: var(--db); --on-acc: var(--on-db); }
+body[data-list="im"] { --acc: var(--im); --on-acc: var(--on-im); }
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.5 var(--text);
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+a { color: inherit; }
+
+.wrap {
+  max-width: 1120px; margin: 0 auto; padding-block: 20px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 16px;
+}
+
+/* header */
+.top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+.top h1 { font-size: 20px; margin: 0; letter-spacing: .04em; }
+.lists { display: flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: var(--surface); }
+.lists button {
+  border: 0; background: none; padding: 6px 14px; border-radius: 999px; color: var(--muted); white-space: nowrap;
+}
+.lists button[aria-pressed="true"] { background: var(--acc); color: var(--on-acc); font-weight: 600; }
+.top .tools { margin-left: auto; display: flex; gap: 8px; }
+.top .gear { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 14px; white-space: nowrap; }
+.top .gear.on { border-color: var(--acc); }
+
+/* progress */
+.prog { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 20px; }
+.count { font-family: var(--num); font-weight: 700; font-size: 64px; line-height: .9; font-variant-numeric: tabular-nums; }
+.count small { font-size: 26px; font-weight: 500; color: var(--muted); }
+.prog-side { flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 6px; padding-bottom: 4px; }
+.bar { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--acc); border-radius: 4px; transition: width .25s; }
+.prog-note { color: var(--muted); font-size: 13px; }
+
+/* filters */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seg { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface); }
+.seg button { border: 0; background: none; padding: 6px 12px; color: var(--muted); border-left: 1px solid var(--line); }
+.seg button:first-child { border-left: 0; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.filters select, .filters input {
+  border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 6px 10px; min-width: 0;
+}
+.filters input { flex: 1 1 160px; }
+
+/* wall */
+.wall { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); }
+.tile { position: relative; min-width: 0; }
+.tile-main {
+  width: 100%; height: 100%; min-height: 104px; text-align: left; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--surface); padding: 8px 10px 8px; display: flex; flex-direction: column; gap: 2px;
+}
+.tile .rank { font-family: var(--num); font-weight: 700; font-size: 26px; line-height: 32px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tile .t { font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; padding-right: 2px; }
+.tile .m { margin-top: auto; font-size: 12px; color: var(--muted); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; font-variant-numeric: tabular-nums; }
+.tile .src { border: 1px solid currentColor; border-radius: 4px; padding: 0 4px; font-size: 11px; line-height: 16px; }
+.tile .want { font-size: 11px; line-height: 16px; padding: 0 5px; border-radius: 4px; background: var(--ink); color: var(--bg); }
+.stamp {
+  position: absolute; top: 6px; right: 6px; width: 32px; height: 32px; border-radius: 50%;
+  border: 1.5px dashed var(--muted); background: var(--surface); color: transparent; font-size: 16px; line-height: 1;
+  display: grid; place-items: center;
+}
+.stamp:hover { color: var(--muted); }
+.tile.is-seen .tile-main { background: var(--acc); border-color: var(--acc); color: var(--on-acc); }
+.tile.is-seen .rank, .tile.is-seen .m { color: inherit; opacity: .8; }
+.tile.is-seen .stamp { border: 1.5px solid var(--on-acc); background: var(--on-acc); color: var(--acc); font-weight: 700; }
+.tile.is-seen .want { display: none; }
+.empty { color: var(--muted); padding: 32px 0; text-align: center; }
+.foot { color: var(--muted); font-size: 12px; }
+
+/* dialogs */
+dialog {
+  border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--ink);
+  padding: 0; width: min(560px, calc(100vw - 24px)); max-height: calc(100vh - 32px);
+}
+dialog::backdrop { background: rgba(0, 0, 0, .5); }
+.dlg { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+.dlg-head { display: flex; gap: 12px; align-items: flex-start; }
+.dlg-head h2 { margin: 0; font-size: 20px; line-height: 1.3; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.dlg-head .x { border: 0; background: none; font-size: 22px; line-height: 1; padding: 2px 6px; color: var(--muted); }
+.sub { color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+.ranks { display: flex; flex-wrap: wrap; gap: 8px; }
+.ranks a { text-decoration: none; border: 1px solid var(--line); border-radius: 8px; padding: 4px 10px; font-size: 13px; }
+.ranks b { font-family: var(--num); font-size: 18px; }
+.marks { display: flex; gap: 8px; }
+.marks button { flex: 1; border: 1px solid var(--line); background: none; border-radius: 8px; padding: 9px; font-weight: 600; }
+.marks button[aria-pressed="true"] { background: var(--acc); border-color: var(--acc); color: var(--on-acc); }
+h3 { margin: 0; font-size: 12px; letter-spacing: .1em; color: var(--muted); font-weight: 600; }
+.srcs { display: flex; flex-direction: column; gap: 10px; }
+.srow { border: 1px solid var(--line); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+.srow-top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.srow-top strong { margin-right: auto; }
+.btn { border: 1px solid var(--line); background: none; border-radius: 6px; padding: 4px 10px; text-decoration: none; font-size: 13px; white-space: nowrap; }
+.btn.go { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn[aria-pressed="true"] { background: var(--acc); border-color: var(--acc); color: var(--on-acc); }
+.btn.no[aria-pressed="true"] { background: var(--muted); border-color: var(--muted); color: var(--surface); }
+.btn.danger { color: var(--danger); }
+.btn.big { padding: 10px 14px; font-size: 15px; font-weight: 600; text-align: center; }
+.email-form { display: flex; gap: 8px; }
+.email-form input { flex: 1; min-width: 0; border: 1px solid var(--line); background: var(--bg); border-radius: 6px; padding: 8px 10px; }
+.who { font-weight: 600; overflow-wrap: anywhere; }
+.srow input, .cfg input, textarea {
+  width: 100%; border: 1px solid var(--line); background: var(--bg); border-radius: 6px; padding: 6px 8px; font-size: 13px; min-width: 0;
+}
+.cfg { display: grid; grid-template-columns: 1fr 52px auto; gap: 6px; }
+.cfg .tpl { grid-column: 1 / -1; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+textarea { min-height: 84px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; }
+.hint { font-size: 12px; color: var(--muted); margin: 0; }
+@media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+</style>
+<!--/head-->
+</head>
+<body>
+<!--body-->
+<div class="wrap">
+  <header class="top">
+    <h1>片单标记</h1>
+    <div class="lists" role="group" aria-label="榜单">
+      <button type="button" data-list="db" aria-pressed="true">豆瓣 Top 250</button>
+      <button type="button" data-list="im" aria-pressed="false">IMDb Top 250</button>
+    </div>
+    <div class="tools">
+      <button type="button" class="gear" id="open-account" hidden>登录</button>
+      <button type="button" class="gear" id="open-settings">播放源与备份</button>
+    </div>
+  </header>
+
+  <section class="prog" aria-live="polite">
+    <div class="count"><span id="n-seen">0</span><small> / <span id="n-all">250</span></small></div>
+    <div class="prog-side">
+      <div class="bar"><i id="bar" style="width:0"></i></div>
+      <div class="prog-note" id="note">正在载入片单…</div>
+    </div>
+  </section>
+
+  <section class="filters">
+    <div class="seg" role="group" aria-label="标记状态" id="status">
+      <button type="button" data-f="all" aria-pressed="true">全部</button>
+      <button type="button" data-f="todo" aria-pressed="false">没看</button>
+      <button type="button" data-f="seen" aria-pressed="false">看过</button>
+      <button type="button" data-f="want" aria-pressed="false">想看</button>
+    </div>
+    <select id="src-filter" aria-label="按播放源筛选"></select>
+    <input id="q" type="search" placeholder="搜片名、导演、年份" aria-label="搜索片单">
+  </section>
+
+  <ul class="wall" id="wall"></ul>
+  <p class="empty" id="empty" hidden>没有符合条件的影片。</p>
+  <p class="foot" id="foot"></p>
+</div>
+
+<dialog id="detail"><div class="dlg" id="detail-body"></div></dialog>
+
+<dialog id="account"><div class="dlg" id="account-body"></div></dialog>
+
+<dialog id="settings">
+  <div class="dlg">
+    <div class="dlg-head"><h2>播放源与备份</h2><button type="button" class="x" data-close aria-label="关闭">×</button></div>
+    <h3>播放源</h3>
+    <p class="hint">搜索网址里用 <code>{q}</code> 代表片名。在对应网站搜一次，把地址栏里的片名换成 <code>{q}</code> 贴进来即可。简称会显示在影片格子上。</p>
+    <div class="srcs" id="cfg-list"></div>
+    <div class="row"><button type="button" class="btn" id="add-src">添加播放源</button></div>
+    <h3>备份</h3>
+    <p class="hint">没有登录时，标记只存在这台设备的这个浏览器里。换设备或清理浏览器数据前，把下面的备份文字存好；在新设备上粘贴后点“导入”。</p>
+    <textarea id="backup" aria-label="备份文字" spellcheck="false"></textarea>
+    <div class="row">
+      <button type="button" class="btn" id="do-export">生成并复制备份</button>
+      <button type="button" class="btn" id="do-import">导入</button>
+      <span class="hint" id="backup-msg" role="status"></span>
+    </div>
+  </div>
+</dialog>
+
+<script src="config.js"></script>
+<script>
+(() => {
+  const KEY = 'pianDan.v1';
+  const DEFAULT_SOURCES = [
+    { id: 'ole', name: '欧乐影院', tag: '欧', tpl: 'https://www.olevod.com/search/{q}' },
+    { id: 'iyf', name: '爱壹帆', tag: '帆', tpl: 'https://www.iyf.tv/search/{q}' },
+  ];
+  const $ = (s, el = document) => el.querySelector(s);
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const safeUrl = (u) => (/^https?:\/\//i.test((u || '').trim()) ? u.trim() : '');
+
+  // marks: { filmId: 'seen' | 'want' }; avail: { filmId: { sourceId: { a: 1 | 0, u: url } } }
+  let state = { marks: {}, avail: {}, sources: DEFAULT_SOURCES.map((s) => ({ ...s })), list: 'db' };
+  let ui = { filter: 'all', src: '', q: '' };
+  let films = [], meta = {}, byId = new Map(), openId = null;
+
+  function adopt(o) {
+    if (!o || typeof o !== 'object') return false;
+    state.marks = o.marks && typeof o.marks === 'object' ? o.marks : {};
+    state.avail = o.avail && typeof o.avail === 'object' ? o.avail : {};
+    if (Array.isArray(o.sources) && o.sources.length) state.sources = o.sources.filter((s) => s && s.id);
+    if (o.list === 'db' || o.list === 'im') state.list = o.list;
+    return true;
+  }
+  function load() { try { adopt(JSON.parse(localStorage.getItem(KEY))); } catch (e) {} }
+  function store() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function save() { store(); touch(); }
+
+  const inList = (f, l) => (l === 'db' ? f.db : f.imdb);
+  const srcOf = (f, sid) => (state.avail[f.id] || {})[sid] || {};
+  function setSrc(f, sid, patch) {
+    const cur = { ...srcOf(f, sid), ...patch };
+    if (cur.a == null) delete cur.a;
+    if (!cur.u) delete cur.u;
+    const all = { ...(state.avail[f.id] || {}) };
+    if (Object.keys(cur).length) all[sid] = cur; else delete all[sid];
+    if (Object.keys(all).length) state.avail[f.id] = all; else delete state.avail[f.id];
+    save();
+  }
+  function setMark(f, v) {
+    if (state.marks[f.id] === v) delete state.marks[f.id]; else state.marks[f.id] = v;
+    save();
+  }
+  const searchUrl = (s, f) => safeUrl((s.tpl || '').replace('{q}', encodeURIComponent(f.zh)));
+
+  function visible() {
+    const q = ui.q.trim().toLowerCase();
+    return films
+      .filter((f) => inList(f, state.list))
+      .filter((f) => {
+        const m = state.marks[f.id];
+        if (ui.filter === 'seen' && m !== 'seen') return false;
+        if (ui.filter === 'want' && m !== 'want') return false;
+        if (ui.filter === 'todo' && m === 'seen') return false;
+        if (ui.src && srcOf(f, ui.src).a !== 1) return false;
+        if (q && !`${f.zh} ${f.orig} ${f.dir || ''} ${f.year}`.toLowerCase().includes(q)) return false;
+        return true;
+      })
+      .sort((a, b) => inList(a, state.list).rank - inList(b, state.list).rank);
+  }
+
+  function render() {
+    document.body.dataset.list = state.list;
+    document.querySelectorAll('.lists button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.list === state.list));
+    document.querySelectorAll('#status button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.f === ui.filter));
+
+    const sel = $('#src-filter');
+    sel.innerHTML = '<option value="">播放源不限</option>' +
+      state.sources.map((s) => `<option value="${esc(s.id)}">${esc(s.name)}有</option>`).join('');
+    if (!state.sources.some((s) => s.id === ui.src)) ui.src = '';
+    sel.value = ui.src;
+
+    const all = films.filter((f) => inList(f, state.list));
+    const seen = all.filter((f) => state.marks[f.id] === 'seen').length;
+    const want = all.filter((f) => state.marks[f.id] === 'want').length;
+    $('#n-seen').textContent = seen;
+    $('#n-all').textContent = all.length || 250;
+    $('#bar').style.width = (all.length ? (seen / all.length) * 100 : 0) + '%';
+    if (films.length) {
+      const total = films.filter((f) => state.marks[f.id] === 'seen').length;
+      $('#note').textContent = `想看 ${want} 部 · 两个榜单合计 ${films.length} 部，看过 ${total} 部`;
+    }
+
+    const rows = visible();
+    $('#wall').innerHTML = rows.map((f) => {
+      const r = inList(f, state.list), m = state.marks[f.id];
+      const tags = state.sources.filter((s) => srcOf(f, s.id).a === 1)
+        .map((s) => `<span class="src" title="${esc(s.name)}有">${esc(s.tag || s.name.slice(0, 1))}</span>`).join('');
+      return `<li class="tile${m === 'seen' ? ' is-seen' : ''}" data-id="${esc(f.id)}">
+        <button type="button" class="tile-main" data-open>
+          <span class="rank">${r.rank}</span>
+          <span class="t">${esc(f.zh)}</span>
+          <span class="m"><span>${f.year || ''} · ${r.score}</span>${m === 'want' ? '<span class="want">想看</span>' : ''}${tags}</span>
+        </button>
+        <button type="button" class="stamp" data-toggle aria-pressed="${m === 'seen'}" aria-label="${m === 'seen' ? '取消看过' : '标记看过'}：${esc(f.zh)}">✓</button>
+      </li>`;
+    }).join('');
+    $('#empty').hidden = rows.length > 0 || !films.length;
+    if (meta.doubanAsOf) {
+      $('#foot').textContent = `豆瓣榜单截至 ${meta.doubanAsOf}，IMDb 榜单截至 ${meta.imdbAsOf}。同时上两个榜的影片只需标记一次。`;
+    }
+  }
+
+  function renderDetail() {
+    const f = byId.get(openId);
+    if (!f) return;
+    const m = state.marks[f.id];
+    const ranks = [];
+    if (f.db) ranks.push(`<a href="https://movie.douban.com/subject/${esc(f.db.id)}/" target="_blank" rel="noopener">豆瓣 <b>#${f.db.rank}</b> · ${f.db.score} ↗</a>`);
+    if (f.imdb) {
+      const u = f.imdb.tt ? `https://www.imdb.com/title/${esc(f.imdb.tt)}/` : `https://www.imdb.com/find/?q=${encodeURIComponent(f.orig || f.zh)}`;
+      ranks.push(`<a href="${u}" target="_blank" rel="noopener">IMDb <b>#${f.imdb.rank}</b> · ${f.imdb.score} ↗</a>`);
+    }
+    const sub = [f.orig, f.year, f.region, f.genre, f.dir].filter(Boolean).join(' · ');
+    const srcs = state.sources.map((s) => {
+      const v = srcOf(f, s.id), direct = safeUrl(v.u), su = searchUrl(s, f);
+      return `<div class="srow" data-sid="${esc(s.id)}">
+        <div class="srow-top">
+          <strong>${esc(s.name)}</strong>
+          ${direct ? `<a class="btn go" href="${esc(direct)}" target="_blank" rel="noopener">播放 ↗</a>` : ''}
+          ${su ? `<a class="btn${direct ? '' : ' go'}" href="${esc(su)}" target="_blank" rel="noopener">搜这部片 ↗</a>` : ''}
+          <button type="button" class="btn" data-avail="1" aria-pressed="${v.a === 1}">有</button>
+          <button type="button" class="btn no" data-avail="0" aria-pressed="${v.a === 0}">没有</button>
+        </div>
+        <input type="url" id="direct-${esc(s.id)}" data-direct value="${esc(v.u || '')}" placeholder="找到后把播放页网址贴在这里，下次一键直达" aria-label="${esc(s.name)}播放页网址">
+      </div>`;
+    }).join('');
+    $('#detail-body').innerHTML = `
+      <div class="dlg-head"><h2>${esc(f.zh)}</h2><button type="button" class="x" data-close aria-label="关闭">×</button></div>
+      <div class="sub">${esc(sub)}</div>
+      <div class="ranks">${ranks.join('')}</div>
+      <div class="marks">
+        <button type="button" data-mark="seen" aria-pressed="${m === 'seen'}">看过</button>
+        <button type="button" data-mark="want" aria-pressed="${m === 'want'}">想看</button>
+      </div>
+      <h3>在哪儿看</h3>
+      <div class="srcs">${srcs || '<p class="hint">还没有播放源，到“播放源与备份”里添加。</p>'}</div>
+      <div class="row"><button type="button" class="btn" data-copy>复制片名</button><span class="hint" id="copy-msg" role="status"></span></div>`;
+  }
+
+  function renderSettings() {
+    $('#cfg-list').innerHTML = state.sources.map((s, i) => `
+      <div class="srow cfg" data-i="${i}">
+        <input id="cfg-name-${i}" data-k="name" value="${esc(s.name)}" placeholder="名称" aria-label="名称">
+        <input id="cfg-tag-${i}" data-k="tag" value="${esc(s.tag || '')}" maxlength="2" placeholder="简称" aria-label="简称">
+        <button type="button" class="btn danger" data-del>删除</button>
+        <input id="cfg-tpl-${i}" class="tpl" data-k="tpl" value="${esc(s.tpl || '')}" placeholder="https://example.com/search/{q}" aria-label="搜索网址">
+      </div>`).join('');
+  }
+
+  // ---- events
+  document.querySelector('.lists').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-list]');
+    if (b) { state.list = b.dataset.list; store(); render(); }
+  });
+  $('#status').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-f]');
+    if (b) { ui.filter = b.dataset.f; render(); }
+  });
+  $('#src-filter').addEventListener('change', (e) => { ui.src = e.target.value; render(); });
+  $('#q').addEventListener('input', (e) => { ui.q = e.target.value; render(); });
+
+  $('#wall').addEventListener('click', (e) => {
+    const li = e.target.closest('.tile');
+    if (!li) return;
+    const f = byId.get(li.dataset.id);
+    if (e.target.closest('[data-toggle]')) { setMark(f, 'seen'); render(); return; }
+    openId = f.id; renderDetail(); $('#detail').showModal();
+  });
+
+  $('#detail').addEventListener('click', (e) => {
+    const f = byId.get(openId);
+    if (e.target === e.currentTarget || e.target.closest('[data-close]')) { $('#detail').close(); return; }
+    const mk = e.target.closest('[data-mark]');
+    if (mk) { setMark(f, mk.dataset.mark); renderDetail(); render(); return; }
+    const av = e.target.closest('[data-avail]');
+    if (av) {
+      const sid = av.closest('.srow').dataset.sid, v = Number(av.dataset.avail);
+      setSrc(f, sid, { a: srcOf(f, sid).a === v ? null : v });
+      renderDetail(); render(); return;
+    }
+    if (e.target.closest('[data-copy]')) {
+      const done = (t) => { $('#copy-msg').textContent = t; };
+      try { navigator.clipboard.writeText(f.zh).then(() => done('已复制'), () => done(f.zh)); } catch (err) { done(f.zh); }
+    }
+  });
+  $('#detail').addEventListener('change', (e) => {
+    if (!e.target.matches('[data-direct]')) return;
+    const f = byId.get(openId), sid = e.target.closest('.srow').dataset.sid;
+    const u = safeUrl(e.target.value);
+    setSrc(f, sid, u ? { u, a: 1 } : { u: '' });
+    renderDetail(); render();
+  });
+
+  $('#open-settings').addEventListener('click', () => {
+    renderSettings(); $('#backup').value = ''; $('#backup-msg').textContent = '';
+    $('#settings').showModal();
+  });
+  $('#settings').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget || e.target.closest('[data-close]')) { $('#settings').close(); render(); return; }
+    const del = e.target.closest('[data-del]');
+    if (del) { state.sources.splice(Number(del.closest('.cfg').dataset.i), 1); save(); renderSettings(); }
+  });
+  $('#settings').addEventListener('close', render);
+  $('#cfg-list').addEventListener('input', (e) => {
+    const row = e.target.closest('.cfg');
+    if (!row || !e.target.dataset.k) return;
+    state.sources[Number(row.dataset.i)][e.target.dataset.k] = e.target.value.trim();
+    save();
+  });
+  $('#add-src').addEventListener('click', () => {
+    state.sources.push({ id: 's' + Date.now().toString(36), name: '', tag: '', tpl: '' });
+    save(); renderSettings();
+    const rows = document.querySelectorAll('#cfg-list .cfg');
+    rows[rows.length - 1].querySelector('input').focus();
+  });
+  $('#do-export').addEventListener('click', () => {
+    const ta = $('#backup'), msg = $('#backup-msg');
+    ta.value = JSON.stringify({ app: 'pianDan', v: 1, marks: state.marks, avail: state.avail, sources: state.sources });
+    ta.select();
+    try { navigator.clipboard.writeText(ta.value).then(() => { msg.textContent = '已复制到剪贴板'; }, () => { msg.textContent = '已选中，请手动复制'; }); }
+    catch (err) { msg.textContent = '已选中，请手动复制'; }
+  });
+  $('#do-import').addEventListener('click', () => {
+    const msg = $('#backup-msg');
+    let o;
+    try { o = JSON.parse($('#backup').value); } catch (err) { o = null; }
+    if (!o || o.app !== 'pianDan') { msg.textContent = '这不是有效的备份文字。先把备份粘贴到上面的框里。'; return; }
+    adopt(o); migrate(); save(); renderSettings(); render();
+    msg.textContent = `已导入：${Object.keys(state.marks).length} 条标记`;
+  });
+
+  // A film that joins the Douban list later gets a new id; carry old marks over.
+  function migrate() {
+    for (const f of films) {
+      if (!f.alt) continue;
+      for (const bag of [state.marks, state.avail]) {
+        if (bag[f.alt] != null && bag[f.id] == null) bag[f.id] = bag[f.alt];
+        delete bag[f.alt];
+      }
+    }
+  }
+
+  // ---- sign-in and cloud sync (only when config.js carries a Firebase config)
+  const SYNC_KEY = 'pianDan.sync', EMAIL_KEY = 'pianDan.emailForSignIn';
+  const SDK = 'https://www.gstatic.com/firebasejs/10.14.1/';
+  // sync.uid: the account this browser last synced with; sync.dirty: local changes not yet confirmed by the cloud
+  let sync = { uid: null, dirty: false };
+  let fb = null, auth = null, user = null, docRef = null, unsub = null, pushTimer = 0;
+  let syncNote = '', accountNote = '', pendingLink = '';
+
+  try { Object.assign(sync, JSON.parse(localStorage.getItem(SYNC_KEY)) || {}); } catch (e) {}
+  const saveSync = () => { try { localStorage.setItem(SYNC_KEY, JSON.stringify(sync)); } catch (e) {} };
+  const payload = () => JSON.stringify({ marks: state.marks, avail: state.avail, sources: state.sources });
+  const parse = (t) => { try { const o = JSON.parse(t); return o && typeof o === 'object' ? o : null; } catch (e) { return null; } };
+
+  const ERR = {
+    'auth/popup-blocked': '浏览器拦截了登录窗口，请允许弹出窗口后再试。',
+    'auth/popup-closed-by-user': '',
+    'auth/cancelled-popup-request': '',
+    'auth/unauthorized-domain': '这个网址还没有加到 Firebase 的“授权网域”里。',
+    'auth/operation-not-allowed': '这种登录方式还没有在 Firebase 控制台里开启。',
+    'auth/invalid-email': '邮箱地址格式不对。',
+    'auth/invalid-action-code': '这个登录链接已经用过或已过期，请重新发送一封。',
+    'auth/expired-action-code': '这个登录链接已过期，请重新发送一封。',
+    'auth/network-request-failed': '网络连接失败，请稍后再试。',
+    'permission-denied': '云端数据库拒绝了访问，请检查 Firestore 规则。',
+    unavailable: '暂时连不上云端，联网后会自动重试。',
+  };
+  const errText = (e) => (e && e.code in ERR ? ERR[e.code] : (e && e.message) || '出错了，请再试一次。');
+
+  function setSyncNote(t) { syncNote = t; renderAccount(); }
+  function touch() {
+    if (!user) return;
+    sync.dirty = true; saveSync();
+    clearTimeout(pushTimer); pushTimer = setTimeout(push, 800);
+  }
+  function push() {
+    if (!docRef) return;
+    const body = payload(), ref = docRef;
+    setSyncNote('正在同步…');
+    ref.set({ data: body, updatedAt: fb.firestore.FieldValue.serverTimestamp() }).then(() => {
+      if (ref !== docRef) return;
+      if (body === payload()) { sync.dirty = false; saveSync(); }
+      setSyncNote('已同步到云端');
+    }).catch((e) => setSyncNote('同步失败：' + errText(e)));
+  }
+  function mergeIn(r) { // first sign-in on this browser: keep both sides, cloud wins a conflict
+    state.marks = { ...state.marks, ...(r.marks || {}) };
+    for (const [id, bag] of Object.entries(r.avail || {})) state.avail[id] = { ...(state.avail[id] || {}), ...bag };
+    if (Array.isArray(r.sources) && r.sources.length) {
+      const ids = new Set(r.sources.map((x) => x.id));
+      state.sources = [...r.sources, ...state.sources.filter((x) => !ids.has(x.id))];
+    }
+  }
+  function refreshAll() {
+    store(); render();
+    if ($('#detail').open) renderDetail();
+    if ($('#settings').open) renderSettings();
+  }
+  function onUser(u) {
+    if (unsub) { unsub(); unsub = null; }
+    clearTimeout(pushTimer);
+    user = u; docRef = null; syncNote = '';
+    renderAccount();
+    if (!u) return;
+    const ref = docRef = fb.firestore().collection('users').doc(u.uid);
+    setSyncNote('正在读取云端的标记…');
+    ref.get().then((snap) => {
+      if (ref !== docRef) return;
+      const remote = snap.exists ? parse(snap.data().data) : null;
+      const known = sync.uid === u.uid;
+      if (remote && !sync.uid) mergeIn(remote);           // browser never synced: merge local into the account
+      else if (remote && !(known && sync.dirty)) adopt(remote); // otherwise the cloud copy is the truth
+      else if (!remote && sync.uid && !known) { state.marks = {}; state.avail = {}; } // another account's data stays out
+      const needPush = !remote || !sync.uid || (known && sync.dirty) || payload() !== snap.data().data;
+      sync.uid = u.uid; sync.dirty = needPush; saveSync();
+      migrate(); refreshAll();
+      if (needPush) push(); else setSyncNote('已同步到云端');
+      unsub = ref.onSnapshot((s) => {
+        if (ref !== docRef || s.metadata.hasPendingWrites || !s.exists || sync.dirty) return;
+        const text = s.data().data, r = parse(text);
+        if (r && text !== payload()) { adopt(r); migrate(); refreshAll(); }
+      }, (e) => setSyncNote('同步中断：' + errText(e)));
+    }).catch((e) => setSyncNote('读取云端失败：' + errText(e)));
+  }
+
+  function renderAccount() {
+    const btn = $('#open-account');
+    btn.textContent = user ? '已登录' : '登录';
+    btn.classList.toggle('on', !!user);
+    const head = (t) => `<div class="dlg-head"><h2>${t}</h2><button type="button" class="x" data-close aria-label="关闭">×</button></div>`;
+    let html;
+    if (user) {
+      html = `${head('已登录')}
+        <div class="who">${esc(user.email || user.displayName || '')}</div>
+        <p class="hint" role="status">${esc(syncNote)}</p>
+        <p class="hint">标记和播放源会自动保存到云端；在别的设备上用同一个账号登录就能看到。</p>
+        <div class="row"><button type="button" class="btn" data-signout>退出登录</button></div>
+        <p class="hint">退出后，这台设备上的标记仍会保留。</p>`;
+    } else if (pendingLink) {
+      html = `${head('完成邮箱登录')}
+        <p class="hint">这条登录链接是在别的设备或浏览器上申请的。再输入一次收到邮件的邮箱地址来确认。</p>
+        <form class="email-form" data-finish><input type="email" id="login-email" required placeholder="you@example.com" aria-label="邮箱地址"><button class="btn go">完成登录</button></form>
+        <p class="hint" role="status">${esc(accountNote)}</p>`;
+    } else {
+      html = `${head('登录后同步标记')}
+        <p class="hint">登录后，标记和播放源会保存到云端，在手机和电脑之间自动同步。不登录也能照常使用，标记只留在这个浏览器里。</p>
+        <button type="button" class="btn go big" data-google ${auth ? '' : 'disabled'}>用 Google 账号登录</button>
+        <h3>或者用邮箱</h3>
+        <form class="email-form" data-send><input type="email" id="login-email" required placeholder="you@example.com" aria-label="邮箱地址"><button class="btn" ${auth ? '' : 'disabled'}>发送登录链接</button></form>
+        <p class="hint" role="status">${esc(accountNote)}</p>`;
+    }
+    const keep = $('#login-email') ? $('#login-email').value : '';
+    $('#account-body').innerHTML = html;
+    if (keep && $('#login-email')) $('#login-email').value = keep;
+  }
+  const say = (t) => { accountNote = t; renderAccount(); };
+
+  function finishEmailLink(email) {
+    say('正在登录…');
+    auth.signInWithEmailLink(email, pendingLink).then(() => {
+      try { localStorage.removeItem(EMAIL_KEY); } catch (e) {}
+      pendingLink = ''; accountNote = '';
+      history.replaceState(null, '', location.pathname);
+      renderAccount();
+    }).catch((e) => say(errText(e)));
+  }
+
+  $('#open-account').addEventListener('click', () => { renderAccount(); $('#account').showModal(); });
+  $('#account').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget || e.target.closest('[data-close]')) { $('#account').close(); return; }
+    if (e.target.closest('[data-google]')) {
+      say('');
+      auth.signInWithPopup(new fb.auth.GoogleAuthProvider()).catch((err) => say(errText(err)));
+    }
+    if (e.target.closest('[data-signout]')) auth.signOut();
+  });
+  $('#account').addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!auth) return;
+    const email = $('#login-email').value.trim();
+    if (!email) return;
+    if (e.target.matches('[data-finish]')) { finishEmailLink(email); return; }
+    say('正在发送…');
+    auth.sendSignInLinkToEmail(email, { url: location.origin + location.pathname, handleCodeInApp: true }).then(() => {
+      try { localStorage.setItem(EMAIL_KEY, email); } catch (err) {}
+      say(`登录链接已发到 ${email}。在这台设备上打开邮件里的链接就能登录；没收到的话看看垃圾邮件。`);
+    }).catch((err) => say(errText(err)));
+  });
+
+  const loadScript = (src) => new Promise((ok, fail) => {
+    const el = document.createElement('script');
+    el.src = src; el.onload = ok; el.onerror = () => fail(new Error(src));
+    document.head.appendChild(el);
+  });
+  async function initSync() {
+    const cfg = window.PIANDAN_FIREBASE;
+    if (!cfg || !cfg.apiKey) return;
+    $('#open-account').hidden = false;
+    renderAccount();
+    try {
+      for (const f of ['firebase-app-compat.js', 'firebase-auth-compat.js', 'firebase-firestore-compat.js']) await loadScript(SDK + f);
+    } catch (e) { say('登录服务没有加载成功，请检查网络后刷新页面。'); return; }
+    fb = window.firebase;
+    fb.initializeApp(cfg);
+    auth = fb.auth();
+    auth.useDeviceLanguage();
+    auth.onAuthStateChanged(onUser);
+    if (auth.isSignInWithEmailLink(location.href)) {
+      pendingLink = location.href;
+      let email = '';
+      try { email = localStorage.getItem(EMAIL_KEY) || ''; } catch (e) {}
+      if (email) finishEmailLink(email); else { renderAccount(); $('#account').showModal(); }
+    }
+    renderAccount();
+  }
+
+  load();
+  render();
+  initSync();
+  fetch('data/movies.json')
+    .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then((d) => {
+      films = d.films; meta = d; byId = new Map(films.map((f) => [f.id, f]));
+      migrate(); store(); render();
+    })
+    .catch(() => { $('#note').textContent = '片单没有载入成功，刷新页面再试一次。'; });
+})();
+</script>
+<!--/body-->
+</body>
+</html>

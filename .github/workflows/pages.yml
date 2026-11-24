@@ -25,6 +25,10 @@ jobs:
         id: fetch
         continue-on-error: true
         run: node scripts/fetch.mjs
+      - name: Refresh movie lists
+        # Keeps the committed snapshot when the upstream list is unreachable.
+        continue-on-error: true
+        run: node scripts/build-movies.mjs
       - name: Stop scheduled runs when the fetch failed
         # A push still deploys with the committed snapshot; a scheduled run
         # fails here so the last good deployment stays live.
