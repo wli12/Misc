@@ -92,8 +92,9 @@
 (() => {
   const app = document.getElementById('app');
   const READ_KEY = 'hot-read-v1';
-  // Absolute, so the same file also works when it is served from another site.
-  const DATA_URL = 'https://wli12.github.io/zhihu/data/hot.json';
+  // The snapshot sits next to this page on zhihu.hackerfun.org; the copy served from
+  // hackerfun.org/zhihu has no data of its own and reads it from there.
+  const DATA_URLS = ['data/hot.json', 'https://zhihu.hackerfun.org/data/hot.json'];
   // Live endpoint (functions/zhihu-hot). Empty until it is deployed; the snapshot above is the fallback.
   const LIVE_URL = '';
   let data = null;
@@ -196,7 +197,8 @@
 
   async function load() {
     try {
-      data = (await getJson(LIVE_URL, 5000)) ?? (await getJson(DATA_URL, 15000));
+      data = await getJson(LIVE_URL, 5000);
+      for (const url of DATA_URLS) data ??= await getJson(url, 15000);
       if (!data) throw new Error('no data');
       renderList();
     } catch (err) {
