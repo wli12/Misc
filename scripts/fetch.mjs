@@ -145,6 +145,40 @@ const SOURCES = [
     },
   },
   {
+    id: 'latepost', name: '晚点', sub: 'LatePost', home: 'https://www.latepost.com/',
+    async fetch() {
+      const body = await getJson('https://www.latepost.com/site/index', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'page=1&limit=10',
+      });
+      return body.data.map((a) => ({
+        title: clean(a.title), url: `https://www.latepost.com${a.detail_url}`, excerpt: clean(a.abstract),
+        meta: [clean(a.release_time)],
+      }));
+    },
+  },
+  {
+    id: 'zhangxiaojun', name: '张小珺', sub: '商业访谈录（播客）', home: 'https://www.xiaoyuzhoufm.com/podcast/626b46ea9cbbf0451cf5a962',
+    async fetch() {
+      // The podcast page embeds its episode list as JSON.
+      const html = await getText('https://www.xiaoyuzhoufm.com/podcast/626b46ea9cbbf0451cf5a962');
+      const page = JSON.parse(html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/)[1]);
+      return page.props.pageProps.podcast.episodes.map((e) => ({
+        title: clean(e.title), url: `https://www.xiaoyuzhoufm.com/episode/${e.eid}`, excerpt: clean(e.description).slice(0, 240),
+        meta: [`${Math.round(e.duration / 60)} 分钟`], time: iso(e.pubDate),
+      }));
+    },
+  },
+  {
+    id: 'ruanyifeng', name: '阮一峰', sub: '科技爱好者周刊', home: 'https://www.ruanyifeng.com/blog/weekly/',
+    async fetch() {
+      return feedItems(await getText('https://www.ruanyifeng.com/blog/atom.xml')).map((i) => ({
+        title: i.title, url: i.link.replace(/^http:/, 'https:'), excerpt: i.description.slice(0, 240), time: iso(i.date),
+      }));
+    },
+  },
+  {
     id: 'guokr', name: '果壳', sub: '科学人', home: 'https://www.guokr.com/scientific/',
     async fetch() {
       const list = await getJson('https://www.guokr.com/beta/proxy/science_api/articles?retrieve_type=by_category&page=1');

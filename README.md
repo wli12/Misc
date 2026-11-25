@@ -1,6 +1,6 @@
 # 热榜速读
 
-把几个中文热榜和信息源放在一个安静的页面里：知乎热榜、知乎日报、Hacker News、V2EX、华尔街见闻、虎嗅、少数派、果壳、机器之心、SemiAnalysis，以及七个英文来源（Dwarkesh、Import AI、Simon Willison、Interconnects、ChinaTalk、Damodaran、Construction Physics）。点条目跳到原站。
+把几个中文热榜和信息源放在一个安静的页面里：知乎热榜、知乎日报、Hacker News、V2EX、华尔街见闻、虎嗅、少数派、晚点、张小珺商业访谈录、阮一峰周刊、果壳、机器之心、SemiAnalysis，以及七个英文来源（Dwarkesh、Import AI、Simon Willison、Interconnects、ChinaTalk、Damodaran、Construction Physics）。点条目跳到原站。
 
 线上地址：<https://news.hackerfun.org/>。
 
