@@ -1,7 +1,0 @@
-{
-  "name": "zhihu-hot",
-  "private": true,
-  "type": "module",
-  "main": "index.mjs",
-  "engines": { "node": ">=20" }
-}

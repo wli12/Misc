@@ -95,8 +95,6 @@
   // The snapshot sits next to this page on zhihu.hackerfun.org; the copy served from
   // hackerfun.org/zhihu has no data of its own and reads it from there.
   const DATA_URLS = ['data/hot.json', 'https://zhihu.hackerfun.org/data/hot.json'];
-  // Live endpoint (functions/zhihu-hot). Empty until it is deployed; the snapshot above is the fallback.
-  const LIVE_URL = '';
   let data = null;
 
   const el = (tag, props = {}, ...kids) => {
@@ -187,7 +185,6 @@
   }
 
   async function getJson(url, timeoutMs) {
-    if (!url) return null;
     try {
       const res = await fetch(url, { cache: 'no-cache', signal: AbortSignal.timeout(timeoutMs) });
       const body = res.ok ? await res.json() : null;
@@ -197,7 +194,7 @@
 
   async function load() {
     try {
-      data = await getJson(LIVE_URL, 5000);
+      data = null;
       for (const url of DATA_URLS) data ??= await getJson(url, 15000);
       if (!data) throw new Error('no data');
       renderList();
