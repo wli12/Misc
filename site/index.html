@@ -156,24 +156,25 @@
     });
   }
 
-  // Links open in a new tab. The exception is Zhihu on phones, which is opened in
-  // this tab by script: there a tapped link is handed to the installed app. Back
-  // returns to this list. Tablets and computers use the plain link, which gives a
-  // new tab that stays open when Zhihu's "open the app" prompt is declined. Phones
-  // are told apart by user agent, not pointer type: an iPad reports a fine pointer
-  // with a keyboard attached and a coarse one without, which flipped this behaviour.
+  // Every link opens in a new tab and leaves this page in place.
+  // Zhihu on phones needs a detour. A tapped link straight to zhihu.com is handed to
+  // the installed app, and a tab opened by script is closed again when Zhihu's "open
+  // the app" prompt is declined. So the link points at this page with #go=<url>: the
+  // tap opens an ordinary new tab on our own site, and that tab then moves on to
+  // Zhihu by script (see the end of this file), which the app does not intercept.
+  // Phones are told apart by user agent rather than pointer type, because an iPad
+  // reports a different pointer type with and without a keyboard attached.
   const IS_PHONE = /iPhone|iPod|Android.*Mobile/.test(navigator.userAgent);
+  const hrefFor = (it) =>
+    IS_PHONE && it.url.startsWith('https://www.zhihu.com/') ? `#go=${encodeURIComponent(it.url)}` : it.url;
   function openItem(e, it) {
     markRead(it.url);
     e.currentTarget.parentNode.classList.add('read');
-    if (!IS_PHONE || !it.url.startsWith('https://www.zhihu.com/')) return;
-    e.preventDefault();
-    setTimeout(() => { location.assign(it.url); }, 0);
   }
 
   function row(it, index, read, compact) {
     return el('li', { class: 'item' + (read.has(it.url) ? ' read' : '') },
-      el('a', { href: it.url, target: '_blank', rel: 'noopener noreferrer', onclick: (e) => openItem(e, it) },
+      el('a', { href: hrefFor(it), target: '_blank', rel: 'noopener noreferrer', onclick: (e) => openItem(e, it) },
         el('span', { class: 'rank' }, String(index + 1)),
         el('div', {},
           el('h3', {}, it.title),
@@ -241,7 +242,21 @@
     render();
     window.scrollTo(0, 0);
   });
-  load();
+
+  // A tab opened for #go=<url> moves on to that address. It uses assign, not replace:
+  // the extra history entry is what stops the destination from closing the tab.
+  // Coming back to this entry (the back button) shows the list instead of leaving again.
+  const go = location.hash.match(/^#go=(.+)$/);
+  const target = go && decodeURIComponent(go[1]);
+  if (!target || !target.startsWith('https://www.zhihu.com/')) { load(); return; }
+  window.addEventListener('pageshow', () => {
+    const key = `hot-go:${target}`;
+    let seen = null;
+    try { seen = sessionStorage.getItem(key); sessionStorage.setItem(key, '1'); } catch {}
+    if (!seen) { location.assign(target); return; }
+    history.replaceState(null, '', location.pathname + location.search);
+    if (!data) load();
+  });
 })();
 </script>
 </body>
