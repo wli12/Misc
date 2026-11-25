@@ -1,12 +1,13 @@
 # 热榜速读
 
-知乎热榜的一个安静的列表页：扫一眼标题和问题说明，点条目跳到知乎网页版。
+把几个中文热榜和信息源放在一个安静的页面里：知乎热榜、知乎日报、V2EX、36氪、果壳、掘金（人工智能）、机器之心、量子位、SemiAnalysis。点条目跳到原站。
 
 线上地址：<https://news.hackerfun.org/>。
 
 - `site/` — 页面本体（单文件 `index.html`）和数据快照 `data/hot.json`
-- `scripts/fetch.mjs` — 抓取知乎公开热榜接口，生成 `site/data/hot.json`
-- `.github/workflows/pages.yml` — 定时抓取并部署到 GitHub Pages（每 15 分钟排一次，实际执行频率由 GitHub 决定）
+- `scripts/fetch.mjs` — 逐个抓取各来源的公开接口或 RSS，生成 `site/data/hot.json`；某个来源失败时沿用它上一次的内容
+- `scripts/translations/semianalysis.json` — SemiAnalysis 标题和副标题的中文翻译（人工维护；没翻译的新文章显示英文）
+- `.github/workflows/pages.yml` — 抓取并部署到 GitHub Pages，由 Google Cloud Scheduler 每小时触发一次
 
 ## 本地预览
 

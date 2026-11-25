@@ -1,0 +1,22 @@
+{
+  "Nvidia and the World Without Jensen": ["英伟达，以及没有黄仁勋的世界", "英伟达到头了吗？出口管制、RASA、对开源和供应链的影响、绯闻风波、美国仍依赖中国"],
+  "We Visited China’s Stargate in Inner Mongolia": ["我们探访了内蒙古的“中国版星际之门”", "风电供能的 800MW 园区，一年内建成 120MW，5MW 固态变压器原生 800V 直流试点，以及不用中央冷水机组的冷却设计"],
+  "The Iron(wood) Throne: Google's TPU Stakes Its Claim on Inference": ["铁（木）王座：谷歌 TPU 在推理领域宣示主权", "CUDA 护城河的可行替代、英伟达紧张到加班加点、黄仁勋的反击、Kimi K3、Muse Spark 开放、Qwen、GLM5.3、TorchTPU、vLLM、SGLang、llm-d、Ray"],
+  "Elon Is Doing It Again: SpaceX Will Be The World’s Biggest AI Cloud": ["马斯克又来了：SpaceX 将成为全球最大的 AI 云", "一年半建成 13GW 如何成真、改造火箭园区、TeraFab 里建数据中心？"],
+  "GDPx: Measuring Frontier Model Capabilities Across the Most Valuable Domains": ["GDPx：在最有价值的领域衡量前沿模型能力", "一套前沿基准，覆盖递归自我改进、硬件设计、网络安全、生物、金融、法律、量化交易、芯片设计、软件工程、材料科学与对齐"],
+  "The Datacenter Backlash Goes Bipartisan: Next Week's Midterms and the 2028 Buildout": ["反数据中心浪潮成为两党共识：下周的中期选举与 2028 年的建设", "2027 年基本已成定局，2028 年则没那么稳：得州许可长期冻结是美国建设进度的最大单一风险，两党都在主打更严的规则"],
+  "Amazon’s Trainium Takes a Strike at the Training King": ["亚马逊 Trainium 向训练之王出手", "Trainium 最适合推理？如今训练也不错，原生 Trainium PyTorch、高质量 CI、TorchTitan、“GPU 做不到”的性能分析器"],
+  "The Huawei-DeepSeek Symbiosis": ["华为与 DeepSeek 的共生", "华为昇腾 950PR 深度解析与微基准测试、DSv4.1 Flash 分析、DeepSeek 对昇腾的支持"],
+  "Datacenters 2027: The Year of Acceleration, +50GW in a Single Year": ["数据中心 2027：加速之年，单年新增 50GW", "60GW 在建、SemiAnalysis 先行指标、今年至今已签 1.3 万亿美元租约、短缺可能转移到芯片"],
+  "ASML Is Building a Hybrid Bonding Tool!": ["ASML 正在造混合键合设备！", "ASML 正在造混合键合设备！公司尚未官宣，但专利申请、一则新闻报道和它自己的路线图都指向这一点。"],
+  "Beijing Will Not Pace the Frontier: China’s Speed-First AI Safety Regime": ["北京不会为前沿踩刹车：中国“速度优先”的 AI 安全体制", "AI 安全火烧眉毛。"],
+  "Anthropic Subscriptions Offer 5x+ More Value Than OpenAI": ["Anthropic 订阅的价值是 OpenAI 的 5 倍以上", "极限测试 Anthropic、OpenAI、Meta、SpaceXSI、MiniMax、月之暗面、智谱、Cursor 和 Cognition 的每一档 AI 订阅"],
+  "How GLM5.3 Sparse Attention Affects HBM Memory Usage": ["GLM5.3 的稀疏注意力如何影响 HBM 内存用量", "GLM-5.3、KV 缓存卸载、HiSparse、DeepSeek 稀疏注意力、IndexShare、单轨迹异步优化、网络安全"],
+  "Intel Panther Lake Teardown": ["英特尔 Panther Lake 拆解", "深入英特尔 18A 与 Panther Lake 内部。一份免费的 SemiAnalysis STEEL 拆解报告。"],
+  "The Chinese AI Infrastructure Boom: Introducing the SemiAnalysis China Datacenter Model": ["中国 AI 基础设施热潮：SemiAnalysis 中国数据中心模型登场", "梳理 60 多家运营商的 1000 多处设施：先为零售而建、被 AI 改写，最大的超大规模厂商租下全国五分之一容量，12 个月建成 100MW，东数西算"],
+  "ClusterMAX 3.0: The Industry Standard GPU Cloud Rating System Returns": ["ClusterMAX 3.0：GPU 云评级的行业标准回归", "细到骨头里：可靠性、性能、支持、定价，当然还有安全。我们对全球 GPU 云厂商最全面的一次分析。"],
+  "Computation and Data Movement for Inference": ["推理中的计算与数据流动", "把 MoE 模型映射到推理硬件：结构、流动与高效服务"],
+  "Engrams Embedding Entendre: Codesign for Efficient DRAM/SSD Offloading": ["Engram 嵌入的双关：面向高效 DRAM/SSD 卸载的协同设计", "新模型架构对 DRAM/NVMe 市场空间的影响、DeepSeek V4.1 Flash、AgentX、InferenceX、NVMe 实验"],
+  "Everyone Says Datacenter Moratoriums Are Killing the US Buildout. We disagree": ["人人都说数据中心禁令正在扼杀美国的建设，我们不同意", "20GW 位于受限的地方辖区内，真正延期的是 1525MW，算上纽约全国共 2.3GW"],
+  "Vera Rubin NVL72 Agentic Inference: 67x better Performance per Dollar": ["Vera Rubin NVL72 智能体推理：每美元性能提升 67 倍", "黄仁勋又在保守报性能、每吉瓦年利润翻倍、买得越多赚得越多、AgentX、InferenceX、极致协同设计"]
+}

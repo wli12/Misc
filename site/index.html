@@ -48,10 +48,10 @@
   .wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
 
   /* ---------- list ---------- */
-  .masthead { padding: 36px 0 18px; border-bottom: 2px solid var(--ink); }
+  .masthead { padding: 36px 0 14px; }
   .masthead h1 { font-family: var(--serif); font-size: 34px; line-height: 1.15; margin: 0; letter-spacing: .04em; }
   .masthead p { margin: 8px 0 0; color: var(--ink-2); font-size: 14px; }
-  .list { list-style: none; margin: 0; padding: 0 0 64px; }
+  .list { list-style: none; margin: 0; padding: 0; }
   .item { border-bottom: 1px solid var(--line); }
   .item a {
     display: grid; grid-template-columns: 34px 1fr auto; gap: 12px;
@@ -62,7 +62,7 @@
     color: var(--ink-3); font-variant-numeric: tabular-nums;
   }
   .item:nth-child(-n+3) .rank { color: var(--accent); }
-  .item h2 { font-family: var(--serif); font-size: 18px; line-height: 1.45; margin: 0; font-weight: 700; text-wrap: pretty; }
+  .item h3 { font-family: var(--serif); font-size: 18px; line-height: 1.45; margin: 0; font-weight: 700; text-wrap: pretty; }
   .item .lede {
     margin: 6px 0 0; color: var(--ink-2); font-size: 14px;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
@@ -70,16 +70,38 @@
   .meta { margin-top: 8px; font-size: 12px; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; }
   .tag { color: var(--accent); background: var(--accent-soft); border-radius: 3px; padding: 0 5px; font-weight: 600; }
   .thumb { width: 96px; height: 68px; object-fit: cover; border-radius: 6px; background: var(--line); }
-  .item.read h2, .item.read .rank { color: var(--read); }
-  @media (hover: hover) { .item a:hover h2 { text-decoration: underline; text-underline-offset: 4px; } }
+  .item.read h3, .item.read .rank { color: var(--read); }
+  @media (hover: hover) { .item a:hover h3 { text-decoration: underline; text-underline-offset: 4px; } }
   @media (max-width: 480px) {
     .masthead h1 { font-size: 28px; }
     .item a { grid-template-columns: 26px 1fr auto; gap: 10px; }
     .rank { font-size: 20px; }
-    .item h2 { font-size: 17px; }
+    .item h3 { font-size: 17px; }
     .thumb { width: 76px; height: 56px; }
   }
 
+  /* ---------- source tabs ---------- */
+  .tabs { position: sticky; top: 0; z-index: 2; background: var(--bg); border-bottom: 1px solid var(--line); }
+  .tabs .wrap { display: flex; gap: 6px; overflow-x: auto; padding-top: 10px; padding-bottom: 10px; scrollbar-width: none; }
+  .tabs .wrap::-webkit-scrollbar { display: none; }
+  .tab {
+    flex: none; font-size: 14px; line-height: 1; padding: 9px 13px; border-radius: 999px;
+    color: var(--ink-2); border: 1px solid var(--line); background: var(--surface); white-space: nowrap;
+  }
+  .tab[aria-current="true"] { color: var(--bg); background: var(--ink); border-color: var(--ink); }
+  .source { padding-top: 26px; }
+  .source-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 6px; border-bottom: 2px solid var(--ink); }
+  .source-head h2 { font-family: var(--serif); font-size: 20px; margin: 0; }
+  .source-head h2 small { font-family: var(--sans); font-size: 13px; font-weight: 400; color: var(--ink-3); margin-left: 8px; }
+  .source-head button, .source-head a { flex: none; font-size: 13px; color: var(--accent); text-decoration: none; }
+  .source .list { padding-bottom: 0; }
+  .source .empty { color: var(--ink-3); font-size: 14px; padding: 16px 0; margin: 0; }
+  .compact .item a { padding: 12px 0; }
+  .compact .rank { font-size: 18px; }
+  .compact .item h3 { font-size: 16px; }
+  .compact .meta { margin-top: 4px; }
+  .item .original { margin: 4px 0 0; font-size: 13px; color: var(--ink-3); }
+  .foot { padding: 28px 0 64px; }
   .state { padding: 72px 0; text-align: center; color: var(--ink-2); }
   .state button { color: var(--accent); text-decoration: underline; }
   [hidden] { display: none !important; }
@@ -91,8 +113,9 @@
 <script>
 (() => {
   const app = document.getElementById('app');
-  const READ_KEY = 'hot-read-v1';
+  const READ_KEY = 'hot-read-v2';
   const DATA_URL = 'data/hot.json';
+  const PREVIEW = 5; // items per source on the overview
   let data = null;
 
   const el = (tag, props = {}, ...kids) => {
@@ -110,15 +133,12 @@
   const readSet = () => {
     try { return new Set(JSON.parse(localStorage.getItem(READ_KEY) || '[]')); } catch { return new Set(); }
   };
-  const markRead = (id) => {
+  const markRead = (url) => {
     try {
-      const s = readSet(); s.add(id);
-      localStorage.setItem(READ_KEY, JSON.stringify([...s].slice(-300)));
+      const s = readSet(); s.add(url);
+      localStorage.setItem(READ_KEY, JSON.stringify([...s].slice(-800)));
     } catch {}
   };
-
-  const webUrl = (it) => `https://www.zhihu.com/question/${it.id}`;
-  const count = (n) => (n >= 10000 ? (n / 10000).toFixed(1).replace(/\.0$/, '') + ' 万' : String(n));
 
   function ago(iso) {
     const mins = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60000));
@@ -136,59 +156,89 @@
     });
   }
 
-  // Desktop: the link opens Zhihu in a new tab. Touch devices: go there in this tab,
-  // by script. A tapped link would be handed to the installed app, and Zhihu's mobile
-  // page closes any tab a web page opened for it once its "open the app" prompt is
-  // declined, so a new tab cannot be kept. Back returns to this list.
-  function openFromList(e, it) {
-    markRead(it.id);
+  // Links open in a new tab. The exception is Zhihu on touch devices, which is opened
+  // in this tab by script: a tapped link would be handed to the installed app, and
+  // Zhihu's mobile page closes any tab a web page opened for it once its "open the
+  // app" prompt is declined. Back returns to this list.
+  function openItem(e, it) {
+    markRead(it.url);
     e.currentTarget.parentNode.classList.add('read');
+    if (!it.url.startsWith('https://www.zhihu.com/')) return;
     if (!window.matchMedia('(pointer: coarse)').matches) return;
     e.preventDefault();
-    setTimeout(() => { location.assign(webUrl(it)); }, 0);
+    setTimeout(() => { location.assign(it.url); }, 0);
   }
 
-  function renderList() {
+  function row(it, index, read, compact) {
+    return el('li', { class: 'item' + (read.has(it.url) ? ' read' : '') },
+      el('a', { href: it.url, target: '_blank', rel: 'noopener noreferrer', onclick: (e) => openItem(e, it) },
+        el('span', { class: 'rank' }, String(index + 1)),
+        el('div', {},
+          el('h3', {}, it.title),
+          it.original && el('p', { class: 'original', lang: 'en' }, it.original),
+          !compact && it.excerpt && el('p', { class: 'lede' }, it.excerpt),
+          el('div', { class: 'meta' },
+            it.isNew && el('span', { class: 'tag' }, '新'),
+            (it.meta || []).map((m) => el('span', {}, m)),
+            it.time && el('span', {}, ago(it.time)))),
+        !compact && image(it.image, 'thumb')));
+  }
+
+  function section(src, read, compact) {
+    const items = compact ? src.items.slice(0, PREVIEW) : src.items;
+    return el('section', { class: 'source' + (compact ? ' compact' : '') },
+      el('div', { class: 'source-head' },
+        el('h2', {}, src.name, el('small', {}, src.sub)),
+        compact
+          ? src.items.length > PREVIEW && el('button', { onclick: () => { location.hash = src.id; } }, `全部 ${src.items.length} 条 →`)
+          : el('a', { href: src.home, target: '_blank', rel: 'noopener noreferrer' }, '去原站 ↗')),
+      items.length
+        ? el('ol', { class: 'list' }, items.map((it, i) => row(it, i, read, compact)))
+        : el('p', { class: 'empty' }, '这个来源暂时没取到。'));
+  }
+
+  function render() {
+    const current = data.sources.find((s) => s.id === decodeURIComponent(location.hash.slice(1)));
     const read = readSet();
+    const tab = (id, label) => el('button', {
+      class: 'tab', 'aria-current': String((current ? current.id : '') === id),
+      onclick: () => { location.hash = id; },
+    }, label);
+    document.title = current ? `${current.name} · 热榜速读` : '热榜速读';
     app.replaceChildren(
       el('div', { class: 'wrap' },
         el('header', { class: 'masthead' },
           el('h1', {}, '热榜速读'),
-          el('p', {}, `知乎热榜 ${data.items.length} 条 · 更新于 ${ago(data.updatedAt)}`)),
-        el('ol', { class: 'list' }, data.items.map((it) =>
-          el('li', { class: 'item' + (read.has(it.id) ? ' read' : '') },
-            el('a', { href: webUrl(it), target: '_blank', rel: 'noopener noreferrer', onclick: (e) => openFromList(e, it) },
-              el('span', { class: 'rank' }, String(it.rank)),
-              el('div', {},
-                el('h2', {}, it.title),
-                it.excerpt && el('p', { class: 'lede' }, it.excerpt),
-                el('div', { class: 'meta' },
-                  it.isNew && el('span', { class: 'tag' }, '新'),
-                  el('span', {}, it.heat),
-                  el('span', {}, `${count(it.answers)} 回答`))),
-              image(it.image, 'thumb'))))))
-    );
+          el('p', {}, `${data.sources.length} 个来源 · 更新于 ${ago(data.updatedAt)}`))),
+      el('nav', { class: 'tabs' },
+        el('div', { class: 'wrap' }, tab('', '全部'), data.sources.map((s) => tab(s.id, s.name)))),
+      el('div', { class: 'wrap' },
+        current ? section(current, read, false) : data.sources.map((s) => section(s, read, true)),
+        el('div', { class: 'foot' })));
+    app.querySelector('.tab[aria-current="true"]')?.scrollIntoView({ block: 'nearest', inline: 'center' });
   }
 
   async function getJson(url, timeoutMs) {
     try {
       const res = await fetch(url, { cache: 'no-cache', signal: AbortSignal.timeout(timeoutMs) });
       const body = res.ok ? await res.json() : null;
-      return Array.isArray(body?.items) && body.items.length ? body : null;
+      return Array.isArray(body?.sources) && body.sources.length ? body : null;
     } catch { return null; }
   }
 
   async function load() {
-    try {
-      data = await getJson(DATA_URL, 15000);
-      if (!data) throw new Error('no data');
-      renderList();
-    } catch (err) {
-      app.replaceChildren(el('div', { class: 'wrap state' },
-        el('p', {}, '热榜没取到。'),
-        el('button', { onclick: load }, '再试一次')));
-    }
+    data = await getJson(DATA_URL, 15000);
+    if (data) { render(); return; }
+    app.replaceChildren(el('div', { class: 'wrap state' },
+      el('p', {}, '热榜没取到。'),
+      el('button', { onclick: load }, '再试一次')));
   }
+
+  window.addEventListener('hashchange', () => {
+    if (!data) return;
+    render();
+    window.scrollTo(0, 0);
+  });
   load();
 })();
 </script>
