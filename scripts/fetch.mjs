@@ -126,15 +126,6 @@ const SOURCES = [
     },
   },
   {
-    id: 'huxiu', name: '虎嗅', sub: '最新文章', home: 'https://www.huxiu.com/',
-    async fetch() {
-      return feedItems(await getText('https://rss.huxiu.com/')).map((i) => ({
-        title: i.title, url: i.link.replace(/\?f=rss$/, ''), excerpt: i.description.slice(0, 200),
-        meta: [i.author], time: iso(i.date),
-      }));
-    },
-  },
-  {
     id: 'sspai', name: '少数派', sub: '热门文章', home: 'https://sspai.com/',
     async fetch() {
       const body = await getJson(`https://sspai.com/api/v1/article/tag/page/get?limit=20&offset=0&tag=${encodeURIComponent('热门文章')}`);
