@@ -92,9 +92,7 @@
 (() => {
   const app = document.getElementById('app');
   const READ_KEY = 'hot-read-v1';
-  // The snapshot sits next to this page on zhihu.hackerfun.org; the copy served from
-  // hackerfun.org/zhihu has no data of its own and reads it from there.
-  const DATA_URLS = ['data/hot.json', 'https://zhihu.hackerfun.org/data/hot.json'];
+  const DATA_URL = 'data/hot.json';
   let data = null;
 
   const el = (tag, props = {}, ...kids) => {
@@ -182,8 +180,7 @@
 
   async function load() {
     try {
-      data = null;
-      for (const url of DATA_URLS) data ??= await getJson(url, 15000);
+      data = await getJson(DATA_URL, 15000);
       if (!data) throw new Error('no data');
       renderList();
     } catch (err) {

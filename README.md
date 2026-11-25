@@ -2,7 +2,7 @@
 
 知乎热榜的一个安静的列表页：扫一眼标题和问题说明，点条目跳到知乎网页版。
 
-线上地址：<https://zhihu.hackerfun.org/>（`hackerfun.org/zhihu` 是同一页面的副本，由 `hackerfun` 仓库发布，数据读这里的）。
+线上地址：<https://zhihu.hackerfun.org/>。
 
 - `site/` — 页面本体（单文件 `index.html`）和数据快照 `data/hot.json`
 - `scripts/fetch.mjs` — 抓取知乎公开热榜接口，生成 `site/data/hot.json`
