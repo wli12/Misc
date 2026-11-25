@@ -55,7 +55,7 @@ function feedItems(xml) {
   });
 }
 
-// An English-language feed. Titles and summaries are translated later; see translate().
+// An English-language feed. Titles are given their Chinese translation later; see translate().
 const englishFeed = (id, name, sub, home, feed) => ({
   id, name, sub, home, english: true,
   async fetch() {
@@ -96,7 +96,7 @@ const SOURCES = [
     },
   },
   {
-    id: 'hackernews', name: 'Hacker News', sub: '首页', home: 'https://news.ycombinator.com/', english: true,
+    id: 'hackernews', name: 'Hacker News', sub: '首页', home: 'https://news.ycombinator.com/',
     async fetch() {
       const body = await getJson('https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=30');
       return body.hits.map((h) => ({
@@ -233,60 +233,25 @@ const sources = await Promise.all(SOURCES.map(async ({ fetch: run, ...info }) =>
 
 if (!sources.some((s) => s.updatedAt === now)) throw new Error('every source failed');
 
-// ---- Chinese titles for the English sources ----
-// Order of preference per item: the hand-made file, what the last published data
-// already had for the same English title, then Gemini (only with GEMINI_API_KEY).
-// Anything still untranslated is shown in English.
-async function gemini(pairs) {
-  const model = process.env.GEMINI_MODEL || 'gemini-flash-latest';
-  const prompt =
-    '把下面 JSON 数组里每一项的 title 和 excerpt 翻译成简体中文，面向关注科技、AI 和财经的读者。' +
-    '保留公司名、产品名、人名和缩写的原文，不要添加原文没有的信息，excerpt 为空就返回空字符串。' +
-    '只返回 JSON 数组，长度和顺序与输入一致，每项形如 {"title": "...", "excerpt": "..."}。\n\n' +
-    JSON.stringify(pairs);
-  const body = await getJson(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY },
-    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: 'application/json', temperature: 0.2 } }),
-  });
-  const out = JSON.parse(body.candidates[0].content.parts.map((p) => p.text ?? '').join(''));
-  if (!Array.isArray(out) || out.length !== pairs.length) throw new Error('unexpected translation shape');
-  return out;
-}
-
+// ---- Chinese titles for the English feeds ----
+// Translated by hand: translations/titles.json maps an English title to its Chinese
+// title; translations/semianalysis.json is an earlier batch that also carries a
+// Chinese summary. A post in neither file is shown in English. Hacker News is not
+// translated.
 async function translate() {
-  const manual = JSON.parse(await readFile(resolve(HERE, 'translations/semianalysis.json'), 'utf8'));
-  const known = new Map();
-  for (const src of before?.sources ?? []) for (const it of src.items) if (it.original) known.set(it.original, it);
-  const todo = [];
+  const read = async (name) => JSON.parse(await readFile(resolve(HERE, 'translations', name), 'utf8'));
+  const titles = await read('titles.json');
+  const withSummary = await read('semianalysis.json');
+  let missing = 0;
   for (const src of sources.filter((s) => s.english)) {
     for (const it of src.items) {
-      if (it.original) continue; // kept from the previous data, already translated
-      const en = it.title;
-      const zh = manual[en] ? { title: manual[en][0], excerpt: manual[en][1] } : known.get(en);
+      const en = it.original ?? it.title;
+      const zh = withSummary[en] ? { title: withSummary[en][0], excerpt: withSummary[en][1] } : titles[en] && { title: titles[en] };
       if (zh) Object.assign(it, { title: zh.title, excerpt: zh.excerpt ?? it.excerpt, original: en });
-      else todo.push(it);
+      else { it.title = en; delete it.original; missing++; }
     }
   }
-  if (todo.length === 0 || !process.env.GEMINI_API_KEY) {
-    console.log(`translation: ${todo.length} items left in English${process.env.GEMINI_API_KEY ? '' : ' (no GEMINI_API_KEY)'}`);
-    return;
-  }
-  let done = 0;
-  for (let i = 0; i < todo.length; i += 40) {
-    const chunk = todo.slice(i, i + 40);
-    try {
-      const out = await gemini(chunk.map((it) => ({ title: it.title, excerpt: it.excerpt ?? '' })));
-      chunk.forEach((it, k) => {
-        if (!clean(out[k]?.title)) return;
-        Object.assign(it, { original: it.title, title: clean(out[k].title), excerpt: clean(out[k].excerpt) || it.excerpt });
-        done++;
-      });
-    } catch (err) {
-      console.log(`translation: a batch failed (${err.message})`);
-    }
-  }
-  console.log(`translation: ${done} of ${todo.length} new items translated`);
+  console.log(`translation: ${missing} titles still in English`);
 }
 await translate();
 await mkdir(dirname(OUT), { recursive: true });

@@ -6,8 +6,7 @@
 
 - `site/` — 页面本体（单文件 `index.html`）和数据快照 `data/hot.json`
 - `scripts/fetch.mjs` — 逐个抓取各来源的公开接口或 RSS，生成 `site/data/hot.json`；某个来源失败时沿用它上一次的内容
-- 英文来源的标题和摘要由 Gemini 接口翻成中文（仓库密钥 `GEMINI_API_KEY`；没有密钥或翻译失败时显示英文），翻过的条目从上一次发布的数据里复用
-- `scripts/translations/semianalysis.json` — 早先人工翻译的一批 SemiAnalysis 标题，优先于自动翻译
+- `scripts/translations/` — 英文来源标题的中文翻译，人工维护（`titles.json` 只有标题，`semianalysis.json` 是早先连副标题一起翻的一批）；没翻译的新文章显示英文，Hacker News 不翻译
 - `.github/workflows/pages.yml` — 抓取并部署到 GitHub Pages，由 Google Cloud Scheduler 每小时触发一次
 
 ## 本地预览
