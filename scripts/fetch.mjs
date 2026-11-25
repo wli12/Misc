@@ -45,7 +45,10 @@ function rssItems(xml) {
     );
   return [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].map(([, body]) => {
     const tag = (name) => decode(body.match(new RegExp(`<${name}[^>]*>([\\s\\S]*?)</${name}>`))?.[1]);
-    return { title: tag('title'), link: tag('link'), date: tag('pubDate'), description: tag('description'), creator: tag('dc:creator') };
+    return {
+      title: tag('title'), link: tag('link'), date: tag('pubDate'), description: tag('description'),
+      creator: tag('dc:creator'), author: tag('author'),
+    };
   });
 }
 
@@ -80,6 +83,16 @@ const SOURCES = [
     },
   },
   {
+    id: 'hackernews', name: 'Hacker News', sub: '首页', home: 'https://news.ycombinator.com/',
+    async fetch() {
+      const body = await getJson('https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=30');
+      return body.hits.map((h) => ({
+        title: clean(h.title), url: h.url || `https://news.ycombinator.com/item?id=${h.objectID}`,
+        meta: [`${h.points} 分`, `${h.num_comments} 评论`], time: iso(h.created_at),
+      }));
+    },
+  },
+  {
     id: 'v2ex', name: 'V2EX', sub: '最热', home: 'https://www.v2ex.com/?tab=hot',
     async fetch() {
       const list = await getJson('https://www.v2ex.com/api/topics/hot.json');
@@ -90,16 +103,31 @@ const SOURCES = [
     },
   },
   {
-    id: '36kr', name: '36氪', sub: '24 小时热榜', home: 'https://36kr.com/hot-list/catalog',
+    id: 'wallstreetcn', name: '华尔街见闻', sub: '日排行', home: 'https://wallstreetcn.com/',
     async fetch() {
-      const body = await getJson('https://gateway.36kr.com/api/mis/nav/home/nav/rank/hot', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ partner_id: 'wap', param: { siteId: 1, platformId: 2 }, timestamp: Date.now() }),
-      });
-      return body.data.hotRankList.map(({ templateMaterial: m }) => ({
-        title: clean(m.widgetTitle), url: `https://36kr.com/p/${m.itemId}`,
-        meta: [clean(m.authorName), m.statRead ? `${wan(Number(m.statRead))} 阅读` : ''], time: iso(Number(m.publishTime)),
+      const body = await getJson('https://api-one-wscn.awtmt.com/apiv1/content/articles/hot?period=all');
+      return body.data.day_items.map((a) => ({
+        title: clean(a.title), url: a.uri,
+        meta: [a.pageviews ? `${wan(a.pageviews)} 阅读` : ''], time: iso(a.display_time * 1000),
+      }));
+    },
+  },
+  {
+    id: 'huxiu', name: '虎嗅', sub: '最新文章', home: 'https://www.huxiu.com/',
+    async fetch() {
+      return rssItems(await getText('https://rss.huxiu.com/')).map((i) => ({
+        title: i.title, url: i.link.replace(/\?f=rss$/, ''), excerpt: i.description.slice(0, 200),
+        meta: [i.author], time: iso(i.date),
+      }));
+    },
+  },
+  {
+    id: 'sspai', name: '少数派', sub: '热门文章', home: 'https://sspai.com/',
+    async fetch() {
+      const body = await getJson(`https://sspai.com/api/v1/article/tag/page/get?limit=20&offset=0&tag=${encodeURIComponent('热门文章')}`);
+      return body.data.map((a) => ({
+        title: clean(a.title), url: `https://sspai.com/post/${a.id}`, excerpt: clean(a.summary),
+        meta: [clean(a.author?.nickname)], time: iso(a.released_time * 1000),
       }));
     },
   },
@@ -114,30 +142,12 @@ const SOURCES = [
     },
   },
   {
-    id: 'juejin', name: '掘金', sub: '人工智能本周最热', home: 'https://juejin.cn/hot/articles/6809637773935378440',
-    async fetch() {
-      const body = await getJson('https://api.juejin.cn/content_api/v1/content/article_rank?category_id=6809637773935378440&type=hot');
-      return body.data.map((x) => ({
-        title: clean(x.content.title), url: `https://juejin.cn/post/${x.content.content_id}`,
-        meta: [clean(x.author?.name), x.content_counter?.view ? `${wan(x.content_counter.view)} 阅读` : ''],
-      }));
-    },
-  },
-  {
     id: 'jiqizhixin', name: '机器之心', sub: '文章库', home: 'https://www.jiqizhixin.com/articles',
     async fetch() {
       const body = await getJson('https://www.jiqizhixin.com/api/article_library/articles.json?sort=time&page=1&per=20');
       return body.articles.map((a) => ({
         title: clean(a.title), url: `https://www.jiqizhixin.com/articles/${a.slug}`, excerpt: clean(a.content).slice(0, 300),
         meta: [clean(a.author)], time: iso(`${String(a.publishedAt).replace(/\//g, '-').replace(' ', 'T')}:00+08:00`),
-      }));
-    },
-  },
-  {
-    id: 'qbitai', name: '量子位', sub: '每日最新', home: 'https://www.qbitai.com/',
-    async fetch() {
-      return rssItems(await getText('https://www.qbitai.com/feed')).map((i) => ({
-        title: i.title, url: i.link, excerpt: i.description, meta: [i.creator], time: iso(i.date),
       }));
     },
   },
