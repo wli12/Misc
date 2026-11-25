@@ -119,28 +119,6 @@
   };
 
   const webUrl = (it) => `https://www.zhihu.com/question/${it.id}`;
-
-  // A new tab first loads this page with #go=<id> and only then moves on to Zhihu.
-  // Zhihu's mobile page steps back in history when its "open the app" prompt is
-  // declined; in a tab with nothing behind it that closes the tab. With this stop
-  // behind it, the step back lands here and we send the tab forward again, once.
-  const go = location.hash.match(/^#go=(\d+)$/);
-  if (go) {
-    const url = webUrl({ id: go[1] });
-    const key = `hot-go-${go[1]}`;
-    const state = () => { try { return sessionStorage.getItem(key); } catch { return null; } };
-    const setState = (v) => { try { sessionStorage.setItem(key, v); } catch {} };
-    window.addEventListener('pageshow', () => {
-      const seen = state();
-      if (!seen) { setState('left'); location.href = url; return; }
-      if (seen === 'left') { setState('returned'); history.forward(); return; }
-      app.replaceChildren(el('div', { class: 'wrap state' },
-        el('p', {}, '知乎页面自己退了回来。'),
-        el('p', {}, el('a', { href: url }, '再打开一次')),
-        el('p', {}, el('a', { href: './' }, '回热榜'))));
-    });
-    return;
-  }
   const count = (n) => (n >= 10000 ? (n / 10000).toFixed(1).replace(/\.0$/, '') + ' 万' : String(n));
 
   function ago(iso) {
@@ -159,12 +137,16 @@
     });
   }
 
-  // List items open in a new tab (via the #go stop above) and leave this page in place.
-  // Because the move to zhihu.com is made by script rather than by a tapped link,
-  // phones keep it in the browser instead of handing it to the installed app.
+  // Desktop: the link opens Zhihu in a new tab. Touch devices: go there in this tab,
+  // by script. A tapped link would be handed to the installed app, and Zhihu's mobile
+  // page closes any tab a web page opened for it once its "open the app" prompt is
+  // declined, so a new tab cannot be kept. Back returns to this list.
   function openFromList(e, it) {
     markRead(it.id);
     e.currentTarget.parentNode.classList.add('read');
+    if (!window.matchMedia('(pointer: coarse)').matches) return;
+    e.preventDefault();
+    setTimeout(() => { location.assign(webUrl(it)); }, 0);
   }
 
   function renderList() {
@@ -176,7 +158,7 @@
           el('p', {}, `知乎热榜 ${data.items.length} 条 · 更新于 ${ago(data.updatedAt)}`)),
         el('ol', { class: 'list' }, data.items.map((it) =>
           el('li', { class: 'item' + (read.has(it.id) ? ' read' : '') },
-            el('a', { href: `#go=${it.id}`, target: '_blank', rel: 'noopener', onclick: (e) => openFromList(e, it) },
+            el('a', { href: webUrl(it), target: '_blank', rel: 'noopener noreferrer', onclick: (e) => openFromList(e, it) },
               el('span', { class: 'rank' }, String(it.rank)),
               el('div', {},
                 el('h2', {}, it.title),
