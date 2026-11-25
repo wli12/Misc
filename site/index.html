@@ -120,6 +120,8 @@
   };
 
   const webUrl = (it) => `https://www.zhihu.com/question/${it.id}`;
+  const count = (n) => (n >= 10000 ? (n / 10000).toFixed(1).replace(/\.0$/, '') + ' 万' : String(n));
+
   function ago(iso) {
     const mins = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60000));
     if (mins < 1) return '刚刚';
