@@ -156,15 +156,17 @@
     });
   }
 
-  // Links open in a new tab. The exception is Zhihu on touch devices, which is opened
-  // in this tab by script: a tapped link would be handed to the installed app, and
-  // Zhihu's mobile page closes any tab a web page opened for it once its "open the
-  // app" prompt is declined. Back returns to this list.
+  // Links open in a new tab. The exception is Zhihu on phones, which is opened in
+  // this tab by script: there a tapped link is handed to the installed app. Back
+  // returns to this list. Tablets and computers use the plain link, which gives a
+  // new tab that stays open when Zhihu's "open the app" prompt is declined. Phones
+  // are told apart by user agent, not pointer type: an iPad reports a fine pointer
+  // with a keyboard attached and a coarse one without, which flipped this behaviour.
+  const IS_PHONE = /iPhone|iPod|Android.*Mobile/.test(navigator.userAgent);
   function openItem(e, it) {
     markRead(it.url);
     e.currentTarget.parentNode.classList.add('read');
-    if (!it.url.startsWith('https://www.zhihu.com/')) return;
-    if (!window.matchMedia('(pointer: coarse)').matches) return;
+    if (!IS_PHONE || !it.url.startsWith('https://www.zhihu.com/')) return;
     e.preventDefault();
     setTimeout(() => { location.assign(it.url); }, 0);
   }
