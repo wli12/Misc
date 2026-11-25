@@ -94,6 +94,8 @@
   const READ_KEY = 'hot-read-v1';
   // Absolute, so the same file also works when it is served from another site.
   const DATA_URL = 'https://wli12.github.io/Misc/data/hot.json';
+  // Live endpoint (functions/zhihu-hot). Empty until it is deployed; the snapshot above is the fallback.
+  const LIVE_URL = '';
   let data = null;
 
   const el = (tag, props = {}, ...kids) => {
@@ -171,11 +173,19 @@
     );
   }
 
+  async function getJson(url, timeoutMs) {
+    if (!url) return null;
+    try {
+      const res = await fetch(url, { cache: 'no-cache', signal: AbortSignal.timeout(timeoutMs) });
+      const body = res.ok ? await res.json() : null;
+      return Array.isArray(body?.items) && body.items.length ? body : null;
+    } catch { return null; }
+  }
+
   async function load() {
     try {
-      const res = await fetch(DATA_URL, { cache: 'no-cache' });
-      if (!res.ok) throw new Error(res.status);
-      data = await res.json();
+      data = (await getJson(LIVE_URL, 5000)) ?? (await getJson(DATA_URL, 15000));
+      if (!data) throw new Error('no data');
       renderList();
     } catch (err) {
       app.replaceChildren(el('div', { class: 'wrap state' },
