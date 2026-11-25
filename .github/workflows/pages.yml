@@ -4,7 +4,8 @@ on:
   push:
     paths: ['site/**', 'scripts/**', '.github/workflows/pages.yml']
   schedule:
-    - cron: '17 * * * *'
+    # GitHub runs only a fraction of scheduled slots on a quiet repository, so ask often.
+    - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
 
 permissions:

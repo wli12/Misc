@@ -51,7 +51,6 @@
   .masthead { padding: 36px 0 18px; border-bottom: 2px solid var(--ink); }
   .masthead h1 { font-family: var(--serif); font-size: 34px; line-height: 1.15; margin: 0; letter-spacing: .04em; }
   .masthead p { margin: 8px 0 0; color: var(--ink-2); font-size: 14px; }
-  .masthead .stale { color: var(--accent); }
   .list { list-style: none; margin: 0; padding: 0 0 64px; }
   .item { border-bottom: 1px solid var(--line); }
   .item a {
@@ -170,13 +169,11 @@
 
   function renderList() {
     const read = readSet();
-    const hours = (Date.now() - new Date(data.updatedAt).getTime()) / 36e5;
     app.replaceChildren(
       el('div', { class: 'wrap' },
         el('header', { class: 'masthead' },
           el('h1', {}, '热榜速读'),
-          el('p', { class: hours > 3 ? 'stale' : null },
-            `知乎热榜 ${data.items.length} 条 · 更新于 ${ago(data.updatedAt)}` + (hours > 3 ? '（数据有点旧了）' : ''))),
+          el('p', {}, `知乎热榜 ${data.items.length} 条 · 更新于 ${ago(data.updatedAt)}`)),
         el('ol', { class: 'list' }, data.items.map((it) =>
           el('li', { class: 'item' + (read.has(it.id) ? ' read' : '') },
             el('a', { href: `#go=${it.id}`, target: '_blank', rel: 'noopener', onclick: (e) => openFromList(e, it) },
