@@ -1,12 +1,13 @@
 # 热榜速读
 
-把几个中文热榜和信息源放在一个安静的页面里：知乎热榜、知乎日报、Hacker News、V2EX、华尔街见闻、虎嗅、少数派、果壳、机器之心、SemiAnalysis。点条目跳到原站。
+把几个中文热榜和信息源放在一个安静的页面里：知乎热榜、知乎日报、Hacker News、V2EX、华尔街见闻、虎嗅、少数派、果壳、机器之心、SemiAnalysis，以及七个英文来源（Dwarkesh、Import AI、Simon Willison、Interconnects、ChinaTalk、Damodaran、Construction Physics）。点条目跳到原站。
 
 线上地址：<https://news.hackerfun.org/>。
 
 - `site/` — 页面本体（单文件 `index.html`）和数据快照 `data/hot.json`
 - `scripts/fetch.mjs` — 逐个抓取各来源的公开接口或 RSS，生成 `site/data/hot.json`；某个来源失败时沿用它上一次的内容
-- `scripts/translations/semianalysis.json` — SemiAnalysis 标题和副标题的中文翻译（人工维护；没翻译的新文章显示英文）
+- 英文来源的标题和摘要由 Gemini 接口翻成中文（仓库密钥 `GEMINI_API_KEY`；没有密钥或翻译失败时显示英文），翻过的条目从上一次发布的数据里复用
+- `scripts/translations/semianalysis.json` — 早先人工翻译的一批 SemiAnalysis 标题，优先于自动翻译
 - `.github/workflows/pages.yml` — 抓取并部署到 GitHub Pages，由 Google Cloud Scheduler 每小时触发一次
 
 ## 本地预览

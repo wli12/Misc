@@ -26,6 +26,9 @@ jobs:
         id: fetch
         continue-on-error: true
         run: node scripts/fetch.mjs
+        env:
+          # Optional: without it the English sources keep their English titles.
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       - name: Refresh movie lists
         # Keeps the committed snapshot when the upstream list is unreachable.
         continue-on-error: true

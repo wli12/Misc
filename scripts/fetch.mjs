@@ -31,26 +31,39 @@ const iso = (v) => {
 };
 const wan = (n) => (n >= 10000 ? `${(n / 10000).toFixed(1).replace(/\.0$/, '')} 万` : String(n));
 
-// Minimal RSS reader: enough for well-formed feeds with <item> blocks.
-function rssItems(xml) {
+// Minimal feed reader: RSS <item> blocks and Atom <entry> blocks of well-formed feeds.
+function feedItems(xml) {
   const decode = (s) =>
     clean(
       String(s ?? '')
         .replace(/^\s*<!\[CDATA\[([\s\S]*?)\]\]>\s*$/, '$1')
+        .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
         .replace(/<[^>]+>/g, ' ')
         .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
         .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
-        .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'")
-        .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&'),
+        .replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&'),
     );
-  return [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].map(([, body]) => {
+  return [...xml.matchAll(/<(item|entry)>([\s\S]*?)<\/\1>/g)].map(([, , body]) => {
     const tag = (name) => decode(body.match(new RegExp(`<${name}[^>]*>([\\s\\S]*?)</${name}>`))?.[1]);
     return {
-      title: tag('title'), link: tag('link'), date: tag('pubDate'), description: tag('description'),
+      title: tag('title'),
+      link: tag('link') || body.match(/<link[^>]*rel="alternate"[^>]*href="([^"]+)"/)?.[1] || body.match(/<link[^>]*href="([^"]+)"/)?.[1] || '',
+      date: tag('pubDate') || tag('published') || tag('updated'),
+      description: tag('description') || tag('summary'),
       creator: tag('dc:creator'), author: tag('author'),
     };
   });
 }
+
+// An English-language feed. Titles and summaries are translated later; see translate().
+const englishFeed = (id, name, sub, home, feed) => ({
+  id, name, sub, home, english: true,
+  async fetch() {
+    return feedItems(await getText(feed)).slice(0, 10).map((i) => ({
+      title: i.title, url: i.link, excerpt: i.description.slice(0, 240), time: iso(i.date),
+    }));
+  },
+});
 
 const SOURCES = [
   {
@@ -83,7 +96,7 @@ const SOURCES = [
     },
   },
   {
-    id: 'hackernews', name: 'Hacker News', sub: '首页', home: 'https://news.ycombinator.com/',
+    id: 'hackernews', name: 'Hacker News', sub: '首页', home: 'https://news.ycombinator.com/', english: true,
     async fetch() {
       const body = await getJson('https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=30');
       return body.hits.map((h) => ({
@@ -115,7 +128,7 @@ const SOURCES = [
   {
     id: 'huxiu', name: '虎嗅', sub: '最新文章', home: 'https://www.huxiu.com/',
     async fetch() {
-      return rssItems(await getText('https://rss.huxiu.com/')).map((i) => ({
+      return feedItems(await getText('https://rss.huxiu.com/')).map((i) => ({
         title: i.title, url: i.link.replace(/\?f=rss$/, ''), excerpt: i.description.slice(0, 200),
         meta: [i.author], time: iso(i.date),
       }));
@@ -151,21 +164,14 @@ const SOURCES = [
       }));
     },
   },
-  {
-    id: 'semianalysis', name: 'SemiAnalysis', sub: '中文标题', home: 'https://newsletter.semianalysis.com/',
-    async fetch() {
-      // Titles are translated by hand in translations/semianalysis.json; a post that
-      // is not in that file yet is shown in English.
-      const zh = JSON.parse(await readFile(resolve(HERE, 'translations/semianalysis.json'), 'utf8'));
-      return rssItems(await getText('https://newsletter.semianalysis.com/feed')).map((i) => {
-        const [title, excerpt] = zh[i.title] ?? [];
-        return {
-          title: title ?? i.title, url: i.link, excerpt: excerpt ?? i.description,
-          original: title ? i.title : undefined, meta: [i.creator], time: iso(i.date),
-        };
-      });
-    },
-  },
+  englishFeed('semianalysis', 'SemiAnalysis', '半导体与算力', 'https://newsletter.semianalysis.com/', 'https://newsletter.semianalysis.com/feed'),
+  englishFeed('dwarkesh', 'Dwarkesh', '长访谈', 'https://www.dwarkesh.com/', 'https://www.dwarkesh.com/feed'),
+  englishFeed('importai', 'Import AI', 'AI 周报', 'https://jack-clark.net/', 'https://importai.substack.com/feed'),
+  englishFeed('simonwillison', 'Simon Willison', '大模型实测', 'https://simonwillison.net/', 'https://simonwillison.net/atom/entries/'),
+  englishFeed('interconnects', 'Interconnects', '模型与开源', 'https://www.interconnects.ai/', 'https://www.interconnects.ai/feed'),
+  englishFeed('chinatalk', 'ChinaTalk', '中国科技政策', 'https://www.chinatalk.media/', 'https://www.chinatalk.media/feed'),
+  englishFeed('damodaran', 'Damodaran', '估值与市场', 'https://aswathdamodaran.blogspot.com/', 'https://aswathdamodaran.blogspot.com/feeds/posts/default?alt=rss&max-results=15'),
+  englishFeed('construction-physics', 'Construction Physics', '基建与制造', 'https://www.construction-physics.com/', 'https://www.construction-physics.com/feed'),
 ];
 
 async function previous() {
@@ -192,6 +198,63 @@ const sources = await Promise.all(SOURCES.map(async ({ fetch: run, ...info }) =>
 }));
 
 if (!sources.some((s) => s.updatedAt === now)) throw new Error('every source failed');
+
+// ---- Chinese titles for the English sources ----
+// Order of preference per item: the hand-made file, what the last published data
+// already had for the same English title, then Gemini (only with GEMINI_API_KEY).
+// Anything still untranslated is shown in English.
+async function gemini(pairs) {
+  const model = process.env.GEMINI_MODEL || 'gemini-flash-latest';
+  const prompt =
+    '把下面 JSON 数组里每一项的 title 和 excerpt 翻译成简体中文，面向关注科技、AI 和财经的读者。' +
+    '保留公司名、产品名、人名和缩写的原文，不要添加原文没有的信息，excerpt 为空就返回空字符串。' +
+    '只返回 JSON 数组，长度和顺序与输入一致，每项形如 {"title": "...", "excerpt": "..."}。\n\n' +
+    JSON.stringify(pairs);
+  const body = await getJson(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY },
+    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: 'application/json', temperature: 0.2 } }),
+  });
+  const out = JSON.parse(body.candidates[0].content.parts.map((p) => p.text ?? '').join(''));
+  if (!Array.isArray(out) || out.length !== pairs.length) throw new Error('unexpected translation shape');
+  return out;
+}
+
+async function translate() {
+  const manual = JSON.parse(await readFile(resolve(HERE, 'translations/semianalysis.json'), 'utf8'));
+  const known = new Map();
+  for (const src of before?.sources ?? []) for (const it of src.items) if (it.original) known.set(it.original, it);
+  const todo = [];
+  for (const src of sources.filter((s) => s.english)) {
+    for (const it of src.items) {
+      if (it.original) continue; // kept from the previous data, already translated
+      const en = it.title;
+      const zh = manual[en] ? { title: manual[en][0], excerpt: manual[en][1] } : known.get(en);
+      if (zh) Object.assign(it, { title: zh.title, excerpt: zh.excerpt ?? it.excerpt, original: en });
+      else todo.push(it);
+    }
+  }
+  if (todo.length === 0 || !process.env.GEMINI_API_KEY) {
+    console.log(`translation: ${todo.length} items left in English${process.env.GEMINI_API_KEY ? '' : ' (no GEMINI_API_KEY)'}`);
+    return;
+  }
+  let done = 0;
+  for (let i = 0; i < todo.length; i += 40) {
+    const chunk = todo.slice(i, i + 40);
+    try {
+      const out = await gemini(chunk.map((it) => ({ title: it.title, excerpt: it.excerpt ?? '' })));
+      chunk.forEach((it, k) => {
+        if (!clean(out[k]?.title)) return;
+        Object.assign(it, { original: it.title, title: clean(out[k].title), excerpt: clean(out[k].excerpt) || it.excerpt });
+        done++;
+      });
+    } catch (err) {
+      console.log(`translation: a batch failed (${err.message})`);
+    }
+  }
+  console.log(`translation: ${done} of ${todo.length} new items translated`);
+}
+await translate();
 await mkdir(dirname(OUT), { recursive: true });
 await writeFile(OUT, JSON.stringify({ updatedAt: now, sources }, null, 1) + '\n');
 console.log(`wrote ${sources.reduce((n, s) => n + s.items.length, 0)} items to ${OUT}`);
