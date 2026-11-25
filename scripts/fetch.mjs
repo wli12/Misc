@@ -57,7 +57,7 @@ function feedItems(xml) {
 
 // An English-language feed. Titles are given their Chinese translation later; see translate().
 const englishFeed = (id, name, sub, home, feed) => ({
-  id, name, sub, home, english: true,
+  id, name, sub, home, tier: 1, english: true,
   async fetch() {
     return feedItems(await getText(feed)).slice(0, 10).map((i) => ({
       title: i.title, url: i.link, excerpt: i.description.slice(0, 240), time: iso(i.date),
@@ -65,9 +65,10 @@ const englishFeed = (id, name, sub, home, feed) => ({
   },
 });
 
+// tier is the depth rating shown as a filter on the page: 1 深度 (★★★), 2 有料 (★★), 3 消遣 (★).
 const SOURCES = [
   {
-    id: 'zhihu', name: '知乎', sub: '热榜', home: 'https://www.zhihu.com/hot',
+    id: 'zhihu', tier: 3, name: '知乎', sub: '热榜', home: 'https://www.zhihu.com/hot',
     async fetch() {
       const body = await getJson('https://api.zhihu.com/topstory/hot-list?limit=50&reverse_order=0', {
         headers: { Accept: 'application/json' },
@@ -89,14 +90,14 @@ const SOURCES = [
     },
   },
   {
-    id: 'zhihu-daily', name: '知乎日报', sub: '今日', home: 'https://daily.zhihu.com/',
+    id: 'zhihu-daily', tier: 2, name: '知乎日报', sub: '今日', home: 'https://daily.zhihu.com/',
     async fetch() {
       const body = await getJson('https://daily.zhihu.com/api/4/news/latest');
       return body.stories.map((s) => ({ title: clean(s.title), url: s.url, meta: [clean(s.hint)] }));
     },
   },
   {
-    id: 'hackernews', name: 'Hacker News', sub: '首页', home: 'https://news.ycombinator.com/',
+    id: 'hackernews', tier: 2, name: 'Hacker News', sub: '首页', home: 'https://news.ycombinator.com/',
     async fetch() {
       const body = await getJson('https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=30');
       return body.hits.map((h) => ({
@@ -106,7 +107,7 @@ const SOURCES = [
     },
   },
   {
-    id: 'v2ex', name: 'V2EX', sub: '最热', home: 'https://www.v2ex.com/?tab=hot',
+    id: 'v2ex', tier: 2, name: 'V2EX', sub: '最热', home: 'https://www.v2ex.com/?tab=hot',
     async fetch() {
       const list = await getJson('https://www.v2ex.com/api/topics/hot.json');
       return list.map((t) => ({
@@ -116,7 +117,7 @@ const SOURCES = [
     },
   },
   {
-    id: 'wallstreetcn', name: '华尔街见闻', sub: '日排行', home: 'https://wallstreetcn.com/',
+    id: 'wallstreetcn', tier: 2, name: '华尔街见闻', sub: '日排行', home: 'https://wallstreetcn.com/',
     async fetch() {
       const body = await getJson('https://api-one-wscn.awtmt.com/apiv1/content/articles/hot?period=all');
       return body.data.day_items.map((a) => ({
@@ -126,7 +127,7 @@ const SOURCES = [
     },
   },
   {
-    id: 'sspai', name: '少数派', sub: '热门文章', home: 'https://sspai.com/',
+    id: 'sspai', tier: 2, name: '少数派', sub: '热门文章', home: 'https://sspai.com/',
     async fetch() {
       const body = await getJson(`https://sspai.com/api/v1/article/tag/page/get?limit=20&offset=0&tag=${encodeURIComponent('热门文章')}`);
       return body.data.map((a) => ({
@@ -136,7 +137,7 @@ const SOURCES = [
     },
   },
   {
-    id: 'latepost', name: '晚点', sub: 'LatePost', home: 'https://www.latepost.com/',
+    id: 'latepost', tier: 1, name: '晚点', sub: 'LatePost', home: 'https://www.latepost.com/',
     async fetch() {
       const body = await getJson('https://www.latepost.com/site/index', {
         method: 'POST',
@@ -150,7 +151,7 @@ const SOURCES = [
     },
   },
   {
-    id: 'zhangxiaojun', name: '张小珺', sub: '商业访谈录（播客）', home: 'https://www.xiaoyuzhoufm.com/podcast/626b46ea9cbbf0451cf5a962',
+    id: 'zhangxiaojun', tier: 1, name: '张小珺', sub: '商业访谈录（播客）', home: 'https://www.xiaoyuzhoufm.com/podcast/626b46ea9cbbf0451cf5a962',
     async fetch() {
       // The podcast page embeds its episode list as JSON.
       const html = await getText('https://www.xiaoyuzhoufm.com/podcast/626b46ea9cbbf0451cf5a962');
@@ -162,7 +163,7 @@ const SOURCES = [
     },
   },
   {
-    id: 'ruanyifeng', name: '阮一峰', sub: '科技爱好者周刊', home: 'https://www.ruanyifeng.com/blog/weekly/',
+    id: 'ruanyifeng', tier: 2, name: '阮一峰', sub: '科技爱好者周刊', home: 'https://www.ruanyifeng.com/blog/weekly/',
     async fetch() {
       return feedItems(await getText('https://www.ruanyifeng.com/blog/atom.xml')).map((i) => ({
         title: i.title, url: i.link.replace(/^http:/, 'https:'), excerpt: i.description.slice(0, 240), time: iso(i.date),
@@ -170,7 +171,7 @@ const SOURCES = [
     },
   },
   {
-    id: 'guokr', name: '果壳', sub: '科学人', home: 'https://www.guokr.com/scientific/',
+    id: 'guokr', tier: 2, name: '果壳', sub: '科学人', home: 'https://www.guokr.com/scientific/',
     async fetch() {
       const list = await getJson('https://www.guokr.com/beta/proxy/science_api/articles?retrieve_type=by_category&page=1');
       return list.map((a) => ({
@@ -180,7 +181,7 @@ const SOURCES = [
     },
   },
   {
-    id: 'jiqizhixin', name: '机器之心', sub: '文章库', home: 'https://www.jiqizhixin.com/articles',
+    id: 'jiqizhixin', tier: 2, name: '机器之心', sub: '文章库', home: 'https://www.jiqizhixin.com/articles',
     async fetch() {
       const body = await getJson('https://www.jiqizhixin.com/api/article_library/articles.json?sort=time&page=1&per=20');
       return body.articles.map((a) => ({

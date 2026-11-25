@@ -89,6 +89,15 @@
     color: var(--ink-2); border: 1px solid var(--line); background: var(--surface); white-space: nowrap;
   }
   .tab[aria-current="true"] { color: var(--bg); background: var(--ink); border-color: var(--ink); }
+  .tiers { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .tier {
+    font-size: 13px; line-height: 1; padding: 8px 11px; border-radius: 999px; white-space: nowrap;
+    color: var(--ink-3); border: 1px solid var(--line); background: transparent;
+  }
+  .tier .stars { color: var(--ink-3); margin-right: 5px; letter-spacing: 1px; }
+  .tier[aria-pressed="true"] { color: var(--ink); border-color: var(--ink-2); background: var(--surface); }
+  .tier[aria-pressed="true"] .stars, .source-head .stars { color: var(--accent); }
+  .source-head .stars { font-size: 12px; letter-spacing: 1px; margin-left: 8px; font-family: var(--sans); font-weight: 400; }
   .source { padding-top: 26px; }
   .source-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 6px; border-bottom: 2px solid var(--ink); }
   .source-head h2 { font-family: var(--serif); font-size: 20px; margin: 0; }
@@ -116,6 +125,27 @@
   const READ_KEY = 'hot-read-v2';
   const DATA_URL = 'data/hot.json';
   const PREVIEW = 5; // items per source on the overview
+  // Depth filter, the same three levels as the main HackerFun site.
+  const TIERS_KEY = 'hot-tiers-v1';
+  const TIER = { 1: '深度', 2: '有料', 3: '消遣' };
+  const STARS = { 1: '★★★', 2: '★★', 3: '★' };
+  const TIER_HINT = {
+    1: '三星：功底很深的一手研究、调查和长访谈',
+    2: '二星：有信息量、做得认真',
+    3: '一星：以消遣为主',
+  };
+  let tiers = [1, 2, 3];
+  try {
+    const saved = JSON.parse(localStorage.getItem(TIERS_KEY) || 'null');
+    if (Array.isArray(saved) && saved.length && saved.every((t) => TIER[t])) tiers = saved;
+  } catch {}
+  function toggleTier(t) {
+    const next = tiers.includes(t) ? tiers.filter((x) => x !== t) : tiers.concat(t);
+    if (!next.length) return; // at least one level stays on
+    tiers = next;
+    try { localStorage.setItem(TIERS_KEY, JSON.stringify(tiers)); } catch {}
+    render();
+  }
   let data = null;
 
   const el = (tag, props = {}, ...kids) => {
@@ -191,7 +221,7 @@
     const items = compact ? src.items.slice(0, PREVIEW) : src.items;
     return el('section', { class: 'source' + (compact ? ' compact' : '') },
       el('div', { class: 'source-head' },
-        el('h2', {}, src.name, el('small', {}, src.sub)),
+        el('h2', {}, src.name, el('small', {}, src.sub), el('span', { class: 'stars', title: TIER_HINT[src.tier] }, STARS[src.tier])),
         compact
           ? src.items.length > PREVIEW && el('button', { onclick: () => { location.hash = src.id; } }, `全部 ${src.items.length} 条 →`)
           : el('a', { href: src.home, target: '_blank', rel: 'noopener noreferrer' }, '去原站 ↗')),
@@ -201,7 +231,10 @@
   }
 
   function render() {
-    const current = data.sources.find((s) => s.id === decodeURIComponent(location.hash.slice(1)));
+    // A source whose level is switched off disappears from the tabs and the overview;
+    // if it was the one being viewed, fall back to the overview.
+    const shown = data.sources.filter((s) => tiers.includes(s.tier));
+    const current = shown.find((s) => s.id === decodeURIComponent(location.hash.slice(1)));
     const read = readSet();
     const tab = (id, label) => el('button', {
       class: 'tab', 'aria-current': String((current ? current.id : '') === id),
@@ -212,11 +245,16 @@
       el('div', { class: 'wrap' },
         el('header', { class: 'masthead' },
           el('h1', {}, '热榜速读'),
-          el('p', {}, `${data.sources.length} 个来源 · 更新于 ${ago(data.updatedAt)}`))),
+          el('p', {}, `${shown.length} 个来源 · 更新于 ${ago(data.updatedAt)}`),
+          el('div', { class: 'tiers' }, [1, 2, 3].map((t) =>
+            el('button', {
+              class: 'tier', 'aria-pressed': String(tiers.includes(t)), title: TIER_HINT[t],
+              onclick: () => toggleTier(t),
+            }, el('span', { class: 'stars' }, STARS[t]), `${TIER[t]} ${data.sources.filter((s) => s.tier === t).length}`))))),
       el('nav', { class: 'tabs' },
-        el('div', { class: 'wrap' }, tab('', '全部'), data.sources.map((s) => tab(s.id, s.name)))),
+        el('div', { class: 'wrap' }, tab('', '全部'), shown.map((s) => tab(s.id, s.name)))),
       el('div', { class: 'wrap' },
-        current ? section(current, read, false) : data.sources.map((s) => section(s, read, true)),
+        current ? section(current, read, false) : shown.map((s) => section(s, read, true)),
         el('div', { class: 'foot' })));
     app.querySelector('.tab[aria-current="true"]')?.scrollIntoView({ block: 'nearest', inline: 'center' });
   }

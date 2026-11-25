@@ -4,6 +4,8 @@
 
 线上地址：<https://news.hackerfun.org/>。
 
+每个来源有一个深度星级（★★★ 深度、★★ 有料、★ 消遣，标准与 HackerFun 主站相同，定义在 `scripts/fetch.mjs` 的 `tier` 字段），页面顶部的三个按钮按星级筛选来源。
+
 - `site/` — 页面本体（单文件 `index.html`）和数据快照 `data/hot.json`
 - `scripts/fetch.mjs` — 逐个抓取各来源的公开接口或 RSS，生成 `site/data/hot.json`；某个来源失败时沿用它上一次的内容
 - `scripts/translations/` — 英文来源标题的中文翻译，人工维护（`titles.json` 只有标题，`semianalysis.json` 是早先连副标题一起翻的一批）；没翻译的新文章显示英文，Hacker News 不翻译

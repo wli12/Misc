@@ -1,8 +1,9 @@
 {
- "updatedAt": "2026-11-25T23:21:12.538Z",
+ "updatedAt": "2026-11-25T23:57:07.602Z",
  "sources": [
   {
    "id": "zhihu",
+   "tier": 3,
    "name": "知乎",
    "sub": "热榜",
    "home": "https://www.zhihu.com/hot",
@@ -342,10 +343,11 @@
   },
   {
    "id": "zhihu-daily",
+   "tier": 2,
    "name": "知乎日报",
    "sub": "今日",
    "home": "https://daily.zhihu.com/",
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "鸟类能尝出果实的甜味吗？",
@@ -379,71 +381,36 @@
   },
   {
    "id": "hackernews",
+   "tier": 2,
    "name": "Hacker News",
    "sub": "首页",
    "home": "https://news.ycombinator.com/",
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
-    {
-     "title": "The matrix multiplication exponent is nine fourths [pdf]",
-     "url": "https://github.com/openai/math/blob/main/preprints/The-matrix-multiplication-exponent-is-nine-fourths-November-24-2026/paper.pdf",
-     "meta": [
-      "1015 分",
-      "562 评论"
-     ],
-     "time": "2026-11-25T01:19:26.000Z"
-    },
     {
      "title": "1Password Security Incident",
      "url": "https://1password.com/blog/update-on-nov-2026-security-incident",
      "meta": [
-      "988 分",
-      "417 评论"
+      "1025 分",
+      "438 评论"
      ],
      "time": "2026-11-25T17:18:26.000Z"
-    },
-    {
-     "title": "Button Sounds – collection of professionally-recorded button clicks and presses",
-     "url": "https://buttons.joshwcomeau.com/",
-     "meta": [
-      "825 分",
-      "130 评论"
-     ],
-     "time": "2026-11-25T03:23:07.000Z"
     },
     {
      "title": "Holy shit holy shit holy shit holy shit: The magnitude of what’s now happening",
      "url": "https://scottaaronson.blog/?p=10379",
      "meta": [
-      "747 分",
-      "575 评论"
+      "778 分",
+      "619 评论"
      ],
      "time": "2026-11-25T19:11:27.000Z"
-    },
-    {
-     "title": "Rumors swirling that labs might have cracked Factoring in P",
-     "url": "https://www.reddit.com/r/singularity/comments/1y59ef1/rumor_that_openai_or_anthropic_found_a_way_to/",
-     "meta": [
-      "447 分",
-      "324 评论"
-     ],
-     "time": "2026-11-25T15:08:44.000Z"
-    },
-    {
-     "title": "Models Can Communicate via Inference Servers Despite Being Sandboxed",
-     "url": "https://www.lesswrong.com/posts/7wzWuLP3HhyBLmKfo/models-can-communicate-via-inference-servers-despite-being",
-     "meta": [
-      "444 分",
-      "190 评论"
-     ],
-     "time": "2026-11-25T02:34:21.000Z"
     },
     {
      "title": "Google releases Cogentic papers on integer factorization, discrete logs and more",
      "url": "https://github.com/google-research/google-research/tree/master/cogentic_research_papers",
      "meta": [
-      "421 分",
-      "318 评论"
+      "428 分",
+      "320 评论"
      ],
      "time": "2026-11-25T13:33:07.000Z"
     },
@@ -451,8 +418,8 @@
      "title": "A few questions for the guy who went snorkeling in a Home Depot retention pond",
      "url": "https://www.vox.com/down-to-earth/511999/home-depot-retention-pond-snorkel-joseph-ricketts",
      "meta": [
-      "418 分",
-      "99 评论"
+      "421 分",
+      "100 评论"
      ],
      "time": "2026-11-25T15:14:32.000Z"
     },
@@ -461,7 +428,7 @@
      "url": "https://github.com/xoxorwr/pw-loudness-eq",
      "meta": [
       "304 分",
-      "173 评论"
+      "172 评论"
      ],
      "time": "2026-11-25T11:34:25.000Z"
     },
@@ -469,8 +436,8 @@
      "title": "Smart people who give a shit use tools",
      "url": "https://www.iankduncan.com/engineering/2026-11-19-smart-people-who-give-a-shit-use-tools",
      "meta": [
-      "246 分",
-      "190 评论"
+      "253 分",
+      "194 评论"
      ],
      "time": "2026-11-25T07:46:43.000Z"
     },
@@ -478,26 +445,17 @@
      "title": "Porting Rockbox to an undocumented $9 AliExpress 'YP3' MP3 player with LLMs",
      "url": "https://jayd.ml/2026/11/14/rockbox-on-yp3.html",
      "meta": [
-      "200 分",
-      "83 评论"
+      "207 分",
+      "85 评论"
      ],
      "time": "2026-11-24T06:22:36.000Z"
-    },
-    {
-     "title": "I checked Clojure's core with Lean and found unreported bugs",
-     "url": "https://s.conao3.com/blog/2026/e4f733",
-     "meta": [
-      "165 分",
-      "57 评论"
-     ],
-     "time": "2026-11-25T14:56:52.000Z"
     },
     {
      "title": "GPT-6.2 Astra is the first model to beat Googlers' code golf records",
      "url": "https://bjin.github.io/go-codegolf-benchmark/#leaderboard",
      "meta": [
-      "165 分",
-      "35 评论"
+      "187 分",
+      "52 评论"
      ],
      "time": "2026-11-22T16:44:48.000Z"
     },
@@ -505,17 +463,35 @@
      "title": "Much shorter version of GRH Lean verification from Anthropic",
      "url": "https://github.com/lsernau/grh-lean",
      "meta": [
-      "140 分",
-      "55 评论"
+      "184 分",
+      "83 评论"
      ],
      "time": "2026-11-25T21:48:10.000Z"
+    },
+    {
+     "title": "I checked Clojure's core with Lean and found unreported bugs",
+     "url": "https://s.conao3.com/blog/2026/e4f733",
+     "meta": [
+      "169 分",
+      "58 评论"
+     ],
+     "time": "2026-11-25T14:56:52.000Z"
+    },
+    {
+     "title": "The New York Times tells photographers not to use the latest Photoshop",
+     "url": "https://www.dpreview.com/news/new-york-times-adobe-photoshop-2027-restriction-ai/",
+     "meta": [
+      "123 分",
+      "61 评论"
+     ],
+     "time": "2026-11-25T21:18:02.000Z"
     },
     {
      "title": "SSH is a GUI framework",
      "url": "https://zydra.sh/articles/ssh-is-a-gui-framework/",
      "meta": [
-      "110 分",
-      "54 评论"
+      "112 分",
+      "58 评论"
      ],
      "time": "2026-11-21T14:52:41.000Z"
     },
@@ -523,8 +499,8 @@
      "title": "The polynomial Hirsch conjecture is false [pdf]",
      "url": "https://github.com/openai/math/blob/main/preprints/Superpolynomial-graph-diameter-of-simple-polytopes-November-24-2026/paper.pdf",
      "meta": [
-      "102 分",
-      "22 评论"
+      "109 分",
+      "27 评论"
      ],
      "time": "2026-11-25T17:34:34.000Z"
     },
@@ -532,7 +508,7 @@
      "title": "Predicting LoRA size for any dataset",
      "url": "https://engram.com/blog/lora-size",
      "meta": [
-      "102 分",
+      "104 分",
       "11 评论"
      ],
      "time": "2026-11-24T22:34:29.000Z"
@@ -541,35 +517,17 @@
      "title": "In C++, = default and {} are not the same constructor",
      "url": "https://lemire.me/blog/2026/11/02/default-and-braces-are-not-the-same-constructor/",
      "meta": [
-      "98 分",
-      "156 评论"
+      "99 分",
+      "161 评论"
      ],
      "time": "2026-11-25T15:20:15.000Z"
-    },
-    {
-     "title": "The New York Times tells photographers not to use the latest Photoshop",
-     "url": "https://www.dpreview.com/news/new-york-times-adobe-photoshop-2027-restriction-ai/",
-     "meta": [
-      "86 分",
-      "41 评论"
-     ],
-     "time": "2026-11-25T21:18:02.000Z"
-    },
-    {
-     "title": "Britain's ghost stations",
-     "url": "https://spectator.com/article/britains-ghost-stations-are-fascinating/",
-     "meta": [
-      "79 分",
-      "17 评论"
-     ],
-     "time": "2026-11-25T17:43:46.000Z"
     },
     {
      "title": "Slow Ubuntu security response times",
      "url": "https://www.openwall.com/lists/oss-security/2026/11/25/9",
      "meta": [
-      "69 分",
-      "25 评论"
+      "91 分",
+      "31 评论"
      ],
      "time": "2026-11-25T20:38:00.000Z"
     },
@@ -577,17 +535,35 @@
      "title": "72-Hour Fasting Can Reset Your Immune System, USC Study Shows",
      "url": "https://scienceinhand.com/72-hour-fasting-can-reset-your-entire-immune-system-usc-study-shows/",
      "meta": [
-      "61 分",
-      "23 评论"
+      "90 分",
+      "42 评论"
      ],
      "time": "2026-11-25T20:35:39.000Z"
+    },
+    {
+     "title": "Britain's ghost stations",
+     "url": "https://spectator.com/article/britains-ghost-stations-are-fascinating/",
+     "meta": [
+      "84 分",
+      "18 评论"
+     ],
+     "time": "2026-11-25T17:43:46.000Z"
+    },
+    {
+     "title": "Jev is (probably) Qwen3.5-35B-A3B",
+     "url": "https://modaic.dev/blog/latency-doesnt-lie",
+     "meta": [
+      "81 分",
+      "4 评论"
+     ],
+     "time": "2026-11-25T22:57:04.000Z"
     },
     {
      "title": "Show HN: An agent skill that optimizes code with falsifiable hypotheses",
      "url": "https://chszlab.github.io/AgenticAlgorithmEngineering/",
      "meta": [
-      "56 分",
-      "7 评论"
+      "62 分",
+      "8 评论"
      ],
      "time": "2026-11-23T14:02:15.000Z"
     },
@@ -595,8 +571,8 @@
      "title": "Nfs2root: A 12-year-old pre-auth remote root in the Linux kernel's NFS server",
      "url": "https://opensec.in/blog/nfs2root-cve-2026-99362",
      "meta": [
-      "54 分",
-      "16 评论"
+      "60 分",
+      "19 评论"
      ],
      "time": "2026-11-25T20:35:50.000Z"
     },
@@ -604,28 +580,28 @@
      "title": "Defang Security Incident",
      "url": "https://defang.io/blog/post/security-incident-november-2026/",
      "meta": [
-      "37 分",
-      "12 评论"
+      "44 分",
+      "14 评论"
      ],
      "time": "2026-11-25T21:47:16.000Z"
-    },
-    {
-     "title": "The undocumented 249-file limit for Googlebot rendering",
-     "url": "https://www.fullstackoptimization.com/a/googlebot-249-file-rendering-limit",
-     "meta": [
-      "24 分",
-      "9 评论"
-     ],
-     "time": "2026-11-23T20:50:20.000Z"
     },
     {
      "title": "Show HN: Rchive – Every drive I've owned since the 90s, searchable in one window",
      "url": "https://www.rchive.computer/",
      "meta": [
-      "22 分",
-      "14 评论"
+      "25 分",
+      "15 评论"
      ],
      "time": "2026-11-24T07:03:33.000Z"
+    },
+    {
+     "title": "The undocumented 249-file limit for Googlebot rendering",
+     "url": "https://www.fullstackoptimization.com/a/googlebot-249-file-rendering-limit",
+     "meta": [
+      "25 分",
+      "10 评论"
+     ],
+     "time": "2026-11-23T20:50:20.000Z"
     },
     {
      "title": "A Beer Brewer's Noise Estimation",
@@ -637,13 +613,40 @@
      "time": "2026-11-23T12:20:15.000Z"
     },
     {
+     "title": "Bare Metal Qwen",
+     "url": "https://github.com/alesha-pro/llm.asm/tree/main/02-baremetal-os",
+     "meta": [
+      "10 分",
+      "0 评论"
+     ],
+     "time": "2026-11-25T22:15:34.000Z"
+    },
+    {
      "title": "A fast CAS with a focus on resolution of singularities",
      "url": "https://github.com/pportilla/atlas",
      "meta": [
-      "7 分",
+      "9 分",
       "1 评论"
      ],
      "time": "2026-11-24T02:57:22.000Z"
+    },
+    {
+     "title": "Deploying a payphone on a tiny Pacific Island for fun and zero profit",
+     "url": "https://nickvsnetworking.com/deploying-a-payphone-on-a-tiny-pacific-island-for-fun-and-zero-profit/",
+     "meta": [
+      "7 分",
+      "0 评论"
+     ],
+     "time": "2026-11-25T22:12:25.000Z"
+    },
+    {
+     "title": "Why \"all different\" Sets take 5x longer to find",
+     "url": "https://setdaily.app/blog/spotting-sets",
+     "meta": [
+      "4 分",
+      "0 评论"
+     ],
+     "time": "2026-11-23T18:48:15.000Z"
     },
     {
      "title": "Hazel (YC W24) Is Hiring a Product Designer",
@@ -658,10 +661,11 @@
   },
   {
    "id": "v2ex",
+   "tier": 2,
    "name": "V2EX",
    "sub": "最热",
    "home": "https://www.v2ex.com/?tab=hot",
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "我知道你几岁",
@@ -696,7 +700,7 @@
      "excerpt": "我今天在网上看到一篇纪念数学家、哲学家王浩的文章，里头提到哲学家何兆武。何兆武在他的《上学记》里谈到，有一次他和王浩讨论幸福问题，王浩最终同意了如下说法：幸福是日高日远的觉悟，是不断的拷问和扬弃，是通过苦恼的欢欣，而不是简单的信仰。 我觉得这句话就像阳光一样，一下子照亮我的内心了。只是叹息光阴似箭，年少时并不懂得珍惜。不知道大家都追求的是什么样的生活呢？大概正是人人都有不同的追求，这个世界才如此五彩缤纷吧。",
      "meta": [
       "随想",
-      "92 回复"
+      "93 回复"
      ]
     },
     {
@@ -745,28 +749,29 @@
      ]
     },
     {
-     "title": "准确率 99.9% 的丑丑头像屏蔽脚本",
-     "url": "https://www.v2ex.com/t/1259714",
-     "excerpt": "[安装地址](https://greasyfork.org/zh-CN/scripts/607215-v2ex-ugly-avatar-ai-%E5%B1%8F%E8%94%BD%E5%99%A8-%E7%BA%AF%E6%9C%AC%E5%9C%B0%E5%BE%AE%E5%9E%8B-cnn) 很早就想屏蔽这类头像, 一直没找到太好的方式. 最近又看到这类头像, 然后试着让 Gemini 提供的屏蔽方案, 代码是 gemini 训练一个超轻量的 4 层 CNN 图像二分类模型，Int8 量化后塞进一个独立的油猴脚本里跑的. 安装后可以在[这个帖子](https://www.v2ex.com",
+     "title": "避雷帖：Claude KYC 找人认证慎重",
+     "url": "https://www.v2ex.com/t/1259736",
+     "excerpt": "我在论坛上找人代办韩国资料的 KYC 认证，对方收费 280 元。结果认证完成后，我本人根本还没有实际使用，账号不到一小时就被封了。出了问题后，这位兄弟的态度也不地道，连一部分费用都不肯退。基于这次经历，我提醒大家：后续如果要做 Claude 的 KYC 认证，一定要慎重选择，别轻易踩坑，免得花了钱账号还没用就出问题！！",
      "meta": [
-      "分享创造",
-      "51 回复"
+      "Claude",
+      "52 回复"
      ]
     }
    ]
   },
   {
    "id": "wallstreetcn",
+   "tier": 2,
    "name": "华尔街见闻",
    "sub": "日排行",
    "home": "https://wallstreetcn.com/",
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "AI抛售拖累美股盘中重挫，逢低买盘力撑道指转涨，避险需求推升美债，贵金属深V反转",
      "url": "https://wallstreetcn.com/articles/3786656",
      "meta": [
-      "23.4 万 阅读"
+      "25.3 万 阅读"
      ],
      "time": "2026-11-25T22:57:21.000Z"
     },
@@ -774,7 +779,7 @@
      "title": "美国10月PCE物价指数同比增长3.8%创三年半新高，核心同比 3.3%超预期，12月加息几成定局！",
      "url": "https://wallstreetcn.com/articles/3786699",
      "meta": [
-      "15.8 万 阅读"
+      "16.3 万 阅读"
      ],
      "time": "2026-11-25T13:52:55.000Z"
     },
@@ -782,7 +787,7 @@
      "title": "美国将宣布对中国商品加征关税，外交部：反对借口“产能过剩”进行政治操弄",
      "url": "https://wallstreetcn.com/articles/3786671",
      "meta": [
-      "11.2 万 阅读"
+      "11.3 万 阅读"
      ],
      "time": "2026-11-25T07:30:26.000Z"
     },
@@ -790,7 +795,7 @@
      "title": "今晚，美联储12月决议前最后一份重磅通胀报告出炉！",
      "url": "https://wallstreetcn.com/articles/3786680",
      "meta": [
-      "9.1 万 阅读"
+      "9.2 万 阅读"
      ],
      "time": "2026-11-25T10:06:17.000Z"
     },
@@ -806,7 +811,7 @@
      "title": "次贷危机的味道？甲骨文CDS利差已超越2008年的贝尔斯登，AI数据中心股权被抹去近半",
      "url": "https://wallstreetcn.com/articles/3786678",
      "meta": [
-      "5.7 万 阅读"
+      "5.8 万 阅读"
      ],
      "time": "2026-11-25T11:05:16.000Z"
     },
@@ -846,10 +851,11 @@
   },
   {
    "id": "sspai",
+   "tier": 2,
    "name": "少数派",
    "sub": "热门文章",
    "home": "https://sspai.com/",
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "从深圳到上海，少数派的共创故事还在继续",
@@ -1035,10 +1041,11 @@
   },
   {
    "id": "latepost",
+   "tier": 1,
    "name": "晚点",
    "sub": "LatePost",
    "home": "https://www.latepost.com/",
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "认养一头牛的十二年，让重投入长出新生意",
@@ -1124,10 +1131,11 @@
   },
   {
    "id": "zhangxiaojun",
+   "tier": 1,
    "name": "张小珺",
    "sub": "商业访谈录（播客）",
    "home": "https://www.xiaoyuzhoufm.com/podcast/626b46ea9cbbf0451cf5a962",
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "158.【2026年复盘】和沈驿康聊，黄仁勋、xAI内幕、RSI、持续学习、去中心化、预训练白盒、硅谷创业地图",
@@ -1268,10 +1276,11 @@
   },
   {
    "id": "ruanyifeng",
+   "tier": 2,
    "name": "阮一峰",
    "sub": "科技爱好者周刊",
    "home": "https://www.ruanyifeng.com/blog/weekly/",
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "科技爱好者周刊（第 420 期）：最分心的一年",
@@ -1298,10 +1307,11 @@
   },
   {
    "id": "guokr",
+   "tier": 2,
    "name": "果壳",
    "sub": "科学人",
    "home": "https://www.guokr.com/scientific/",
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "AI 驯化人，是不是人驯化狗的下一集？",
@@ -1397,10 +1407,11 @@
   },
   {
    "id": "jiqizhixin",
+   "tier": 2,
    "name": "机器之心",
    "sub": "文章库",
    "home": "https://www.jiqizhixin.com/articles",
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "全链路任务对齐，浙江人形升级 NAVIAI 工业作业能力",
@@ -1589,8 +1600,9 @@
    "name": "SemiAnalysis",
    "sub": "半导体与算力",
    "home": "https://newsletter.semianalysis.com/",
+   "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "英伟达，以及没有黄仁勋的世界",
@@ -1679,8 +1691,9 @@
    "name": "Dwarkesh",
    "sub": "长访谈",
    "home": "https://www.dwarkesh.com/",
+   "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "回应对“递归自我改进”的质疑",
@@ -1769,8 +1782,9 @@
    "name": "Import AI",
    "sub": "AI 周报",
    "home": "https://jack-clark.net/",
+   "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "Import AI 482：华为内核基准测试；机载无人机探测；国家实验室的 AI 科学基准",
@@ -1859,8 +1873,9 @@
    "name": "Simon Willison",
    "sub": "大模型实测",
    "home": "https://simonwillison.net/",
+   "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "十二个月里大模型的三个拐点",
@@ -1949,8 +1964,9 @@
    "name": "Interconnects",
    "sub": "模型与开源",
    "home": "https://www.interconnects.ai/",
+   "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "没有黄仁勋的开源 AI",
@@ -2039,8 +2055,9 @@
    "name": "ChinaTalk",
    "sub": "中国科技政策",
    "home": "https://www.chinatalk.media/",
+   "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "远程访问规则换来六个月的算力领先",
@@ -2129,8 +2146,9 @@
    "name": "Damodaran",
    "sub": "估值与市场",
    "home": "https://aswathdamodaran.blogspot.com/",
+   "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "人性弱点的代价：英伟达的“黄仁勋考验”",
@@ -2219,8 +2237,9 @@
    "name": "Construction Physics",
    "sub": "基建与制造",
    "home": "https://www.construction-physics.com/",
+   "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-25T23:21:12.538Z",
+   "updatedAt": "2026-11-25T23:57:07.602Z",
    "items": [
     {
      "title": "阅读清单 2026 年 11 月 21 日",
