@@ -121,6 +121,11 @@
   };
 
   const webUrl = (it) => `https://www.zhihu.com/question/${it.id}`;
+  // Experiment, switched on with ?tab=1 or ?tab=2: open Zhihu in a new tab by way of
+  // this page (#go=<id>), to find out whether such a tab survives Zhihu's attempt to
+  // close itself. 1 opens the tab by script, 2 by a plain link.
+  const TAB_MODE = new URLSearchParams(location.search).get('tab');
+
   const count = (n) => (n >= 10000 ? (n / 10000).toFixed(1).replace(/\.0$/, '') + ' 万' : String(n));
 
   function ago(iso) {
@@ -146,6 +151,13 @@
   function openFromList(e, it) {
     markRead(it.id);
     e.currentTarget.parentNode.classList.add('read');
+    if (TAB_MODE === '2') return; // the link itself opens the #go stop in a new tab
+    if (TAB_MODE === '1') {
+      e.preventDefault();
+      const tab = window.open(`#go=${it.id}`, '_blank');
+      if (tab) tab.opener = null;
+      return;
+    }
     if (!window.matchMedia('(pointer: coarse)').matches) return;
     e.preventDefault();
     setTimeout(() => { location.assign(webUrl(it)); }, 0);
@@ -160,7 +172,7 @@
           el('p', {}, `知乎热榜 ${data.items.length} 条 · 更新于 ${ago(data.updatedAt)}`)),
         el('ol', { class: 'list' }, data.items.map((it) =>
           el('li', { class: 'item' + (read.has(it.id) ? ' read' : '') },
-            el('a', { href: webUrl(it), target: '_blank', rel: 'noopener noreferrer', onclick: (e) => openFromList(e, it) },
+            el('a', { href: TAB_MODE ? `#go=${it.id}` : webUrl(it), target: '_blank', rel: 'noopener noreferrer', onclick: (e) => openFromList(e, it) },
               el('span', { class: 'rank' }, String(it.rank)),
               el('div', {},
                 el('h2', {}, it.title),
@@ -193,7 +205,17 @@
         el('button', { onclick: load }, '再试一次')));
     }
   }
-  load();
+  const go = location.hash.match(/^#go=(\d+)$/);
+  if (!go) { load(); return; }
+  const key = `hot-go-${go[1]}`;
+  window.addEventListener('pageshow', () => {
+    let seen = null;
+    try { seen = sessionStorage.getItem(key); sessionStorage.setItem(key, '1'); } catch {}
+    // First visit: move on to Zhihu. Coming back with the back button: show the list.
+    if (!seen) { location.assign(webUrl({ id: go[1] })); return; }
+    history.replaceState(null, '', location.pathname + location.search);
+    if (!data) load();
+  });
 })();
 </script>
 </body>
