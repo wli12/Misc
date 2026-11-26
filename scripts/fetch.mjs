@@ -202,8 +202,7 @@ if (!sources.some((s) => s.updatedAt === now)) throw new Error('every source fai
 // ---- Chinese titles for the English feeds ----
 // Translated by hand: translations/titles.json maps an English title to its Chinese
 // title; translations/semianalysis.json is an earlier batch that also carries a
-// Chinese summary. A post in neither file is shown in English. Hacker News is not
-// translated.
+// Chinese summary. A post in neither file is shown in English.
 async function translate() {
   const read = async (name) => JSON.parse(await readFile(resolve(HERE, 'translations', name), 'utf8'));
   const titles = await read('titles.json');
