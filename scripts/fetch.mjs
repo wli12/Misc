@@ -119,26 +119,6 @@ const SOURCES = [
     },
   },
   {
-    id: 'wallstreetcn', tier: 2, name: '华尔街见闻', sub: '日排行', home: 'https://wallstreetcn.com/',
-    async fetch() {
-      const body = await getJson('https://api-one-wscn.awtmt.com/apiv1/content/articles/hot?period=all');
-      return body.data.day_items.map((a) => ({
-        title: clean(a.title), url: a.uri,
-        meta: [a.pageviews ? `${wan(a.pageviews)} 阅读` : ''], time: iso(a.display_time * 1000),
-      }));
-    },
-  },
-  {
-    id: 'sspai', tier: 2, name: '少数派', sub: '热门文章', home: 'https://sspai.com/',
-    async fetch() {
-      const body = await getJson(`https://sspai.com/api/v1/article/tag/page/get?limit=20&offset=0&tag=${encodeURIComponent('热门文章')}`);
-      return body.data.map((a) => ({
-        title: clean(a.title), url: `https://sspai.com/post/${a.id}`, excerpt: clean(a.summary),
-        meta: [clean(a.author?.nickname)], time: iso(a.released_time * 1000),
-      }));
-    },
-  },
-  {
     id: 'latepost', tier: 1, name: '晚点', sub: 'LatePost', home: 'https://www.latepost.com/',
     async fetch() {
       const body = await getJson('https://www.latepost.com/news/get-news-data', {
