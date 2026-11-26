@@ -102,7 +102,8 @@
   .source-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 6px; border-bottom: 2px solid var(--ink); }
   .source-head h2 { font-family: var(--serif); font-size: 20px; margin: 0; }
   .source-head h2 small { font-family: var(--sans); font-size: 13px; font-weight: 400; color: var(--ink-3); margin-left: 8px; }
-  .source-head button, .source-head a { flex: none; font-size: 13px; color: var(--accent); text-decoration: none; }
+  .source-head a { flex: none; font-size: 13px; color: var(--accent); text-decoration: none; }
+  .source .more { display: block; padding: 12px 0 2px; font-size: 14px; color: var(--accent); }
   .source .list { padding-bottom: 0; }
   .source .empty { color: var(--ink-3); font-size: 14px; padding: 16px 0; margin: 0; }
   .compact .item a { padding: 12px 0; }
@@ -222,12 +223,12 @@
     return el('section', { class: 'source' + (compact ? ' compact' : '') },
       el('div', { class: 'source-head' },
         el('h2', {}, src.name, el('small', {}, src.sub), el('span', { class: 'stars', title: TIER_HINT[src.tier] }, STARS[src.tier])),
-        compact
-          ? src.items.length > PREVIEW && el('button', { onclick: () => { location.hash = src.id; } }, `全部 ${src.items.length} 条 →`)
-          : el('a', { href: src.home, target: '_blank', rel: 'noopener noreferrer' }, '去原站 ↗')),
+        !compact && el('a', { href: src.home, target: '_blank', rel: 'noopener noreferrer' }, '去原站 ↗')),
       items.length
         ? el('ol', { class: 'list' }, items.map((it, i) => row(it, i, read, compact)))
-        : el('p', { class: 'empty' }, '这个来源暂时没取到。'));
+        : el('p', { class: 'empty' }, '这个来源暂时没取到。'),
+      compact && src.items.length > PREVIEW &&
+        el('button', { class: 'more', onclick: () => { location.hash = src.id; } }, `全部 ${src.items.length} 条 →`));
   }
 
   function render() {
