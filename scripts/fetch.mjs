@@ -108,12 +108,13 @@ const SOURCES = [
     },
   },
   {
-    id: 'v2ex', tier: 3, name: 'V2EX', sub: '最热', home: 'https://www.v2ex.com/?tab=hot',
+    id: 'v2ex', tier: 2, name: 'V2EX', sub: '分享创造', home: 'https://www.v2ex.com/go/create',
     async fetch() {
-      const list = await getJson('https://www.v2ex.com/api/topics/hot.json');
+      // The node's newest topics; the site-wide hot list was mostly small talk.
+      const list = await getJson('https://www.v2ex.com/api/topics/show.json?node_name=create');
       return list.map((t) => ({
         title: clean(t.title), url: t.url, excerpt: clean(t.content).slice(0, 300),
-        meta: [clean(t.node?.title), `${t.replies} 回复`],
+        meta: [`${t.replies} 回复`], time: iso(t.created * 1000),
       }));
     },
   },
