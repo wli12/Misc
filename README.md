@@ -1,6 +1,6 @@
 # 热榜速读
 
-把几个中文热榜和信息源放在一个安静的页面里：知乎热榜、知乎日报、Hacker News、V2EX、晚点、张小珺商业访谈录、阮一峰周刊、果壳、机器之心、SemiAnalysis，以及七个英文来源（Dwarkesh、Import AI、Simon Willison、Interconnects、ChinaTalk、Damodaran、Construction Physics）。点条目跳到原站。
+把几个中文热榜和信息源放在一个安静的页面里：知乎热榜、知乎日报、V2EX、晚点、张小珺商业访谈录、阮一峰周刊、果壳、机器之心、SemiAnalysis，以及六个英文来源（Dwarkesh、Import AI、Interconnects、ChinaTalk、Damodaran、Construction Physics）。点条目跳到原站。
 
 线上地址：<https://news.hackerfun.org/>。
 
@@ -8,7 +8,7 @@
 
 - `site/` — 页面本体（单文件 `index.html`）和数据快照 `data/hot.json`
 - `scripts/fetch.mjs` — 逐个抓取各来源的公开接口或 RSS，生成 `site/data/hot.json`；某个来源失败时沿用它上一次的内容
-- `scripts/translations/` — 英文来源标题的中文翻译，人工维护（`titles.json` 只有标题，`semianalysis.json` 是早先连副标题一起翻的一批）；没翻译的新文章显示英文，Hacker News 不翻译
+- `scripts/translations/` — 英文来源标题的中文翻译，人工维护（`titles.json` 只有标题，`semianalysis.json` 是早先连副标题一起翻的一批）；没翻译的新文章显示英文
 - `.github/workflows/pages.yml` — 抓取并部署到 GitHub Pages，由 Google Cloud Scheduler 每小时触发一次
 
 ## 本地预览

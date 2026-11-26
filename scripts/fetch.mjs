@@ -98,16 +98,6 @@ const SOURCES = [
     },
   },
   {
-    id: 'hackernews', tier: 2, name: 'Hacker News', sub: '首页', home: 'https://news.ycombinator.com/',
-    async fetch() {
-      const body = await getJson('https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=30');
-      return body.hits.map((h) => ({
-        title: clean(h.title), url: h.url || `https://news.ycombinator.com/item?id=${h.objectID}`,
-        meta: [`${h.points} 分`, `${h.num_comments} 评论`], time: iso(h.created_at),
-      }));
-    },
-  },
-  {
     id: 'v2ex', tier: 2, name: 'V2EX', sub: '分享创造', home: 'https://www.v2ex.com/go/create',
     async fetch() {
       // The node's newest topics; the site-wide hot list was mostly small talk.
@@ -176,7 +166,6 @@ const SOURCES = [
   englishFeed('semianalysis', 'SemiAnalysis', '半导体与算力', 'https://newsletter.semianalysis.com/', 'https://newsletter.semianalysis.com/feed'),
   englishFeed('dwarkesh', 'Dwarkesh', '长访谈', 'https://www.dwarkesh.com/', 'https://www.dwarkesh.com/feed'),
   englishFeed('importai', 'Import AI', 'AI 周报', 'https://jack-clark.net/', 'https://importai.substack.com/feed'),
-  englishFeed('simonwillison', 'Simon Willison', '大模型实测', 'https://simonwillison.net/', 'https://simonwillison.net/atom/entries/', { tier: 2 }),
   englishFeed('interconnects', 'Interconnects', '模型与开源', 'https://www.interconnects.ai/', 'https://www.interconnects.ai/feed'),
   englishFeed('chinatalk', 'ChinaTalk', '中国科技政策', 'https://www.chinatalk.media/', 'https://www.chinatalk.media/feed'),
   englishFeed('damodaran', 'Damodaran', '估值与市场', 'https://aswathdamodaran.blogspot.com/', 'https://aswathdamodaran.blogspot.com/feeds/posts/default?alt=rss&max-results=15'),
