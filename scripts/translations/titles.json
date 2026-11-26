@@ -9,7 +9,6 @@
   "Si Sheppard – How did a few hundred Spanish soldiers topple two empires?": "Si Sheppard：几百名西班牙士兵如何推翻两个帝国？",
   "Noam Brown – Agent swarms, alignment, & recursive self-improvement": "Noam Brown：智能体集群、对齐与递归自我改进",
   "AI researchers debate how close we are to recursive self-improvement": "AI 研究者辩论：我们离递归自我改进还有多远",
-
   "Import AI 482: Huawei kernel benchmarks; airborne drone detection; and a national lab's AI science benchmark": "Import AI 482：华为内核基准测试；机载无人机探测；国家实验室的 AI 科学基准",
   "Import AI 481: AI sub-contractors; a wet lab for AI; and subterfuge during development": "Import AI 481：AI 分包商；给 AI 用的湿实验室；研发过程中的欺瞒行为",
   "Import AI 480: Self-sustaining space economies; AI for science progress, and Meta builds perfect hands for a superintelligence": "Import AI 480：自给自足的太空经济；AI 科研的进展；Meta 为超级智能造出完美的手",
@@ -20,7 +19,6 @@
   "Import AI 475: Swarm scaling; Google DeepMind watermarks biology; and the AI science economy": "Import AI 475：集群式扩展；Google DeepMind 给生物学加水印；AI 科研经济",
   "Import AI 474: Platonic mindspace; TPUs in space; Zhipu starts an outer RSI loop": "Import AI 474：柏拉图式的心智空间；太空里的 TPU；智谱启动外层递归自我改进循环",
   "Import AI 473: The US's superintelligence strategy; human brain in a mouse skull; and machine hermeneutics": "Import AI 473：美国的超级智能战略；装进鼠颅骨的人脑；机器诠释学",
-
   "Three LLM inflection points in twelve months": "十二个月里大模型的三个拐点",
   "Ladybird's first alpha release": "Ladybird 浏览器发布首个 alpha 版",
   "Running the full server-side Datasette Python app in the browser with service workers and Pyodide": "用 Service Worker 和 Pyodide 在浏览器里跑完整的服务端 Datasette 应用",
@@ -31,7 +29,6 @@
   "The October inflection point for vibe game development": "十月，氛围式游戏开发的拐点",
   "Battle Drones - a vibe coded RTS with audio-based multiplayer": "Battle Drones：氛围编程做出的即时战略游戏，靠音频联机",
   "Hello Python 3.15, goodbye 3.10, and now I can use 3.11": "你好 Python 3.15，再见 3.10，我终于可以用 3.11 了",
-
   "Open-source AI without Jensen": "没有黄仁勋的开源 AI",
   "How big is the open model economy today?": "今天的开放模型经济有多大？",
   "Was I wrong about open models & cyber risks?": "关于开放模型和网络安全风险，我错了吗？",
@@ -42,7 +39,6 @@
   "I expect rapid progress but not towards general superintelligence": "我预期进展会很快，但不是通向通用超级智能",
   "The Cyber Risk Discourse is Broken": "关于网络安全风险的讨论已经失灵",
   "Debating RSI, the US-China Gap, and Jaggedness with JS Denain of Epoch AI": "与 Epoch AI 的 JS Denain 辩论：递归自我改进、中美差距与能力的参差",
-
   "The Remote Access Rule Buys Six Months of Compute Lead": "远程访问规则换来六个月的算力领先",
   "Jensen Returns": "黄仁勋归来",
   "The Agentic State": "智能体化的国家",
@@ -53,7 +49,6 @@
   "MOFCOM's New Rules: Digging For Leverage": "中国商务部新规：挖掘谈判筹码",
   "Jensen Out, MATCH Act In?": "黄仁勋出局，MATCH 法案上位？",
   "Piggybacking to the Frontier": "搭便车追到前沿",
-
   "The Cost of Human Frailty: Nvidia's Jensen Huang Test!": "人性弱点的代价：英伟达的“黄仁勋考验”",
   "The Rocky Road from Aggregate to Per Share Value: Anthropic's IPO update": "从总估值到每股价值的坎坷之路：Anthropic IPO 更新",
   "The AI Trade Deconstructed: AI Builders, AI Suppliers and AI Product firms!": "拆解 AI 交易：AI 建设者、AI 供应商与 AI 产品公司",
@@ -64,7 +59,6 @@
   "Interest Rates and Stock Prices: An Old Debate Flares up!": "利率与股价：一场老争论再起",
   "The Scaling and Profitability Trade off: Venture Capital's Weakest Link!": "规模与盈利的取舍：风险投资最薄弱的一环",
   "AI's Bar Mitzvah Moment: From Hype & Hope to Business Questions!": "AI 的“成人礼”时刻：从炒作与期望转向商业问题",
-
   "Reading List 11/21/2026": "阅读清单 2026 年 11 月 21 日",
   "Reading List 11/14/2026": "阅读清单 2026 年 11 月 14 日",
   "Technology as a Search Problem": "把技术看作一个搜索问题",
@@ -74,5 +68,6 @@
   "A New Kind of Chemistry": "一种新的化学",
   "Reading List 10/24/26": "阅读清单 2026 年 10 月 24 日",
   "Reading List 10/17/26": "阅读清单 2026 年 10 月 17 日",
-  "How to Train Your Robot": "驯“机器人”高手"
+  "How to Train Your Robot": "驯“机器人”高手",
+  "Evaluating Recent Model Releases on GDPx": "用 GDPx 评测近期发布的模型"
 }

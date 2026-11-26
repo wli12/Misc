@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-25T23:57:07.602Z",
+ "updatedAt": "2026-11-26T00:10:31.713Z",
  "sources": [
   {
    "id": "zhihu",
@@ -347,7 +347,7 @@
    "name": "知乎日报",
    "sub": "今日",
    "home": "https://daily.zhihu.com/",
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "鸟类能尝出果实的甜味吗？",
@@ -385,14 +385,14 @@
    "name": "Hacker News",
    "sub": "首页",
    "home": "https://news.ycombinator.com/",
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "1Password Security Incident",
      "url": "https://1password.com/blog/update-on-nov-2026-security-incident",
      "meta": [
-      "1025 分",
-      "438 评论"
+      "1046 分",
+      "450 评论"
      ],
      "time": "2026-11-25T17:18:26.000Z"
     },
@@ -400,8 +400,8 @@
      "title": "Holy shit holy shit holy shit holy shit: The magnitude of what’s now happening",
      "url": "https://scottaaronson.blog/?p=10379",
      "meta": [
-      "778 分",
-      "619 评论"
+      "788 分",
+      "645 评论"
      ],
      "time": "2026-11-25T19:11:27.000Z"
     },
@@ -409,8 +409,8 @@
      "title": "Google releases Cogentic papers on integer factorization, discrete logs and more",
      "url": "https://github.com/google-research/google-research/tree/master/cogentic_research_papers",
      "meta": [
-      "428 分",
-      "320 评论"
+      "433 分",
+      "322 评论"
      ],
      "time": "2026-11-25T13:33:07.000Z"
     },
@@ -418,7 +418,7 @@
      "title": "A few questions for the guy who went snorkeling in a Home Depot retention pond",
      "url": "https://www.vox.com/down-to-earth/511999/home-depot-retention-pond-snorkel-joseph-ricketts",
      "meta": [
-      "421 分",
+      "423 分",
       "100 评论"
      ],
      "time": "2026-11-25T15:14:32.000Z"
@@ -427,7 +427,7 @@
      "title": "Windows Loudness Equalization, reverse-engineered and ported to PipeWire",
      "url": "https://github.com/xoxorwr/pw-loudness-eq",
      "meta": [
-      "304 分",
+      "306 分",
       "172 评论"
      ],
      "time": "2026-11-25T11:34:25.000Z"
@@ -436,8 +436,8 @@
      "title": "Smart people who give a shit use tools",
      "url": "https://www.iankduncan.com/engineering/2026-11-19-smart-people-who-give-a-shit-use-tools",
      "meta": [
-      "253 分",
-      "194 评论"
+      "260 分",
+      "198 评论"
      ],
      "time": "2026-11-25T07:46:43.000Z"
     },
@@ -445,35 +445,35 @@
      "title": "Porting Rockbox to an undocumented $9 AliExpress 'YP3' MP3 player with LLMs",
      "url": "https://jayd.ml/2026/11/14/rockbox-on-yp3.html",
      "meta": [
-      "207 分",
+      "213 分",
       "85 评论"
      ],
      "time": "2026-11-24T06:22:36.000Z"
     },
     {
-     "title": "GPT-6.2 Astra is the first model to beat Googlers' code golf records",
-     "url": "https://bjin.github.io/go-codegolf-benchmark/#leaderboard",
-     "meta": [
-      "187 分",
-      "52 评论"
-     ],
-     "time": "2026-11-22T16:44:48.000Z"
-    },
-    {
      "title": "Much shorter version of GRH Lean verification from Anthropic",
      "url": "https://github.com/lsernau/grh-lean",
      "meta": [
-      "184 分",
-      "83 评论"
+      "200 分",
+      "88 评论"
      ],
      "time": "2026-11-25T21:48:10.000Z"
+    },
+    {
+     "title": "GPT-6.2 Astra is the first model to beat Googlers' code golf records",
+     "url": "https://bjin.github.io/go-codegolf-benchmark/#leaderboard",
+     "meta": [
+      "197 分",
+      "58 评论"
+     ],
+     "time": "2026-11-22T16:44:48.000Z"
     },
     {
      "title": "I checked Clojure's core with Lean and found unreported bugs",
      "url": "https://s.conao3.com/blog/2026/e4f733",
      "meta": [
-      "169 分",
-      "58 评论"
+      "172 分",
+      "59 评论"
      ],
      "time": "2026-11-25T14:56:52.000Z"
     },
@@ -481,17 +481,26 @@
      "title": "The New York Times tells photographers not to use the latest Photoshop",
      "url": "https://www.dpreview.com/news/new-york-times-adobe-photoshop-2027-restriction-ai/",
      "meta": [
-      "123 分",
-      "61 评论"
+      "136 分",
+      "69 评论"
      ],
      "time": "2026-11-25T21:18:02.000Z"
+    },
+    {
+     "title": "Jev is (probably) Qwen3.5-35B-A3B",
+     "url": "https://modaic.dev/blog/latency-doesnt-lie",
+     "meta": [
+      "125 分",
+      "14 评论"
+     ],
+     "time": "2026-11-25T22:57:04.000Z"
     },
     {
      "title": "SSH is a GUI framework",
      "url": "https://zydra.sh/articles/ssh-is-a-gui-framework/",
      "meta": [
-      "112 分",
-      "58 评论"
+      "118 分",
+      "59 评论"
      ],
      "time": "2026-11-21T14:52:41.000Z"
     },
@@ -499,16 +508,25 @@
      "title": "The polynomial Hirsch conjecture is false [pdf]",
      "url": "https://github.com/openai/math/blob/main/preprints/Superpolynomial-graph-diameter-of-simple-polytopes-November-24-2026/paper.pdf",
      "meta": [
-      "109 分",
-      "27 评论"
+      "113 分",
+      "28 评论"
      ],
      "time": "2026-11-25T17:34:34.000Z"
+    },
+    {
+     "title": "72-Hour Fasting Can Reset Your Immune System, USC Study Shows",
+     "url": "https://scienceinhand.com/72-hour-fasting-can-reset-your-entire-immune-system-usc-study-shows/",
+     "meta": [
+      "108 分",
+      "49 评论"
+     ],
+     "time": "2026-11-25T20:35:39.000Z"
     },
     {
      "title": "Predicting LoRA size for any dataset",
      "url": "https://engram.com/blog/lora-size",
      "meta": [
-      "104 分",
+      "105 分",
       "11 评论"
      ],
      "time": "2026-11-24T22:34:29.000Z"
@@ -517,8 +535,8 @@
      "title": "In C++, = default and {} are not the same constructor",
      "url": "https://lemire.me/blog/2026/11/02/default-and-braces-are-not-the-same-constructor/",
      "meta": [
-      "99 分",
-      "161 评论"
+      "102 分",
+      "162 评论"
      ],
      "time": "2026-11-25T15:20:15.000Z"
     },
@@ -526,62 +544,44 @@
      "title": "Slow Ubuntu security response times",
      "url": "https://www.openwall.com/lists/oss-security/2026/11/25/9",
      "meta": [
-      "91 分",
-      "31 评论"
+      "95 分",
+      "32 评论"
      ],
      "time": "2026-11-25T20:38:00.000Z"
-    },
-    {
-     "title": "72-Hour Fasting Can Reset Your Immune System, USC Study Shows",
-     "url": "https://scienceinhand.com/72-hour-fasting-can-reset-your-entire-immune-system-usc-study-shows/",
-     "meta": [
-      "90 分",
-      "42 评论"
-     ],
-     "time": "2026-11-25T20:35:39.000Z"
     },
     {
      "title": "Britain's ghost stations",
      "url": "https://spectator.com/article/britains-ghost-stations-are-fascinating/",
      "meta": [
-      "84 分",
+      "87 分",
       "18 评论"
      ],
      "time": "2026-11-25T17:43:46.000Z"
     },
     {
-     "title": "Jev is (probably) Qwen3.5-35B-A3B",
-     "url": "https://modaic.dev/blog/latency-doesnt-lie",
+     "title": "Nfs2root: A 12-year-old pre-auth remote root in the Linux kernel's NFS server",
+     "url": "https://opensec.in/blog/nfs2root-cve-2026-99362",
      "meta": [
-      "81 分",
-      "4 评论"
+      "66 分",
+      "20 评论"
      ],
-     "time": "2026-11-25T22:57:04.000Z"
+     "time": "2026-11-25T20:35:50.000Z"
     },
     {
      "title": "Show HN: An agent skill that optimizes code with falsifiable hypotheses",
      "url": "https://chszlab.github.io/AgenticAlgorithmEngineering/",
      "meta": [
-      "62 分",
+      "64 分",
       "8 评论"
      ],
      "time": "2026-11-23T14:02:15.000Z"
     },
     {
-     "title": "Nfs2root: A 12-year-old pre-auth remote root in the Linux kernel's NFS server",
-     "url": "https://opensec.in/blog/nfs2root-cve-2026-99362",
-     "meta": [
-      "60 分",
-      "19 评论"
-     ],
-     "time": "2026-11-25T20:35:50.000Z"
-    },
-    {
      "title": "Defang Security Incident",
      "url": "https://defang.io/blog/post/security-incident-november-2026/",
      "meta": [
-      "44 分",
-      "14 评论"
+      "45 分",
+      "16 评论"
      ],
      "time": "2026-11-25T21:47:16.000Z"
     },
@@ -589,8 +589,8 @@
      "title": "Show HN: Rchive – Every drive I've owned since the 90s, searchable in one window",
      "url": "https://www.rchive.computer/",
      "meta": [
-      "25 分",
-      "15 评论"
+      "28 分",
+      "16 评论"
      ],
      "time": "2026-11-24T07:03:33.000Z"
     },
@@ -598,10 +598,19 @@
      "title": "The undocumented 249-file limit for Googlebot rendering",
      "url": "https://www.fullstackoptimization.com/a/googlebot-249-file-rendering-limit",
      "meta": [
-      "25 分",
-      "10 评论"
+      "27 分",
+      "11 评论"
      ],
      "time": "2026-11-23T20:50:20.000Z"
+    },
+    {
+     "title": "Bare Metal Qwen",
+     "url": "https://github.com/alesha-pro/llm.asm/tree/main/02-baremetal-os",
+     "meta": [
+      "22 分",
+      "1 评论"
+     ],
+     "time": "2026-11-25T22:15:34.000Z"
     },
     {
      "title": "A Beer Brewer's Noise Estimation",
@@ -613,31 +622,22 @@
      "time": "2026-11-23T12:20:15.000Z"
     },
     {
-     "title": "Bare Metal Qwen",
-     "url": "https://github.com/alesha-pro/llm.asm/tree/main/02-baremetal-os",
+     "title": "Deploying a payphone on a tiny Pacific Island for fun and zero profit",
+     "url": "https://nickvsnetworking.com/deploying-a-payphone-on-a-tiny-pacific-island-for-fun-and-zero-profit/",
      "meta": [
-      "10 分",
+      "13 分",
       "0 评论"
      ],
-     "time": "2026-11-25T22:15:34.000Z"
+     "time": "2026-11-25T22:12:25.000Z"
     },
     {
      "title": "A fast CAS with a focus on resolution of singularities",
      "url": "https://github.com/pportilla/atlas",
      "meta": [
-      "9 分",
+      "11 分",
       "1 评论"
      ],
      "time": "2026-11-24T02:57:22.000Z"
-    },
-    {
-     "title": "Deploying a payphone on a tiny Pacific Island for fun and zero profit",
-     "url": "https://nickvsnetworking.com/deploying-a-payphone-on-a-tiny-pacific-island-for-fun-and-zero-profit/",
-     "meta": [
-      "7 分",
-      "0 评论"
-     ],
-     "time": "2026-11-25T22:12:25.000Z"
     },
     {
      "title": "Why \"all different\" Sets take 5x longer to find",
@@ -661,11 +661,11 @@
   },
   {
    "id": "v2ex",
-   "tier": 2,
+   "tier": 3,
    "name": "V2EX",
    "sub": "最热",
    "home": "https://www.v2ex.com/?tab=hot",
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "我知道你几岁",
@@ -754,7 +754,7 @@
      "excerpt": "我在论坛上找人代办韩国资料的 KYC 认证，对方收费 280 元。结果认证完成后，我本人根本还没有实际使用，账号不到一小时就被封了。出了问题后，这位兄弟的态度也不地道，连一部分费用都不肯退。基于这次经历，我提醒大家：后续如果要做 Claude 的 KYC 认证，一定要慎重选择，别轻易踩坑，免得花了钱账号还没用就出问题！！",
      "meta": [
       "Claude",
-      "52 回复"
+      "53 回复"
      ]
     }
    ]
@@ -765,13 +765,13 @@
    "name": "华尔街见闻",
    "sub": "日排行",
    "home": "https://wallstreetcn.com/",
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "AI抛售拖累美股盘中重挫，逢低买盘力撑道指转涨，避险需求推升美债，贵金属深V反转",
      "url": "https://wallstreetcn.com/articles/3786656",
      "meta": [
-      "25.3 万 阅读"
+      "26.2 万 阅读"
      ],
      "time": "2026-11-25T22:57:21.000Z"
     },
@@ -779,7 +779,7 @@
      "title": "美国10月PCE物价指数同比增长3.8%创三年半新高，核心同比 3.3%超预期，12月加息几成定局！",
      "url": "https://wallstreetcn.com/articles/3786699",
      "meta": [
-      "16.3 万 阅读"
+      "16.6 万 阅读"
      ],
      "time": "2026-11-25T13:52:55.000Z"
     },
@@ -787,7 +787,7 @@
      "title": "美国将宣布对中国商品加征关税，外交部：反对借口“产能过剩”进行政治操弄",
      "url": "https://wallstreetcn.com/articles/3786671",
      "meta": [
-      "11.3 万 阅读"
+      "11.4 万 阅读"
      ],
      "time": "2026-11-25T07:30:26.000Z"
     },
@@ -803,7 +803,7 @@
      "title": "高盛：市场已替美联储“加息四次”，但沃什12月仍将继续加息",
      "url": "https://wallstreetcn.com/articles/3786691",
      "meta": [
-      "7.5 万 阅读"
+      "7.6 万 阅读"
      ],
      "time": "2026-11-25T12:16:50.000Z"
     },
@@ -811,7 +811,7 @@
      "title": "次贷危机的味道？甲骨文CDS利差已超越2008年的贝尔斯登，AI数据中心股权被抹去近半",
      "url": "https://wallstreetcn.com/articles/3786678",
      "meta": [
-      "5.8 万 阅读"
+      "5.9 万 阅读"
      ],
      "time": "2026-11-25T11:05:16.000Z"
     },
@@ -819,7 +819,7 @@
      "title": "美股这波反弹是陷阱？华尔街大佬拉响警报：标普500可能跌到5500点！",
      "url": "https://wallstreetcn.com/articles/3786666",
      "meta": [
-      "5.4 万 阅读"
+      "5.5 万 阅读"
      ],
      "time": "2026-11-25T08:20:44.000Z"
     },
@@ -835,17 +835,17 @@
      "title": "沪指失守3500点，医药、消费逆势走强，创业板跌超4%，“宁王”大跌8%，半导体产业链下跌，恒科指午后跌超2%",
      "url": "https://wallstreetcn.com/articles/3786653",
      "meta": [
-      "5.2 万 阅读"
+      "5.3 万 阅读"
      ],
      "time": "2026-11-25T08:50:24.000Z"
     },
     {
-     "title": "推动黄仁勋下台的“自媒体黑嘴”：由Anthropic的早期投资者资助",
-     "url": "https://wallstreetcn.com/articles/3786645",
+     "title": "拯救纳指！“大空头”Burry转多：做空仓位几近清零，四分之一现金备战抄底",
+     "url": "https://wallstreetcn.com/articles/3786713",
      "meta": [
-      "4.5 万 阅读"
+      "5.1 万 阅读"
      ],
-     "time": "2026-11-25T00:20:40.000Z"
+     "time": "2026-11-25T23:01:34.000Z"
     }
    ]
   },
@@ -855,7 +855,7 @@
    "name": "少数派",
    "sub": "热门文章",
    "home": "https://sspai.com/",
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "从深圳到上海，少数派的共创故事还在继续",
@@ -1045,14 +1045,22 @@
    "name": "晚点",
    "sub": "LatePost",
    "home": "https://www.latepost.com/",
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
+    {
+     "title": "黄仁勋的权力游戏：30 年主导产业，3 年走进华盛顿",
+     "url": "https://www.latepost.com/news/dj_detail?id=3825",
+     "excerpt": "“要么奔跑觅食，要么沦为猎物。”",
+     "meta": [
+      "昨天"
+     ]
+    },
     {
      "title": "认养一头牛的十二年，让重投入长出新生意",
      "url": "https://www.latepost.com/news/dj_detail?id=3824",
      "excerpt": "做乳业，公司要有长期持续不断投入的定力，也要有顺势而为的灵活转身。",
      "meta": [
-      "11月11日"
+      "11月24日"
      ]
     },
     {
@@ -1060,7 +1068,7 @@
      "url": "https://www.latepost.com/news/dj_detail?id=3823",
      "excerpt": "自动驾驶公司的商业价值，已经不必完全等待智驾更普及的那天才能兑现。",
      "meta": [
-      "11月11日"
+      "11月24日"
      ]
     },
     {
@@ -1068,7 +1076,7 @@
      "url": "https://www.latepost.com/news/dj_detail?id=3822",
      "excerpt": "GPT-6 对机器人行业的冲击或许是一件好事。",
      "meta": [
-      "11月11日"
+      "11月23日"
      ]
     },
     {
@@ -1076,7 +1084,7 @@
      "url": "https://www.latepost.com/news/dj_detail?id=3821",
      "excerpt": "蒸馏物理世界的初衷，被商业规则改变。",
      "meta": [
-      "11月11日"
+      "11月23日"
      ]
     },
     {
@@ -1084,7 +1092,7 @@
      "url": "https://www.latepost.com/news/dj_detail?id=3820",
      "excerpt": "“在我尝试过的所有方法里，scaling 是对提升智能最有效的一个。”",
      "meta": [
-      "11月11日"
+      "11月23日"
      ]
     },
     {
@@ -1092,7 +1100,15 @@
      "url": "https://www.latepost.com/news/dj_detail?id=3819",
      "excerpt": "甚至车企账期缩短的成本，会以某种方式回到供应商身上。",
      "meta": [
-      "11月11日"
+      "11月21日"
+     ]
+    },
+    {
+     "title": "药明康德的底牌：当全球供应链安全遇上中国商业效率",
+     "url": "https://www.latepost.com/news/dj_detail?id=3818",
+     "excerpt": "",
+     "meta": [
+      "11月20日"
      ]
     },
     {
@@ -1100,7 +1116,7 @@
      "url": "https://www.latepost.com/news/dj_detail?id=3817",
      "excerpt": "曾经，“英伟达就是 last company”。",
      "meta": [
-      "11月11日"
+      "11月19日"
      ]
     },
     {
@@ -1108,23 +1124,7 @@
      "url": "https://www.latepost.com/news/dj_detail?id=3816",
      "excerpt": "两个企业的 AI 开始自动完成交易，商业服务的竞争回到底层履约。",
      "meta": [
-      "11月11日"
-     ]
-    },
-    {
-     "title": "对话 LiberAI 刘松铭：Astra 来袭，00 后物理 AI 创始人看到的胜率",
-     "url": "https://www.latepost.com/news/dj_detail?id=3815",
-     "excerpt": "“有一件事我确实极致热爱，那就是创业本身。”",
-     "meta": [
-      "11月11日"
-     ]
-    },
-    {
-     "title": "乌兰察布 72 小时，目睹 AI 时代的工业奇观",
-     "url": "https://www.latepost.com/news/dj_detail?id=3813",
-     "excerpt": "为 AI 建设人类能提供的最好的基础设施。",
-     "meta": [
-      "11月11日"
+      "11月19日"
      ]
     }
    ]
@@ -1135,7 +1135,7 @@
    "name": "张小珺",
    "sub": "商业访谈录（播客）",
    "home": "https://www.xiaoyuzhoufm.com/podcast/626b46ea9cbbf0451cf5a962",
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "158.【2026年复盘】和沈驿康聊，黄仁勋、xAI内幕、RSI、持续学习、去中心化、预训练白盒、硅谷创业地图",
@@ -1280,7 +1280,7 @@
    "name": "阮一峰",
    "sub": "科技爱好者周刊",
    "home": "https://www.ruanyifeng.com/blog/weekly/",
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "科技爱好者周刊（第 420 期）：最分心的一年",
@@ -1311,7 +1311,7 @@
    "name": "果壳",
    "sub": "科学人",
    "home": "https://www.guokr.com/scientific/",
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "AI 驯化人，是不是人驯化狗的下一集？",
@@ -1411,7 +1411,7 @@
    "name": "机器之心",
    "sub": "文章库",
    "home": "https://www.jiqizhixin.com/articles",
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "全链路任务对齐，浙江人形升级 NAVIAI 工业作业能力",
@@ -1602,8 +1602,16 @@
    "home": "https://newsletter.semianalysis.com/",
    "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
+    {
+     "title": "用 GDPx 评测近期发布的模型",
+     "url": "https://newsletter.semianalysis.com/p/evaluating-recent-model-releases",
+     "excerpt": "GPT-6.2 Astra takes the crown but bad at software engineering, Gemini 4 Neon is an impressive improvement from Google but still overrated, Fable 5.2 is smart but expensive, and new Chinese models as well",
+     "time": "2026-11-26T00:05:35.000Z",
+     "meta": [],
+     "original": "Evaluating Recent Model Releases on GDPx"
+    },
     {
      "title": "英伟达，以及没有黄仁勋的世界",
      "url": "https://newsletter.semianalysis.com/p/nvidia-and-the-world-without-jensen",
@@ -1675,14 +1683,6 @@
      "time": "2026-10-19T05:39:38.000Z",
      "meta": [],
      "original": "Datacenters 2027: The Year of Acceleration, +50GW in a Single Year"
-    },
-    {
-     "title": "ASML 正在造混合键合设备！",
-     "url": "https://newsletter.semianalysis.com/p/asml-is-building-a-hybrid-bonding",
-     "excerpt": "ASML 正在造混合键合设备！公司尚未官宣，但专利申请、一则新闻报道和它自己的路线图都指向这一点。",
-     "time": "2026-10-15T19:27:20.000Z",
-     "meta": [],
-     "original": "ASML Is Building a Hybrid Bonding Tool!"
     }
    ]
   },
@@ -1693,7 +1693,7 @@
    "home": "https://www.dwarkesh.com/",
    "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "回应对“递归自我改进”的质疑",
@@ -1784,7 +1784,7 @@
    "home": "https://jack-clark.net/",
    "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "Import AI 482：华为内核基准测试；机载无人机探测；国家实验室的 AI 科学基准",
@@ -1873,9 +1873,9 @@
    "name": "Simon Willison",
    "sub": "大模型实测",
    "home": "https://simonwillison.net/",
-   "tier": 1,
+   "tier": 2,
    "english": true,
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "十二个月里大模型的三个拐点",
@@ -1920,7 +1920,7 @@
     {
      "title": "我笔记本上的 Qwen 3.8 27B 也能解读模型权重",
      "url": "https://simonwillison.net/2026/Nov/3/qwen-can-interpret-model-weights/",
-     "excerpt": "Yesterday's hot paper was Sparks of Weight-Space Programming: LLMs can natively read &amp; write neural network weights by Rikiya Takehi, Jayden Teoh, Alex Zhang, and Omar Khattab. The paper (OK, the authors classify is as a \"blog post\", bu",
+     "excerpt": "Yesterday's hot paper was Sparks of Weight-Space Programming: LLMs can natively read & write neural network weights by Rikiya Takehi, Jayden Teoh, Alex Zhang, and Omar Khattab. The paper (OK, the authors classify is as a \"blog post\", but it",
      "time": "2026-11-03T16:29:48.000Z",
      "meta": [],
      "original": "Qwen 3.8 27B on my laptop can interpret model weights, too"
@@ -1944,7 +1944,7 @@
     {
      "title": "Battle Drones：氛围编程做出的即时战略游戏，靠音频联机",
      "url": "https://simonwillison.net/2026/Oct/20/battledrones/",
-     "excerpt": "My latest vibe coded game experiment is a Command &amp; Conquer style RTS (Real Time Strategy) game called Battle Drones ( play it here ). Unlike my previous experiments , this one is actually fun to play . I'm somewhat embarrassed to admit",
+     "excerpt": "My latest vibe coded game experiment is a Command & Conquer style RTS (Real Time Strategy) game called Battle Drones ( play it here ). Unlike my previous experiments , this one is actually fun to play . I'm somewhat embarrassed to admit tha",
      "time": "2026-10-20T19:34:19.000Z",
      "meta": [],
      "original": "Battle Drones - a vibe coded RTS with audio-based multiplayer"
@@ -1966,7 +1966,7 @@
    "home": "https://www.interconnects.ai/",
    "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "没有黄仁勋的开源 AI",
@@ -2057,7 +2057,7 @@
    "home": "https://www.chinatalk.media/",
    "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "远程访问规则换来六个月的算力领先",
@@ -2148,7 +2148,7 @@
    "home": "https://aswathdamodaran.blogspot.com/",
    "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "人性弱点的代价：英伟达的“黄仁勋考验”",
@@ -2161,7 +2161,7 @@
     {
      "title": "从总估值到每股价值的坎坷之路：Anthropic IPO 更新",
      "url": "https://aswathdamodaran.blogspot.com/2026/11/the-rocky-road-from-aggregate-to-per.html",
-     "excerpt": "&nbsp; &nbsp; &nbsp; I valued Anthropic in a post on November 2, 2026, and while estimating a value of $1.475 trillion for the equity in the company, I noted that the share count was a placeholder, while we waited for bankers to make a fina",
+     "excerpt": "I valued Anthropic in a post on November 2, 2026, and while estimating a value of $1.475 trillion for the equity in the company, I noted that the share count was a placeholder, while we waited for bankers to make a final judgment on how man",
      "time": "2026-11-19T00:24:25.000Z",
      "meta": [],
      "original": "The Rocky Road from Aggregate to Per Share Value: Anthropic's IPO update"
@@ -2169,7 +2169,7 @@
     {
      "title": "拆解 AI 交易：AI 建设者、AI 供应商与 AI 产品公司",
      "url": "https://aswathdamodaran.blogspot.com/2026/11/the-ai-trade-deconstructed-ai-builders.html",
-     "excerpt": "&nbsp; &nbsp; When I posted my valuation of Anthropic a few days ago, I noted that turbulence lay ahead, both for the company and the market. I did not expect that turbulence to be this forceful and arrive this soon, but markets don't have ",
+     "excerpt": "When I posted my valuation of Anthropic a few days ago, I noted that turbulence lay ahead, both for the company and the market. I did not expect that turbulence to be this forceful and arrive this soon, but markets don't have an obligation ",
      "time": "2026-11-09T13:37:55.000Z",
      "meta": [],
      "original": "The AI Trade Deconstructed: AI Builders, AI Suppliers and AI Product firms!"
@@ -2185,7 +2185,7 @@
     {
      "title": "Anthropic 招股书来了：我的（而非唯一的）IPO 估值",
      "url": "https://aswathdamodaran.blogspot.com/2026/10/the-anthropic-prospectus-arrives-ipo.html",
-     "excerpt": "&nbsp; &nbsp; I am a dabbler, by nature, moving on from topic to topic, but this year, I have spent more time than usual on AI, but that is because it seems to be part of almost every business or economy related story. I tried to value Spac",
+     "excerpt": "I am a dabbler, by nature, moving on from topic to topic, but this year, I have spent more time than usual on AI, but that is because it seems to be part of almost every business or economy related story. I tried to value SpaceX ahead of an",
      "time": "2026-10-28T18:07:02.000Z",
      "meta": [],
      "original": "The Anthropic Prospectus Arrives: My (but not the) IPO valuation!"
@@ -2193,7 +2193,7 @@
     {
      "title": "从“眼球”到年化收入（ARR）：时髦的定价指标与 Anthropic 交易",
      "url": "https://aswathdamodaran.blogspot.com/2026/10/from-eyeballs-to-annual-run-rates-arr.html",
-     "excerpt": "&nbsp; &nbsp; I was in San Francisco last week to talk to NYU Stern Alumni on October 15, and it was the day that Anthropic had a pre-IPO meeting with prospective investors. While I was not at the meeting, the focus&nbsp; of teh gathering w",
+     "excerpt": "I was in San Francisco last week to talk to NYU Stern Alumni on October 15, and it was the day that Anthropic had a pre-IPO meeting with prospective investors. While I was not at the meeting, the focus of teh gathering was laying a foundati",
      "time": "2026-10-22T22:02:13.000Z",
      "meta": [],
      "original": "From Eyeballs to Annual Run Rates (ARR): Buzzy Pricing Metrics and the Anthropic Trade!"
@@ -2209,7 +2209,7 @@
     {
      "title": "利率与股价：一场老争论再起",
      "url": "https://aswathdamodaran.blogspot.com/2026/09/interest-rates-and-stock-prices-old.html",
-     "excerpt": "&nbsp; &nbsp; The war in Iran, oil prices and worries about a recession have all taken turns driving stock prices&nbsp; in 2026 but talk about interest rates and where they are going has been a constant concern all year. In the last few wee",
+     "excerpt": "The war in Iran, oil prices and worries about a recession have all taken turns driving stock prices in 2026 but talk about interest rates and where they are going has been a constant concern all year. In the last few weeks, interest rate wo",
      "time": "2026-09-10T16:37:37.000Z",
      "meta": [],
      "original": "Interest Rates and Stock Prices: An Old Debate Flares up!"
@@ -2217,7 +2217,7 @@
     {
      "title": "规模与盈利的取舍：风险投资最薄弱的一环",
      "url": "https://aswathdamodaran.blogspot.com/2026/09/the-scaling-and-profitability-trade-off.html",
-     "excerpt": "&nbsp; &nbsp; It is undeniable technology companies have found their most hospitable setting in the United States and while there are many reasons for the US dominance of technology, easier access to capital for young businesses has been a ",
+     "excerpt": "It is undeniable technology companies have found their most hospitable setting in the United States and while there are many reasons for the US dominance of technology, easier access to capital for young businesses has been a key ingredient",
      "time": "2026-09-02T17:39:51.000Z",
      "meta": [],
      "original": "The Scaling and Profitability Trade off: Venture Capital's Weakest Link!"
@@ -2239,7 +2239,7 @@
    "home": "https://www.construction-physics.com/",
    "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-25T23:57:07.602Z",
+   "updatedAt": "2026-11-26T00:10:31.713Z",
    "items": [
     {
      "title": "阅读清单 2026 年 11 月 21 日",

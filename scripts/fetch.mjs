@@ -37,6 +37,7 @@ function feedItems(xml) {
     clean(
       String(s ?? '')
         .replace(/^\s*<!\[CDATA\[([\s\S]*?)\]\]>\s*$/, '$1')
+        .replace(/&amp;(#?\w+;)/g, '&$1')
         .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
         .replace(/<[^>]+>/g, ' ')
         .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
@@ -56,8 +57,8 @@ function feedItems(xml) {
 }
 
 // An English-language feed. Titles are given their Chinese translation later; see translate().
-const englishFeed = (id, name, sub, home, feed) => ({
-  id, name, sub, home, tier: 1, english: true,
+const englishFeed = (id, name, sub, home, feed, tier = 1) => ({
+  id, name, sub, home, tier, english: true,
   async fetch() {
     return feedItems(await getText(feed)).slice(0, 10).map((i) => ({
       title: i.title, url: i.link, excerpt: i.description.slice(0, 240), time: iso(i.date),
@@ -107,7 +108,7 @@ const SOURCES = [
     },
   },
   {
-    id: 'v2ex', tier: 2, name: 'V2EX', sub: '最热', home: 'https://www.v2ex.com/?tab=hot',
+    id: 'v2ex', tier: 3, name: 'V2EX', sub: '最热', home: 'https://www.v2ex.com/?tab=hot',
     async fetch() {
       const list = await getJson('https://www.v2ex.com/api/topics/hot.json');
       return list.map((t) => ({
@@ -139,13 +140,13 @@ const SOURCES = [
   {
     id: 'latepost', tier: 1, name: '晚点', sub: 'LatePost', home: 'https://www.latepost.com/',
     async fetch() {
-      const body = await getJson('https://www.latepost.com/site/index', {
+      const body = await getJson('https://www.latepost.com/news/get-news-data', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'page=1&limit=10',
+        body: 'page=1&limit=10&programa=',
       });
       return body.data.map((a) => ({
-        title: clean(a.title), url: `https://www.latepost.com${a.detail_url}`, excerpt: clean(a.abstract),
+        title: clean(a.title), url: `https://www.latepost.com${a.detail_url ?? `/news/dj_detail?id=${a.id}`}`, excerpt: clean(a.abstract),
         meta: [clean(a.release_time)],
       }));
     },
@@ -193,7 +194,7 @@ const SOURCES = [
   englishFeed('semianalysis', 'SemiAnalysis', '半导体与算力', 'https://newsletter.semianalysis.com/', 'https://newsletter.semianalysis.com/feed'),
   englishFeed('dwarkesh', 'Dwarkesh', '长访谈', 'https://www.dwarkesh.com/', 'https://www.dwarkesh.com/feed'),
   englishFeed('importai', 'Import AI', 'AI 周报', 'https://jack-clark.net/', 'https://importai.substack.com/feed'),
-  englishFeed('simonwillison', 'Simon Willison', '大模型实测', 'https://simonwillison.net/', 'https://simonwillison.net/atom/entries/'),
+  englishFeed('simonwillison', 'Simon Willison', '大模型实测', 'https://simonwillison.net/', 'https://simonwillison.net/atom/entries/', 2),
   englishFeed('interconnects', 'Interconnects', '模型与开源', 'https://www.interconnects.ai/', 'https://www.interconnects.ai/feed'),
   englishFeed('chinatalk', 'ChinaTalk', '中国科技政策', 'https://www.chinatalk.media/', 'https://www.chinatalk.media/feed'),
   englishFeed('damodaran', 'Damodaran', '估值与市场', 'https://aswathdamodaran.blogspot.com/', 'https://aswathdamodaran.blogspot.com/feeds/posts/default?alt=rss&max-results=15'),
