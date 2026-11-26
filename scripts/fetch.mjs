@@ -57,10 +57,10 @@ function feedItems(xml) {
 }
 
 // An English-language feed. Titles are given their Chinese translation later; see translate().
-const englishFeed = (id, name, sub, home, feed, tier = 1) => ({
+const englishFeed = (id, name, sub, home, feed, { tier = 1, skip } = {}) => ({
   id, name, sub, home, tier, english: true,
   async fetch() {
-    return feedItems(await getText(feed)).slice(0, 10).map((i) => ({
+    return feedItems(await getText(feed)).filter((i) => !skip?.test(i.title)).slice(0, 10).map((i) => ({
       title: i.title, url: i.link, excerpt: i.description.slice(0, 240), time: iso(i.date),
     }));
   },
@@ -185,8 +185,9 @@ const SOURCES = [
   {
     id: 'jiqizhixin', tier: 2, name: '机器之心', sub: '文章库', home: 'https://www.jiqizhixin.com/articles',
     async fetch() {
-      const body = await getJson('https://www.jiqizhixin.com/api/article_library/articles.json?sort=time&page=1&per=20');
-      return body.articles.map((a) => ({
+      const body = await getJson('https://www.jiqizhixin.com/api/article_library/articles.json?sort=time&page=1&per=30');
+      // Pieces signed 新闻资讯 are company announcements, not the site's own reporting.
+      return body.articles.filter((a) => clean(a.author) !== '新闻资讯').map((a) => ({
         title: clean(a.title), url: `https://www.jiqizhixin.com/articles/${a.slug}`, excerpt: clean(a.content).slice(0, 300),
         meta: [clean(a.author)], time: iso(`${String(a.publishedAt).replace(/\//g, '-').replace(' ', 'T')}:00+08:00`),
       }));
@@ -195,11 +196,13 @@ const SOURCES = [
   englishFeed('semianalysis', 'SemiAnalysis', '半导体与算力', 'https://newsletter.semianalysis.com/', 'https://newsletter.semianalysis.com/feed'),
   englishFeed('dwarkesh', 'Dwarkesh', '长访谈', 'https://www.dwarkesh.com/', 'https://www.dwarkesh.com/feed'),
   englishFeed('importai', 'Import AI', 'AI 周报', 'https://jack-clark.net/', 'https://importai.substack.com/feed'),
-  englishFeed('simonwillison', 'Simon Willison', '大模型实测', 'https://simonwillison.net/', 'https://simonwillison.net/atom/entries/', 2),
+  englishFeed('simonwillison', 'Simon Willison', '大模型实测', 'https://simonwillison.net/', 'https://simonwillison.net/atom/entries/', { tier: 2 }),
   englishFeed('interconnects', 'Interconnects', '模型与开源', 'https://www.interconnects.ai/', 'https://www.interconnects.ai/feed'),
   englishFeed('chinatalk', 'ChinaTalk', '中国科技政策', 'https://www.chinatalk.media/', 'https://www.chinatalk.media/feed'),
   englishFeed('damodaran', 'Damodaran', '估值与市场', 'https://aswathdamodaran.blogspot.com/', 'https://aswathdamodaran.blogspot.com/feeds/posts/default?alt=rss&max-results=15'),
-  englishFeed('construction-physics', 'Construction Physics', '基建与制造', 'https://www.construction-physics.com/', 'https://www.construction-physics.com/feed'),
+  englishFeed('construction-physics', 'Construction Physics', '基建与制造', 'https://www.construction-physics.com/', 'https://www.construction-physics.com/feed',
+    { skip: /^Reading List\b/i }), // the weekly link round-ups; keep the essays
+
 ];
 
 async function previous() {
