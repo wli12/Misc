@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-26T15:31:41.491Z",
+ "updatedAt": "2026-11-27T00:49:27.724Z",
  "sources": [
   {
    "id": "zhihu",
@@ -347,34 +347,34 @@
    "name": "知乎日报",
    "sub": "今日",
    "home": "https://daily.zhihu.com/",
-   "updatedAt": "2026-11-26T15:31:41.491Z",
+   "updatedAt": "2026-11-27T00:49:27.724Z",
    "items": [
     {
-     "title": "鸟类能尝出果实的甜味吗？",
-     "url": "https://daily.zhihu.com/story/9794251",
+     "title": "能不能说一个「就是为了这点醋，才包了这顿饺子」的典型事例？",
+     "url": "https://daily.zhihu.com/story/9794273",
      "meta": [
-      "biokiwi · 2 分钟阅读"
+      "文森特·凡喵 · 1 分钟阅读"
      ]
     },
     {
-     "title": "现代人能吃得惯古代普通老百姓家里的菜吗？",
-     "url": "https://daily.zhihu.com/story/9794252",
+     "title": "大运河江南段为何不直接取道太湖而要围着太湖绕个大弯？",
+     "url": "https://daily.zhihu.com/story/9794279",
      "meta": [
-      "友善用户川丹丹 · 6 分钟阅读"
+      "免渡河 · 1 分钟阅读"
      ]
     },
     {
-     "title": "为什么龟没有完全抢占鳖的生态位、淘汰掉鳖？",
-     "url": "https://daily.zhihu.com/story/9794262",
+     "title": "想看看大家用Vibe Coding做了什么好玩的东西？",
+     "url": "https://daily.zhihu.com/story/9794282",
      "meta": [
-      "Azonker · 3 分钟阅读"
+      "佩奇 · 1 分钟阅读"
      ]
     },
     {
      "title": "瞎扯 · 如何正确地吐槽",
-     "url": "https://daily.zhihu.com/story/9794272",
+     "url": "https://daily.zhihu.com/story/9794283",
      "meta": [
-      "VOL.4035"
+      "VOL.4036"
      ]
     }
    ]
@@ -385,8 +385,53 @@
    "name": "V2EX",
    "sub": "分享创造",
    "home": "https://www.v2ex.com/go/create",
-   "updatedAt": "2026-11-26T15:31:41.491Z",
+   "updatedAt": "2026-11-27T00:49:27.724Z",
    "items": [
+    {
+     "title": "最近 Antigravity 重置太频繁了，于是我上线了一个 Agy Reset 重置信号监测站，让你不错过每一次重置，且本贴随楼抽 50 位评论者每位赠送 50$V2EX",
+     "url": "https://www.v2ex.com/t/1260187",
+     "excerpt": "现在 Google 找到了属于他们自己的\"Tibo\" - Varun Mohan，而 OpenAI 的 Tibo 却不再是真正的\"Tibo\"。 **站点地址：https://agyreset.com** 如果监测到有重置排期、重置确认都会发布信号，订阅了邮件的都会进行推送，就不会让你错过每一次的重置，包括各个通知渠道都有机器或人工手动通知，尽全力不让你错过重置 😂 同时也提供开放 API、SKill、MCP 的集成，有需要可以自取集成～ ![image.png](https://s3.ap-tokyo-2.megas4.com/lotek4kvdldmsi7bcqlu5uekid66gkw5",
+     "meta": [
+      "1 回复"
+     ],
+     "time": "2026-11-27T00:44:21.000Z"
+    },
+    {
+     "title": "给 Antigravity 打包了套后台浏览器插件：faster-mac-use + browser-routing（macOS 开源）",
+     "url": "https://www.v2ex.com/t/1260183",
+     "excerpt": "Antigravity 自带的电脑和浏览器子代理用起来偏慢，也没法直接复用已登录的 Chrome 标签页。之前做了个 macOS 后台多光标引擎 `faster-mac-use`，用了一阵发现单装 MCP 还不够，模型还是会惯性走内置浏览器，或者看个视频字幕、查个搜索结果都去开网页。 刚发了 `v0.5.8`，把自用的 `browser-routing` 五通道路由技能和 `faster-mac-use` 打包成了一键安装的 Antigravity 原生插件（Claude Code / Codex 也能装技能）： - API / Git / YouTube 字幕直接走 CLI，公开搜索走 `s",
+     "meta": [
+      "0 回复"
+     ],
+     "time": "2026-11-27T00:18:56.000Z"
+    },
+    {
+     "title": "有没有可以帮做网站的",
+     "url": "https://www.v2ex.com/t/1260172",
+     "excerpt": "我们想做一个企业内部的培训学习考试平台",
+     "meta": [
+      "3 回复"
+     ],
+     "time": "2026-11-26T17:24:36.000Z"
+    },
+    {
+     "title": "[开源] 写完文档，一键投递多自媒体平台，自动传图+生成小红书/抖音 3:4 卡片，欢迎佬给项目点点 star",
+     "url": "https://www.v2ex.com/t/1260170",
+     "excerpt": "佬友们好，分享一个自己从零写到开源发布的桌面端文档编辑器：**Vmark（维记）**。 写技术总结、踩坑笔记或产品文档时，大家大概率都遇到过同一件事：文档写完了，往公众号、知乎、掘金、CSDN、博客园、百家号一粘贴，**图片外链直接裂开**、格式得重调；想同步发个小红书或抖音图文，还得另外找工具拼图、一个个切浏览器填文案。 所以我做了 **Vmark**，把“平时专注写文档”和“写完直接推 10 个平台草稿箱”放到同一个桌面应用里： ### **1. 平时写文档：顺手的编辑与阅读细节** * **编辑 / 只读双模式**：右上角一键切换只读阅读视图，阅读时点击文内图片支持**放大、缩小、复位*",
+     "meta": [
+      "0 回复"
+     ],
+     "time": "2026-11-26T16:48:42.000Z"
+    },
+    {
+     "title": "用 3 小时 Vibe Coding 搓了个像素小游戏：《FDE 的 100 种死法》（含 100 个真实 B2B/AI 交付翻车原型）",
+     "url": "https://www.v2ex.com/t/1260162",
+     "excerpt": "试玩地址：https://fde.daretob2b.com/ （手机/电脑打开即玩，免登录） ![](https://i.v2ex.co/k0zmv08L.png) 想做《FDE 的 100 种死法》这个点子很久了，一直没动手主要是没设计过游戏，机制怎么落地脑子里一直比较空。 今天在群里看到朋友分享 mopan.ai 的招聘帖，点进去发现是个挺好玩的游戏引擎 / MEME 开发机，找朋友要了个邀请码，花了大概 3 小时就把基础版原型搓出来了。后来因为引擎还在快速迭代中，我就直接导出了代码，自己补上了全网计数器、比惨排行榜和真实案例原型，部署到了自己的域名下。 玩法很简单： 扮演驻场工程师黑飞",
+     "meta": [
+      "0 回复"
+     ],
+     "time": "2026-11-26T15:56:41.000Z"
+    },
     {
      "title": "燃烧了 100 刀的 Gemini4Neon，我做了歌收公开来源的 AI 商业案例库（已整理 164 个产品与 48 篇开发者档案）",
      "url": "https://www.v2ex.com/t/1260155",
@@ -404,15 +449,6 @@
       "0 回复"
      ],
      "time": "2026-11-26T14:44:37.000Z"
-    },
-    {
-     "title": "免费领会员，RouteX 黑五活动来袭",
-     "url": "https://www.v2ex.com/t/1260147",
-     "excerpt": "RouteX 一款记录生活足迹的极简轨迹 App。 只有 7M 小而美的轨迹追光记录，自动记录打点，可追溯轨迹记录，支持 iPhone/iPhone Duo/iPad/Mac 轨迹地图，自动或手动打点，不耗电量，基本无消耗，每天低到 1%，实测使用 1 年多打点 7000+。 支持读取相册地点，数据同步 iCloud。 3D 地图展示轨迹点，轨迹云，最近轨迹点排行。 官网介绍： https://sauteam.github.io/app/routex/ 直接点击下载： https://apps.apple.com/app/id6753095851 黑五活动：点击下载安装，在订阅界面点击年会员：",
-     "meta": [
-      "0 回复"
-     ],
-     "time": "2026-11-26T14:14:15.000Z"
     },
     {
      "title": "Token 花不完马上要重置的时候，大家一般是怎么处理的",
@@ -440,42 +476,177 @@
       "0 回复"
      ],
      "time": "2026-11-26T13:51:04.000Z"
+    }
+   ]
+  },
+  {
+   "id": "skills",
+   "tier": 2,
+   "name": "Skill 排行榜",
+   "sub": "GitHub 星数",
+   "brief": true,
+   "home": "https://github.com/search?q=agent+skills&type=repositories&s=stars&o=desc",
+   "updatedAt": "2026-11-27T00:49:27.724Z",
+   "items": [
+    {
+     "title": "mattpocock/skills",
+     "url": "https://github.com/mattpocock/skills",
+     "excerpt": "TypeScript 名师 Matt Pocock 把自己 .agents 目录里的工程技能整套公开",
+     "meta": [
+      "33.4 万 星"
+     ]
     },
     {
-     "title": "旧手机用上了",
-     "url": "https://www.v2ex.com/t/1260128",
-     "excerpt": "旧手机这下也算是有了点用武之地 哈哈哈哈 ![](https://pic2.ziyuan.wang/user/biu/2026/11/a92c7dd3a39c60e1f18241a4611e62fd_f9203bf79384b.png) ![](https://pic2.ziyuan.wang/user/biu/2026/11/3a561c23f3672ff8bcff7b6333172f16_562e9eec38caf.jpg)",
+     "title": "obra/superpowers",
+     "url": "https://github.com/obra/superpowers",
+     "excerpt": "一套技能框架加软件开发方法论，让编程助手按规范流程干活",
      "meta": [
-      "5 回复"
-     ],
-     "time": "2026-11-26T13:13:44.000Z"
+      "32.7 万 星"
+     ]
     },
     {
-     "title": "os-optics v0.14.0 版本更新",
-     "url": "https://www.v2ex.com/t/1260116",
-     "excerpt": "**OS Optics 版本更新｜2026 年 11 月 26 日** 本次核心引擎更新至 os-optics 0.14.0，Skill 仓更新至 os-optics-kit 0.5.0，主要更新内容： • 仿真与优化大幅提速：支持按需计算并跨方案复用中间状态，在非严格功率、纯折射元件任务中计算速度提升 8–15 倍。 • 新增多项核心光学分析与设计工具：新增变焦镜组求解（zoom）、光线像差扇形图（fans）、场曲与畸变分析（field）、公差自动补偿、斜边 SFR 测量、本地实时查看器，以及多进程并发研究框架与外部优化器接口；Skill 增至 21 个，可复现案例增至 19 个。 • 光学",
+     "title": "affaan-m/ECC",
+     "url": "https://github.com/affaan-m/ECC",
+     "excerpt": "助手性能优化全家桶：技能、本能、记忆、安全，先调研再动手",
      "meta": [
-      "0 回复"
-     ],
-     "time": "2026-11-26T12:16:17.000Z"
+      "31.1 万 星"
+     ]
     },
     {
-     "title": "写了个小工具：会话换工具时不用重来，把一个编码助手的会话，搬到另一个里继续（支持 6 个产品）",
-     "url": "https://www.v2ex.com/t/1260113",
-     "excerpt": "最近在几个编程助手之间来回切，最大的麻烦不是操作习惯，是历史。 我在一个工具里跟到几十轮，想换个工具接着做，发现没法定。 把聊天记录复制过去不行——那是一整条消息，不是历史。 新工具看不到那些轮次，后面每问一句都得重新解释背景。 把聊天记录复制过去不行——那是一整条消息，不是历史。新工具看不到那些轮次， 后面每问一句都得重新解释背景。 所以写了个小工具 session-tape：把「你说的话 + 模型的回答」搬过去，别的都不搬。 ## 只搬文本，是刻意的 工具调用、附件、思考过程、模型身份全都不搬。原因不是做不到，是不该做： 每个产品存这些东西的形状都不一样，硬塞给目标产品，要么被拒绝，要么渲",
+     "title": "multica-ai/andrej-karpathy-skills",
+     "url": "https://github.com/multica-ai/andrej-karpathy-skills",
+     "excerpt": "一份 CLAUDE.md，按 Karpathy 总结的大模型写代码常见毛病来约束 Claude Code",
      "meta": [
-      "1 回复"
-     ],
-     "time": "2026-11-26T12:09:40.000Z"
+      "23.6 万 星"
+     ]
     },
     {
-     "title": "最近在研究土豆姐的 pstack 和 Agent 工程理论，顺手做了个 6 章互动图解网页",
-     "url": "https://www.v2ex.com/t/1260106",
-     "excerpt": "最近把土豆姐（Poteto）聊 Agent 工程的推文、演讲还有她开源的 `cursor/plugins/pstack` 仓库翻了一遍。原始材料散落在不少帖子里，仓库里又有几十个 Markdown 文件，干脆顺手把自己的拆解笔记做成了一个 6 章的互动图解网页，发出来给同样在折腾 AI 写代码的朋友当个参考。 在线地址：https://wanghao-sunsky.github.io/guides/pstack/ 整个页面按从宏观定位到具体落地的顺序拆成了 6 章，点进去大概能看到这些内容： - 01 破题：拆开她看着比较拧巴的三组工程取舍——为什么提倡少写 AGENTS.md 却维护了 59",
+     "title": "anthropics/skills",
+     "url": "https://github.com/anthropics/skills",
+     "excerpt": "Anthropic 官方技能仓库，不知道装什么就先逛这个",
      "meta": [
-      "1 回复"
-     ],
-     "time": "2026-11-26T11:32:15.000Z"
+      "20.1 万 星"
+     ]
+    },
+    {
+     "title": "Graphify-Labs/graphify",
+     "url": "https://github.com/Graphify-Labs/graphify",
+     "excerpt": "把代码库连同文档、SQL、PDF 变成可查询的知识图谱，本地解析、不用向量库",
+     "meta": [
+      "15.4 万 星"
+     ]
+    },
+    {
+     "title": "Shubhamsaboo/awesome-llm-apps",
+     "url": "https://github.com/Shubhamsaboo/awesome-llm-apps",
+     "excerpt": "100 多个 AI 智能体、技能和 RAG 应用的合集，免费开源",
+     "meta": [
+      "14.6 万 星"
+     ]
+    },
+    {
+     "title": "JuliusBrussee/caveman",
+     "url": "https://github.com/JuliusBrussee/caveman",
+     "excerpt": "省 token：让助手少说话、压缩工具输出，原文随时可恢复",
+     "meta": [
+      "12.3 万 星"
+     ]
+    },
+    {
+     "title": "Leonxlnx/taste-skill",
+     "url": "https://github.com/Leonxlnx/taste-skill",
+     "excerpt": "给编程助手补审美：美术指导、参考图加浏览器实看，告别千篇一律的 AI 页面",
+     "meta": [
+      "12.2 万 星"
+     ]
+    },
+    {
+     "title": "addyosmani/agent-skills",
+     "url": "https://github.com/addyosmani/agent-skills",
+     "excerpt": "Addy Osmani 整理的生产级工程技能合集，拿来就能用",
+     "meta": [
+      "12.1 万 星"
+     ]
+    },
+    {
+     "title": "tt-a1i/archify",
+     "url": "https://github.com/tt-a1i/archify",
+     "excerpt": "把想法、计划或代码库变成可交互的图：10 种图表、架构诊断、PR 讲解",
+     "meta": [
+      "10.1 万 星"
+     ]
+    },
+    {
+     "title": "OpenMontageInc/OpenMontage",
+     "url": "https://github.com/OpenMontageInc/OpenMontage",
+     "excerpt": "把编程助手变成视频制作工作室：12 条制作流程、100 多个工具",
+     "meta": [
+      "8.4 万 星"
+     ]
+    },
+    {
+     "title": "ComposioHQ/awesome-claude-skills",
+     "url": "https://github.com/ComposioHQ/awesome-claude-skills",
+     "excerpt": "Claude 技能、资源和工具的精选清单",
+     "meta": [
+      "8 万 星"
+     ]
+    },
+    {
+     "title": "cloudflare/security-audit-skill",
+     "url": "https://github.com/cloudflare/security-audit-skill",
+     "excerpt": "Cloudflare 出的安全审计技能：分阶段审计，结论独立验证、机器可读",
+     "meta": [
+      "7.9 万 星"
+     ]
+    },
+    {
+     "title": "mvanhorn/last30days-skill",
+     "url": "https://github.com/mvanhorn/last30days-skill",
+     "excerpt": "调研某个话题最近 30 天在 Reddit、X、YouTube、HN 等处的讨论，汇成有出处的总结",
+     "meta": [
+      "7.6 万 星"
+     ]
+    },
+    {
+     "title": "blader/humanizer",
+     "url": "https://github.com/blader/humanizer",
+     "excerpt": "去掉文字里的 AI 味",
+     "meta": [
+      "7.4 万 星"
+     ]
+    },
+    {
+     "title": "coreyhaines31/marketingskills",
+     "url": "https://github.com/coreyhaines31/marketingskills",
+     "excerpt": "营销技能包：转化优化、文案、SEO、数据分析、增长工程",
+     "meta": [
+      "6.3 万 星"
+     ]
+    },
+    {
+     "title": "ayghri/i-have-adhd",
+     "url": "https://github.com/ayghri/i-have-adhd",
+     "excerpt": "让助手别把答案埋在长篇大论里，先说结论",
+     "meta": [
+      "6.3 万 星"
+     ]
+    },
+    {
+     "title": "Nutlope/hallmark",
+     "url": "https://github.com/Nutlope/hallmark",
+     "excerpt": "反“AI 味”设计技能，让生成的界面不再一眼假",
+     "meta": [
+      "6.2 万 星"
+     ]
+    },
+    {
+     "title": "emilkowalski/skills",
+     "url": "https://github.com/emilkowalski/skills",
+     "excerpt": "设计工程师 Emil Kowalski 给设计师和工程师的技能包",
+     "meta": [
+      "6 万 星"
+     ]
     }
    ]
   },
@@ -485,14 +656,14 @@
    "name": "晚点",
    "sub": "LatePost",
    "home": "https://www.latepost.com/",
-   "updatedAt": "2026-11-26T15:31:41.491Z",
+   "updatedAt": "2026-11-27T00:49:27.724Z",
    "items": [
     {
      "title": "汝原科技王铭钰：众筹千万美金后，要把桌面 UV 打印做成长期生意",
      "url": "https://www.latepost.com/news/dj_detail?id=3828",
      "excerpt": "人有执念，AI 没有执念。人的经历、遗憾和欲望，让人有了执念，就是想把一个东西做好。",
      "meta": [
-      "今天"
+      "昨天"
      ]
     },
     {
@@ -500,7 +671,7 @@
      "url": "https://www.latepost.com/news/dj_detail?id=3827",
      "excerpt": "Sand.ai 发布 MAGI-2 正式版，计划尽快开放权重。",
      "meta": [
-      "今天"
+      "昨天"
      ]
     },
     {
@@ -508,7 +679,7 @@
      "url": "https://www.latepost.com/news/dj_detail?id=3826",
      "excerpt": "这家没有强势创始人的公司，没有在代际交接中陷入守成与官僚化，反而保留了强烈的创业冲动。",
      "meta": [
-      "今天"
+      "昨天"
      ]
     },
     {
@@ -516,7 +687,7 @@
      "url": "https://www.latepost.com/news/dj_detail?id=3825",
      "excerpt": "“要么奔跑觅食，要么沦为猎物。”",
      "meta": [
-      "昨天"
+      "11月25日"
      ]
     },
     {
@@ -575,7 +746,7 @@
    "name": "张小珺",
    "sub": "商业访谈录（播客）",
    "home": "https://www.xiaoyuzhoufm.com/podcast/626b46ea9cbbf0451cf5a962",
-   "updatedAt": "2026-11-26T15:31:41.491Z",
+   "updatedAt": "2026-11-27T00:49:27.724Z",
    "items": [
     {
      "title": "158.【2026年复盘】和沈驿康聊，黄仁勋、xAI内幕、RSI、持续学习、去中心化、预训练白盒、硅谷创业地图",
@@ -720,8 +891,15 @@
    "name": "阮一峰",
    "sub": "科技爱好者周刊",
    "home": "https://www.ruanyifeng.com/blog/weekly/",
-   "updatedAt": "2026-11-26T15:31:41.491Z",
+   "updatedAt": "2026-11-27T00:49:27.724Z",
    "items": [
+    {
+     "title": "科技爱好者周刊（第 421 期）：AI 的疯狂造富",
+     "url": "https://www.ruanyifeng.com/blog/2026/11/weekly-issue-421.html",
+     "excerpt": "这里记录每周值得分享的科技内容，周五发布。...",
+     "time": "2026-11-27T00:10:30.000Z",
+     "meta": []
+    },
     {
      "title": "科技爱好者周刊（第 420 期）：最分心的一年",
      "url": "https://www.ruanyifeng.com/blog/2026/11/weekly-issue-420.html",
@@ -735,13 +913,6 @@
      "excerpt": "这里记录每周值得分享的科技内容，周五发布。...",
      "time": "2026-11-13T00:08:29.000Z",
      "meta": []
-    },
-    {
-     "title": "科技爱好者周刊（第 418 期）：如果科技停止在21世纪初",
-     "url": "https://www.ruanyifeng.com/blog/2026/11/weekly-issue-418.html",
-     "excerpt": "这里记录每周值得分享的科技内容，周五发布。...",
-     "time": "2026-11-05T23:43:55.000Z",
-     "meta": []
     }
    ]
   },
@@ -751,8 +922,26 @@
    "name": "果壳",
    "sub": "科学人",
    "home": "https://www.guokr.com/scientific/",
-   "updatedAt": "2026-11-26T15:31:41.491Z",
+   "updatedAt": "2026-11-27T00:49:27.724Z",
    "items": [
+    {
+     "title": "冬天到了，想要“出门不冷、进门不闷”，该怎么穿？",
+     "url": "https://www.guokr.com/article/470798/",
+     "excerpt": "",
+     "meta": [
+      "果壳"
+     ],
+     "time": "2026-11-26T22:15:10.268Z"
+    },
+    {
+     "title": "全球酒店裁员潮，这次只砍坐班的",
+     "url": "https://www.guokr.com/article/470797/",
+     "excerpt": "",
+     "meta": [
+      "果壳"
+     ],
+     "time": "2026-11-26T21:15:04.550Z"
+    },
     {
      "title": "棒棒糖含在嘴里就能测怀孕？有人正在设计这样的验孕棒",
      "url": "https://www.guokr.com/article/470795/",
@@ -824,24 +1013,6 @@
       "果壳"
      ],
      "time": "2026-11-24T15:15:04.755Z"
-    },
-    {
-     "title": "斥资38万，零下200℃冷冻自己，C罗的“不老之谜”靠谱吗？",
-     "url": "https://www.guokr.com/article/470776/",
-     "excerpt": "",
-     "meta": [
-      "果壳"
-     ],
-     "time": "2026-11-24T10:15:03.034Z"
-    },
-    {
-     "title": "手里的事先放一放，恭喜《果壳时间》入选 Apple 播客 2026 年度精选",
-     "url": "https://www.guokr.com/article/470774/",
-     "excerpt": "",
-     "meta": [
-      "果壳"
-     ],
-     "time": "2026-11-24T08:15:06.098Z"
     }
    ]
   },
@@ -851,7 +1022,7 @@
    "name": "机器之心",
    "sub": "文章库",
    "home": "https://www.jiqizhixin.com/articles",
-   "updatedAt": "2026-11-26T15:31:41.491Z",
+   "updatedAt": "2026-11-27T00:49:27.724Z",
    "items": [
     {
      "title": "告别「假精细」！VAST发布Tripo H3.5 Preview，AI建模开始较真了",
@@ -1015,7 +1186,7 @@
    "home": "https://newsletter.semianalysis.com/",
    "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-26T15:31:41.491Z",
+   "updatedAt": "2026-11-27T00:49:27.724Z",
    "items": [
     {
      "title": "用 GDPx 评测近期发布的模型",
@@ -1106,7 +1277,7 @@
    "home": "https://www.dwarkesh.com/",
    "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-26T15:31:41.491Z",
+   "updatedAt": "2026-11-27T00:49:27.724Z",
    "items": [
     {
      "title": "回应对“递归自我改进”的质疑",
@@ -1197,7 +1368,7 @@
    "home": "https://jack-clark.net/",
    "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-26T15:31:41.491Z",
+   "updatedAt": "2026-11-27T00:49:27.724Z",
    "items": [
     {
      "title": "Import AI 482：华为内核基准测试；机载无人机探测；国家实验室的 AI 科学基准",
@@ -1288,7 +1459,7 @@
    "home": "https://www.interconnects.ai/",
    "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-26T15:31:41.491Z",
+   "updatedAt": "2026-11-27T00:49:27.724Z",
    "items": [
     {
      "title": "没有黄仁勋的开源 AI",
@@ -1379,7 +1550,7 @@
    "home": "https://www.chinatalk.media/",
    "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-26T15:31:41.491Z",
+   "updatedAt": "2026-11-27T00:49:27.724Z",
    "items": [
     {
      "title": "远程访问规则换来六个月的算力领先",
@@ -1470,7 +1641,7 @@
    "home": "https://aswathdamodaran.blogspot.com/",
    "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-26T15:31:41.491Z",
+   "updatedAt": "2026-11-27T00:49:27.724Z",
    "items": [
     {
      "title": "人性弱点的代价：英伟达的“黄仁勋考验”",
@@ -1561,7 +1732,7 @@
    "home": "https://www.construction-physics.com/",
    "tier": 1,
    "english": true,
-   "updatedAt": "2026-11-26T15:31:41.491Z",
+   "updatedAt": "2026-11-27T00:49:27.724Z",
    "items": [
     {
      "title": "把技术看作一个搜索问题",

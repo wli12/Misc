@@ -9,6 +9,7 @@
 - `site/` — 页面本体（单文件 `index.html`）和数据快照 `data/hot.json`
 - `scripts/fetch.mjs` — 逐个抓取各来源的公开接口或 RSS，生成 `site/data/hot.json`；某个来源失败时沿用它上一次的内容
 - `scripts/translations/` — 英文来源标题的中文翻译，人工维护（`titles.json` 只有标题，`semianalysis.json` 是早先连副标题一起翻的一批）；没翻译的新文章显示英文
+- “Skill 排行榜”一栏是 GitHub 上星数最高的 agent skill 仓库（仓库搜索接口），每个仓库的一句话中文简介写在 `scripts/translations/skills.json`
 - `.github/workflows/pages.yml` — 抓取并部署到 GitHub Pages，由 Google Cloud Scheduler 每小时触发一次
 
 ## 本地预览

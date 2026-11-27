@@ -26,6 +26,9 @@ jobs:
         id: fetch
         continue-on-error: true
         run: node scripts/fetch.mjs
+        env:
+          # Raises the rate limit of the GitHub search used for the skill ranking.
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Refresh movie lists
         # Keeps the committed snapshot when the upstream list is unreachable.
         continue-on-error: true

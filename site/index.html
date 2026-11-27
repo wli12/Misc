@@ -203,14 +203,15 @@
     e.currentTarget.parentNode.classList.add('read');
   }
 
-  function row(it, index, read, compact) {
+  // brief: a source whose one-line summary is the point, so it shows on the overview too.
+  function row(it, index, read, compact, brief) {
     return el('li', { class: 'item' + (read.has(it.url) ? ' read' : '') },
       el('a', { href: hrefFor(it), target: '_blank', rel: 'noopener noreferrer', onclick: (e) => openItem(e, it) },
         el('span', { class: 'rank' }, String(index + 1)),
         el('div', {},
           el('h3', {}, it.title),
           it.original && el('p', { class: 'original', lang: 'en' }, it.original),
-          !compact && it.excerpt && el('p', { class: 'lede' }, it.excerpt),
+          (!compact || brief) && it.excerpt && el('p', { class: 'lede' }, it.excerpt),
           el('div', { class: 'meta' },
             it.isNew && el('span', { class: 'tag' }, '新'),
             (it.meta || []).map((m) => el('span', {}, m)),
@@ -225,7 +226,7 @@
         el('h2', {}, src.name, el('small', {}, src.sub), el('span', { class: 'stars', title: TIER_HINT[src.tier] }, STARS[src.tier])),
         !compact && el('a', { href: src.home, target: '_blank', rel: 'noopener noreferrer' }, '去原站 ↗')),
       items.length
-        ? el('ol', { class: 'list' }, items.map((it, i) => row(it, i, read, compact)))
+        ? el('ol', { class: 'list' }, items.map((it, i) => row(it, i, read, compact, src.brief)))
         : el('p', { class: 'empty' }, '这个来源暂时没取到。'),
       compact && src.items.length > PREVIEW &&
         el('button', { class: 'more', onclick: () => { location.hash = src.id; } }, `全部 ${src.items.length} 条 →`));

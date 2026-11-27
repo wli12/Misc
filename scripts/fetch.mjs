@@ -109,6 +109,41 @@ const SOURCES = [
     },
   },
   {
+    // The most-starred GitHub repositories of agent skills, each with a one-line
+    // Chinese summary written by hand (translations/skills.json); a repository
+    // without one falls back to its own description.
+    id: 'skills', tier: 2, name: 'Skill 排行榜', sub: 'GitHub 星数', brief: true,
+    home: 'https://github.com/search?q=agent+skills&type=repositories&s=stars&o=desc',
+    async fetch() {
+      const zh = JSON.parse(await readFile(resolve(HERE, 'translations/skills.json'), 'utf8'));
+      const search = (q) => getJson(
+        `https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&sort=stars&order=desc&per_page=40`,
+        { headers: {
+          Accept: 'application/vnd.github+json',
+          ...(process.env.GITHUB_TOKEN ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {}),
+        } },
+      );
+      // Two keyword searches, plus two topic searches that are only trusted when the
+      // repository also calls itself a skill: the topics are used loosely.
+      const [byAgent, byClaude, topicAgent, topicClaude] = await Promise.all([
+        search('agent skills in:name,description'), search('claude skills in:name,description'),
+        search('topic:agent-skills'), search('topic:claude-skills'),
+      ]);
+      const saysSkill = (r) => /skill/i.test(`${r.name} ${r.description ?? ''}`);
+      const repos = new Map();
+      for (const r of [...byAgent.items, ...byClaude.items, ...[...topicAgent.items, ...topicClaude.items].filter(saysSkill)]) {
+        repos.set(r.full_name, r);
+      }
+      return [...repos.values()]
+        .sort((a, b) => b.stargazers_count - a.stargazers_count)
+        .slice(0, 20)
+        .map((r) => ({
+          title: r.full_name, url: r.html_url, excerpt: zh[r.full_name] ?? clean(r.description),
+          meta: [`${wan(r.stargazers_count)} 星`],
+        }));
+    },
+  },
+  {
     id: 'latepost', tier: 1, name: '晚点', sub: 'LatePost', home: 'https://www.latepost.com/',
     async fetch() {
       const body = await getJson('https://www.latepost.com/news/get-news-data', {
